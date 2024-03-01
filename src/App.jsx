@@ -7,14 +7,17 @@ import {
 
 import LogIn from "./LogIn.jsx"
 import SignUp from "./SignUp.jsx"
+import Home from "./Home.jsx"
+import Profil from "./Profil.jsx"
 
 const App = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<LogIn />} />
+        <Route path="/" element={<Home />} />
         <Route path="SignUp" element={<SignUp />} />
         <Route path="LogIn" element={<LogIn />} />
+        <Route path="Profil" element={<Profil />}/>
       </Routes>
     </Router>
   );

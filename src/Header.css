@@ -1,0 +1,25 @@
+.Header{
+  display : flex ;
+  flex-direction: row ;
+  gap : 1rem ;
+  align-items: center;
+  justify-content: center ;
+}
+
+.Link{
+  display : flex ;
+  flex-direction: column ;
+  align-items: center;
+  justify-content: center ;
+}
+
+.dateIcon{
+  width: 18px;
+  height : 30px ;
+}
+
+@media  (max-width:800px) {
+  .logoSorbonne{
+    height: 4.5vh;
+  }
+}

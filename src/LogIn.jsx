@@ -1,24 +1,29 @@
-import './App.css'
-import {Link} from "react-router-dom";
+  import './App.css'
+  import {Link} from "react-router-dom";
+  import { useState } from 'react'
 
-function Login () {
+  function Login () {
 
-  return (
-    <div className='center'>
-    <div className="mainsectionlogin">
+    const [pseudo,setPseudo] = useState("")
+    const [password,setPassword] = useState("") ;
 
-      <h1 id='titre'>Connection</h1>
-      <input type="text" placeholder="Pseudo" className="myLabel"/>
-      <input type="password" placeholder="Mot de passe" className="myLabel"/>
-      <div className="sectionButtons">
-        <input type="button" value="Login" className="myButton"/>
-        <input type="button" value="Cancel" className="myButton"/>
+    return (
+      <div className='center'>
+        <div className='rgb'>
+          <div className="mainsectionlogin">
+            <h1 id='titre'>Connection</h1>
+            <input type="text" placeholder="Username" className="myLabel" value={pseudo} onChange={(e)=>setPseudo(e.target.value)}/>
+            <input type="password" placeholder="Password" className="myLabel" value={password} onChange={(e)=>setPassword(e.target.value)}/>
+            <div className="sectionButtons">
+              <button className='button-85'>Login</button>
+              <button className='button-85' onClick={()=>{setPseudo("");setPassword("");}} >Cancel</button>
+            </div>
+            <Link className="custom-link" to="/SignUp">Sign up ?</Link>
+          </div>
+        </div>
       </div>
-      <Link to="/SignUp">Deja inscript ?</Link>
-    </div>
-    </div>
-  );
+    );
 
-};
+  };
 
-export default Login ;
+  export default Login ;
