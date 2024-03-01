@@ -14,17 +14,19 @@ function SignUp () {
 
   return (
     <div className='center'>
-      <div className="mainsectionsignup">
-        <h1 id='titre'>Register Account</h1>
-        <input type="text" placeholder="Username" className="myLabel"/>
-        <input type="password" value={password} onChange={(e)=>{setPassword(e.target.value)}}  placeholder="Password" className="myLabel"/>
-        <input type="password" value={confirmPassword} onChange={(e)=>{setConfirmPassword(e.target.value)}}  placeholder="Confirm Password" className="myLabel"/>
-        <div className="sectionButtons">
-        <button className='button-85' onClick={errorPassword}>Register</button>
-        <Toaster />
-        <input type="button" value="Cancel" className="myButton"/>
+      <div className='rgb'>
+        <div className="mainsectionsignup">
+          <h1 id='titre'>Register Account</h1>
+          <input type="text" placeholder="Username" className="myLabel"/>
+          <input type="password" value={password} onChange={(e)=>{setPassword(e.target.value)}}  placeholder="Password" className="myLabel"/>
+          <input type="password" value={confirmPassword} onChange={(e)=>{setConfirmPassword(e.target.value)}}  placeholder="Confirm Password" className="myLabel"/>
+          <div className="sectionButtons">
+          <button className='button-85' onClick={errorPassword}>Register</button>
+          <Toaster />
+          <button className='button-85'  >Cancel</button>
+          </div>
+          <Link to="/LogIn">Log In ?</Link>
         </div>
-        <Link to="/LogIn">S'Inscrire ?</Link>
       </div>
      </div>
   );
