@@ -4,16 +4,19 @@ import {Link} from "react-router-dom";
 function Login () {
 
   return (
-    <mainsectionlogin>
+    <div className='center'>
+    <div className="mainsectionlogin">
+
       <h1 id='titre'>Connection</h1>
       <input type="text" placeholder="Pseudo" className="myLabel"/>
       <input type="password" placeholder="Mot de passe" className="myLabel"/>
-      <sectionButtons>
+      <div className="sectionButtons">
         <input type="button" value="Login" className="myButton"/>
         <input type="button" value="Cancel" className="myButton"/>
-      </sectionButtons>
+      </div>
       <Link to="/SignUp">Deja inscript ?</Link>
-    </mainsectionlogin>
+    </div>
+    </div>
   );
 
 };
