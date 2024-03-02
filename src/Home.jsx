@@ -152,6 +152,8 @@ return (
             <Messages listeMessages={listeMessages} />
           </div>
         </div>
+	<div className={styles.infoPanel}>
+	</div>
       </div>
     </div>
   );
