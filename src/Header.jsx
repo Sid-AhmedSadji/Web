@@ -15,8 +15,10 @@ function Header (){
 
   return(
     <div className={styles.Header}>
-      <img className={styles.logoSorbonne} src="/public/logoSorbonneUniversite.png" height="50vh" />
-      <div>
+      <Link to="/">
+        <img className={styles.logoSorbonne} src="/public/logoSorbonneUniversite.png" height="50vh" />
+        </Link>
+	<div>
         <Label value={recherche} setValue={setRecherche} />
       </div>
       <p> from </p>

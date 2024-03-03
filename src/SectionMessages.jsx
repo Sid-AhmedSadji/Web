@@ -14,7 +14,7 @@ function Messages ({listeMessages}) {
             <div className={styles.main}>
               <ul>
                 <li>
-                  <SingleMessage titre={message.author_name} message={message.text} />
+                  <SingleMessage titre={message.author_name} message={message.text} id={message._id}/>
                 </li>
               </ul>
             </div>
