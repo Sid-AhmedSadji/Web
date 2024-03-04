@@ -22,4 +22,3 @@ function Message({ titre, message, id }) {
 }
 
 export default Message;
-

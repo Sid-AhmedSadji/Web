@@ -7,20 +7,20 @@ function Messages ({listeMessages}) {
 
 
   return (
-    <div className={styles.center}>
+    <div className={styles.main}>
+    <ul className={styles.myUl}>
       {
         listeMessages.map( message =>{
           return(
-            <div className={styles.main}>
-              <ul>
-                <li>
-                  <SingleMessage titre={message.author_name} message={message.text} id={message._id}/>
-                </li>
-              </ul>
-            </div>
+            <>
+            <li className={styles.myLi} >
+              <SingleMessage titre={message.author_name} message={message.text} id={message._id}/>
+            </li>
+            </>
           )
         })
       }
+      </ul>
     </div>
   )
 };

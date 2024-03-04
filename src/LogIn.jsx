@@ -13,7 +13,7 @@
       <div className={styles.center}>
         <div className={rgbStyle.rgb}>
           <div className={styles.mainsectionlogin}>
-            <h1 id='titre'>Connection</h1>
+            <h1 className={styles.h2} id='titre'>Connection</h1>
             <input type="text" placeholder="Username" className={styles.myLabel} value={pseudo} onChange={(e)=>setPseudo(e.target.value)}/>
             <input type="password" placeholder="Password" className={styles.myLabel} value={password} onChange={(e)=>setPassword(e.target.value)}/>
             <div className={styles.sectionButtons}>
@@ -24,8 +24,8 @@
           </div>
         </div>
       </div>
-    );
 
-  };
+    );
+}
 
   export default Login ;

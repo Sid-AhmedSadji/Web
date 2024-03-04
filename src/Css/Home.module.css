@@ -1,25 +1,30 @@
 .globalDiv{
   height: 100%;
+  display : flex ;
+  flex-direction: column;
 }
 
 .globalDiv2{
-  height: 88vh;
+  height: 100%;
+  width: 80%;
   display: flex;
   flex-direction: column ;
   gap : 1rem;
-  padding: 1rem 1rem 0 0;
 }
 
 .mainSection{
   height: 100% ;
   display : flex;
   flex-direction: row-reverse;
+  padding: 15px ;
+  gap : 20px;
+  justify-content: space-between;
 }
 
 .myLabel{
   border-radius: 20px ;
   border : 1px solid ;
-  height: 2rem ;
+  height: 5% ;
   width: 100%;
 }
 
@@ -30,13 +35,48 @@
 .infoPanel{
   border : solid ;
   width : 20rem;
+  height: 100% ;
   border-radius : 24px ;
-  margin : 20px 20px 10px 10px ;
-  padding : 10px;
-  overflow-y : scroll;
   display : flex ;
   flex-direction: column ;
   align-items: center;
   justify-content: center ;
 
+}
+
+@media  (max-width:800px) {
+  .globalDiv{
+    height: 100%;
+    display : flex ;
+    flex-direction: column;
+  }
+
+  .globalDiv2{
+    height: 100%;
+    display: flex;
+    flex-direction: column ;
+    gap : 1rem;
+  }
+
+  .infoPanel{
+    border : solid ;
+    width : 8rem;
+    height: 100% ;
+    border-radius : 24px ;
+    display : flex ;
+    flex-direction: column ;
+    align-items: center;
+    justify-content: center ;
+    text-align: center;
+
+  }
+
+  .mainSection{
+    height: 100% ;
+    display : flex;
+    flex-direction: row-reverse;
+    padding: 15px ;
+    gap : 20px;
+    justify-content: space-between;
+  }
 }

@@ -11,13 +11,12 @@
 }
 
 .center{
-  height :100vh ;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center ;
 }
-
 
 .sectionButtons{
   display : flex ;
@@ -34,7 +33,9 @@
   height: 2rem ;
   width: 25vh;
 }
-
+.h2{
+  font-size: 1.9em;
+}
 @media  (max-width:800px) {
 
   .mainsectionsignup, .mainsectionlogin {

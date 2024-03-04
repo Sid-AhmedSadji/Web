@@ -140,6 +140,7 @@ function Home (){
         "_id": "xhHgAu4UGJEiMgDk"
     }
 ]
+
 return (
     <div className={styles.globalDiv}>
       <Header />
@@ -152,13 +153,13 @@ return (
             <Messages listeMessages={listeMessages} />
           </div>
         </div>
-	<div className={styles.infoPanel}>
-	  <p>Info panel</p>
-	  <p>Nombre d'utilisateur : 0</p>
-	  <p>Nombre de message : 0 </p>
-	</div>
+        <div className={styles.infoPanel}>
+          <p>Info panel</p>
+          <p>Nombre d'utilisateur : 0</p>
+          <p>Nombre de message : 0 </p>
+        </div>
       </div>
     </div>
   );
-};
+}
 export default Home ;

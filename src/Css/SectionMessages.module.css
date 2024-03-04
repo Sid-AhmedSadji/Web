@@ -1,11 +1,29 @@
-.center{
+.center {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center ;
-
+  justify-content: center;
+  height: 100vh;
+  padding-right: 10px; /* Assurez-vous que le défilement ne cache pas le contenu */
 }
-.main{
-  height: 100%;
 
+.main {
+  padding-right: 10px;
+  width: 100%;
+  height: 5rem; /* Assurez-vous que le conteneur principal a la bonne hauteur */
+}
+
+.myUl {
+  margin: 0; /* Assurez-vous qu'il n'y a pas de marges externes pour la liste */
+}
+
+.myLi {
+  width: 100%;
+  height: 5rem; /* Assurez-vous que la hauteur des éléments de liste est correcte */
+}
+@media  (max-width:800px) {
+  .myLi {
+    width: 100%;
+    height: 7rem; /* Assurez-vous que la hauteur des éléments de liste est correcte */
+  }
 }

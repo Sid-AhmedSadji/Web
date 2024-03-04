@@ -22,7 +22,7 @@ function SignUp () {
     <div className={styles.center}>
       <div className={rgbStyle.rgb}>
         <div className={styles.mainsectionlogin}>
-          <h1 id='titre'>Register Account</h1>
+          <h1 className={styles.h2} id='titre'>Register Account</h1>
           <input type="text" value={pseudo} onChange={(e)=>setPseudo(e.target.value)} placeholder="Username" className={styles.myLabel}/>
           <input type="password" value={password} onChange={(e)=>setPassword(e.target.value)}  placeholder="Password" className={styles.myLabel}/>
           <input type="password" value={confirmPassword} onChange={(e)=>setConfirmPassword(e.target.value)}  placeholder="Confirm Password" className={styles.myLabel}/>
