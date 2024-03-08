@@ -1,0 +1,446 @@
+::::::::::::::
+App.jsx
+::::::::::::::
+// App.js
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import LogIn from './LogIn.jsx';
+import SignUp from './SignUp.jsx';
+import Home from './Home.jsx';
+import Profil from './Profil.jsx';
+import MessagePage from './MessagePage.jsx';
+
+const App = () => {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="SignUp" element={<SignUp />} />
+        <Route path="LogIn" element={<LogIn />} />
+        <Route path="Profil" element={<Profil />} />
+        <Route path="Messages/:id" element={<MessagePage />} />
+      </Routes>
+    </Router>
+  );
+}
+
+export default App;
+
+::::::::::::::
+Header.jsx
+::::::::::::::
+import React from 'react';
+import Label from './StylisedLabel.jsx'
+import {Link} from "react-router-dom";
+import { useEffect,useState } from 'react'
+
+import styles from './Css/Header.module.css'
+
+
+function Header (){
+
+  const[recherche,setRecherche] = useState("")
+  useEffect(() =>{
+    console.log(recherche);
+  },[recherche]);
+
+  return(
+    <div className={styles.Header}>
+      <Link to="/">
+        <img className={styles.logoSorbonne} src="/public/logoSorbonneUniversite.png" height="50vh" />
+        </Link>
+	<div>
+        <Label value={recherche} setValue={setRecherche} />
+      </div>
+      <p> from </p>
+      <input className={styles.dateIcon} type="date"/>
+      <p> to </p>
+      <input className={styles.dateIcon} type="date"/>
+      <div className={styles.Link}>
+        <Link to="/SignUp">Sign Up</Link>
+        <Link to="/LogIn">Log In</Link>
+      </div>
+    </div>
+  );
+};
+
+export default Header ;
+::::::::::::::
+Home.jsx
+::::::::::::::
+import Header from "./Header.jsx"
+import Messages from"./SectionMessages.jsx"
+
+import styles from './Css/Home.module.css'
+
+
+function Home (){
+
+  var listeMessages = [
+    {
+        "author_name": "Dido",
+        "author_id": "27",
+        "text": "New Message",
+        "_id": "0jd6M8cEMRqVPuKK"
+    },
+    {
+        "author_name": "user1",
+        "author_id": "21",
+        "text": "message1",
+        "_id": "9a0hnDw3nJljzViW"
+    },
+    {
+        "author_name": "CR7",
+        "author_id": "18",
+        "text": "Je saute haut",
+        "_id": "Az12pLoxwjcbyCAg"
+    },
+    {
+        "author_name": "LM10",
+        "author_id": "17",
+        "text": "8 ballons d'or et 1 cdm",
+        "_id": "E52MuKA5nrbGKYDZ"
+    },
+    {
+        "author_name": "KM7",
+        "author_id": "19",
+        "text": "Je cours vite",
+        "_id": "HBJp4gmHMvZv2fti"
+    },
+    {
+        "author_name": "BobbyF",
+        "author_id": "2",
+        "text": "Je suis un monstre aux echecs + tout le monde peut être fort",
+        "_id": "Svn2foDgw74joe0u"
+    },
+    {
+        "author_name": "HikaruN",
+        "author_id": "3",
+        "text": "here here here takes takes takes takes there check move mate",
+        "_id": "Zz2ZJIiehd0Bd4TC"
+    },
+    {
+        "author_name": "CR7",
+        "author_id": "18",
+        "text": "5 ballons d'or et 0 cdm",
+        "_id": "h83bIP7FV27cz185"
+    },
+    {
+        "author_name": "MagnusC",
+        "author_id": "1",
+        "text": "Je suis le numéro 1 au monde aux échecs",
+        "_id": "k0ln2rrucfgWM7nk"
+    },
+    {
+        "author_name": "BobbyF",
+        "author_id": "2",
+        "text": "J'aime voir mes adversaires se battre pour esperer ne serait ce faire un nul contre moi",
+        "_id": "t8auJ50Jl4lbXkWH"
+    },
+    {
+        "author_name": "user2",
+        "author_id": "22",
+        "text": "message2",
+        "_id": "xhHgAu4UGJEiMgDk"
+    },
+    {
+        "author_name": "Dido",
+        "author_id": "27",
+        "text": "New Message",
+        "_id": "0jd6M8cEMRqVPuKK"
+    },
+    {
+        "author_name": "user1",
+        "author_id": "21",
+        "text": "message1",
+        "_id": "9a0hnDw3nJljzViW"
+    },
+    {
+        "author_name": "CR7",
+        "author_id": "18",
+        "text": "Je saute haut",
+        "_id": "Az12pLoxwjcbyCAg"
+    },
+    {
+        "author_name": "LM10",
+        "author_id": "17",
+        "text": "8 ballons d'or et 1 cdm",
+        "_id": "E52MuKA5nrbGKYDZ"
+    },
+    {
+        "author_name": "KM7",
+        "author_id": "19",
+        "text": "Je cours vite",
+        "_id": "HBJp4gmHMvZv2fti"
+    },
+    {
+        "author_name": "BobbyF",
+        "author_id": "2",
+        "text": "Je suis un monstre aux echecs + tout le monde peut être fort",
+        "_id": "Svn2foDgw74joe0u"
+    },
+    {
+        "author_name": "HikaruN",
+        "author_id": "3",
+        "text": "here here here takes takes takes takes there check move mate",
+        "_id": "Zz2ZJIiehd0Bd4TC"
+    },
+    {
+        "author_name": "CR7",
+        "author_id": "18",
+        "text": "5 ballons d'or et 0 cdm",
+        "_id": "h83bIP7FV27cz185"
+    },
+    {
+        "author_name": "MagnusC",
+        "author_id": "1",
+        "text": "Je suis le numéro 1 au monde aux échecs",
+        "_id": "k0ln2rrucfgWM7nk"
+    },
+    {
+        "author_name": "BobbyF",
+        "author_id": "2",
+        "text": "J'aime voir mes adversaires se battre pour esperer ne serait ce faire un nul contre moi",
+        "_id": "t8auJ50Jl4lbXkWH"
+    },
+    {
+        "author_name": "user2",
+        "author_id": "22",
+        "text": "message2",
+        "_id": "xhHgAu4UGJEiMgDk"
+    }
+]
+
+return (
+    <div className={styles.globalDiv}>
+      <Header />
+      <hr align="center" width="75%" />
+      <div className={styles.mainSection}>
+        <div className={styles.globalDiv2}>
+          <input type="text" placeholder="New message ?" className={styles.myLabel}/>
+          <hr align="center" width="75%" />
+          <div className={styles.center}>
+            <Messages listeMessages={listeMessages} />
+          </div>
+        </div>
+        <div className={styles.infoPanel}>
+          <p>Info panel</p>
+          <p>Nombre d'utilisateur : 0</p>
+          <p>Nombre de message : 0 </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+export default Home ;
+::::::::::::::
+LogIn.jsx
+::::::::::::::
+  import {Link} from "react-router-dom";
+  import { useState } from 'react'
+
+  import styles from "./Css/Login.module.css"
+  import rgbStyle from "./Css/RGB.module.css"
+
+  function Login () {
+
+    const [pseudo,setPseudo] = useState("")
+    const [password,setPassword] = useState("") ;
+
+    return (
+      <div className={styles.center}>
+        <div className={rgbStyle.rgb}>
+          <div className={styles.mainsectionlogin}>
+            <h1 className={styles.h2} id='titre'>Connection</h1>
+            <input type="text" placeholder="Username" className={styles.myLabel} value={pseudo} onChange={(e)=>setPseudo(e.target.value)}/>
+            <input type="password" placeholder="Password" className={styles.myLabel} value={password} onChange={(e)=>setPassword(e.target.value)}/>
+            <div className={styles.sectionButtons}>
+              <button className={rgbStyle.button85}>Login</button>
+              <button className={rgbStyle.button85} onClick={()=>{setPseudo("");setPassword("");}} >Cancel</button>
+            </div>
+            <Link className={styles.customlink} to="/SignUp">Sign up ?</Link>
+          </div>
+        </div>
+      </div>
+
+    );
+}
+
+  export default Login ;
+::::::::::::::
+main.jsx
+::::::::::::::
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './App.jsx'
+import './Css/index.css'
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+
+)
+::::::::::::::
+Message.jsx
+::::::::::::::
+import styles from './Css/Message.module.css';
+import rgbStyle from './Css/RGB.module.css';
+import { Link } from 'react-router-dom';
+import Page from './MessagePage.jsx';
+
+function Message({ titre, message, id }) {
+  var msg = message;
+
+  if (message.length > 60) {
+    msg = message.slice(0, 60) + ' [...]';
+  }
+
+  return (
+    <div className={styles.message}>
+      <p>{titre}</p>
+      <Link className={styles.linkBtn} to={`/Messages/${id}`}>
+        <button className={styles.linkBtn}>{msg}</button>
+      </Link>
+      <button className={styles.button85}>+</button>
+    </div>
+  );
+}
+
+export default Message;
+::::::::::::::
+MessagePage.jsx
+::::::::::::::
+// MessageDetails.jsx
+import React from 'react';
+import { useParams } from 'react-router-dom';
+import Header from './Header.jsx'
+
+const MessageDetails = () => {
+  const { id } = useParams(); // Récupère l'ID à partir de l'URL
+
+  // Récupérez les détails du message à partir de l'ID (par exemple, depuis votre API ou vos données)
+  // const messageDetails = fetchMessageDetails(id);
+
+  return (
+  <>
+    <Header />
+     <hr width="75%"/>
+    <div>
+      <h2>Détails du message {id}</h2>
+      {/* Affichez les détails du message */}
+    </div>
+  </>
+  );
+};
+
+export default MessageDetails;
+
+::::::::::::::
+Profil.jsx
+::::::::::::::
+function Profil (){
+
+  return (
+    <h1>Profil</h1>
+  );
+};
+export default Profil ;
+::::::::::::::
+SectionMessages.jsx
+::::::::::::::
+import SingleMessage from "./Message"
+
+import styles from './Css/SectionMessages.module.css'
+
+function Messages ({listeMessages}) {
+
+
+
+  return (
+    <div className={styles.main}>
+    <ul className={styles.myUl}>
+      {
+        listeMessages.map( message =>{
+          return(
+            <>
+            <li className={styles.myLi} >
+              <SingleMessage titre={message.author_name} message={message.text} id={message._id}/>
+            </li>
+            </>
+          )
+        })
+      }
+      </ul>
+    </div>
+  )
+};
+
+export default Messages ;
+::::::::::::::
+SignUp.jsx
+::::::::::::::
+import { useState } from 'react'
+import {Link} from "react-router-dom";
+import toast, { Toaster } from 'react-hot-toast';
+import reactLogo from './assets/react.svg'
+
+import styles from "./Css/Login.module.css"
+import rgbStyle from "./Css/RGB.module.css"
+
+function SignUp () {
+
+  const [pseudo,setPseudo] = useState("") ;
+  const [password,setPassword] = useState("") ;
+  const [confirmPassword,setConfirmPassword] = useState("") ;
+
+  const errorPassword = ()=> {
+    toast.error("Password doesn't match")
+    setPassword("")
+    setConfirmPassword("")
+  };
+
+  return (
+    <div className={styles.center}>
+      <div className={rgbStyle.rgb}>
+        <div className={styles.mainsectionlogin}>
+          <h1 className={styles.h2} id='titre'>Register Account</h1>
+          <input type="text" value={pseudo} onChange={(e)=>setPseudo(e.target.value)} placeholder="Username" className={styles.myLabel}/>
+          <input type="password" value={password} onChange={(e)=>setPassword(e.target.value)}  placeholder="Password" className={styles.myLabel}/>
+          <input type="password" value={confirmPassword} onChange={(e)=>setConfirmPassword(e.target.value)}  placeholder="Confirm Password" className={styles.myLabel}/>
+          <div className={styles.sectionButtons}>
+          <button className={rgbStyle.button85} onClick={errorPassword}>Register</button>
+          <Toaster />
+          <button className={rgbStyle.button85} onClick={()=>{ setPseudo("");setPassword("");setConfirmPassword("")}}>Cancel</button>
+          </div>
+          <Link className={styles.customlink} to="/LogIn">Log In ?</Link>
+        </div>
+      </div>
+     </div>
+  );
+
+}
+
+export default SignUp
+::::::::::::::
+StylisedLabel.jsx
+::::::::::::::
+import React from 'react';
+import styles from './Css/StylisedLabel.module.css'
+
+const SearchInput = ({ value, setValue }) => {
+  return (
+    <>
+      <input
+        type="text"
+        className={styles.inputSearch}
+        id="input-search"
+        value={value}
+        onChange={(e) => setValue(e.target.value)} // Utilise une fonction fléchée pour mettre à jour la valeur
+      />
+      <label className={styles.search} htmlFor="input-search"></label>
+    </>
+  );
+};
+
+export default SearchInput;

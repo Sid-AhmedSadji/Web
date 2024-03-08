@@ -36,6 +36,11 @@
 .h2{
   font-size: 1.9em;
 }
+.linkBtn{
+  border : none ;
+  background-color : transparent ;
+  color : #6E13D6 ;
+}
 @media  (max-width:800px) {
 
   .mainsectionsignup, .mainsectionlogin {

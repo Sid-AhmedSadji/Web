@@ -1,10 +1,9 @@
-  import {Link} from "react-router-dom";
   import { useState } from 'react'
 
   import styles from "./Css/Login.module.css"
   import rgbStyle from "./Css/RGB.module.css"
 
-  function Login () {
+  function Login ({ setPage}) {
 
     const [pseudo,setPseudo] = useState("")
     const [password,setPassword] = useState("") ;
@@ -20,7 +19,7 @@
               <button className={rgbStyle.button85}>Login</button>
               <button className={rgbStyle.button85} onClick={()=>{setPseudo("");setPassword("");}} >Cancel</button>
             </div>
-            <Link className={styles.customlink} to="/SignUp">Sign up ?</Link>
+	      <button className={ styles.linkBtn } onClick={ ()=>setPage("Signup") }> Click on me </button>
           </div>
         </div>
       </div>

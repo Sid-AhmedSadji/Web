@@ -1,23 +1,28 @@
-// App.js
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
+import React, { useState, useEffect } from 'react';
 import LogIn from './LogIn.jsx';
 import SignUp from './SignUp.jsx';
-import Home from './Home.jsx';
-import Profil from './Profil.jsx';
-import MessagePage from './MessagePage.jsx';
+import Home from './Home.jsx' ;
+import MessagePage from './MessagePage.jsx'
 
-const App = () => {
+function App() {
+  const [isConnected, setIsConnected] = useState(true);
+  const [actualPage, setActualPage] = useState("Home");
+
+  useEffect(() => {
+    // Utilisation de useEffect pour définir la page initiale lors du montage du composant
+    if (!isConnected) {
+      setActualPage("Login");
+    }
+  }, [isConnected]);
+
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="SignUp" element={<SignUp />} />
-        <Route path="LogIn" element={<LogIn />} />
-        <Route path="Profil" element={<Profil />} />
-        <Route path="Messages/:id" element={<MessagePage />} />
-      </Routes>
-    </Router>
+    <>
+      {actualPage === 'Home' && <Home setPage={setActualPage} />}
+      {actualPage === 'Login' && <LogIn setPage={setActualPage} />}
+      {actualPage === 'Signup' && <SignUp setPage={setActualPage} />}
+      {actualPage === 'Message' && <MessagePage setPage={setActualPage} />}
+    </>
   );
 }
 

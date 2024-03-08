@@ -1,8 +1,9 @@
+import React from 'react'
 import SingleMessage from "./Message"
 
 import styles from './Css/SectionMessages.module.css'
 
-function Messages ({listeMessages}) {
+function Messages ({listeMessages, setPage}) {
 
 
 
@@ -14,7 +15,7 @@ function Messages ({listeMessages}) {
           return(
             <>
             <li className={styles.myLi} >
-              <SingleMessage titre={message.author_name} message={message.text} id={message._id}/>
+              <SingleMessage setPage={setPage} titre={message.author_name} message={message.text} id={message._id}/>
             </li>
             </>
           )

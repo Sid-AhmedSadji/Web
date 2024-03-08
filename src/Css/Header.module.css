@@ -18,6 +18,11 @@
   height : 30px ;
 }
 
+.btnImage{
+  border : none ;
+  background-color : transparent ;
+}
+
 @media  (max-width:800px) {
   .logoSorbonne{
     height: 4.5vh;

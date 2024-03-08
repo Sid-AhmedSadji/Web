@@ -1,12 +1,11 @@
 import { useState } from 'react'
-import {Link} from "react-router-dom";
 import toast, { Toaster } from 'react-hot-toast';
 import reactLogo from './assets/react.svg'
 
 import styles from "./Css/Login.module.css"
 import rgbStyle from "./Css/RGB.module.css"
 
-function SignUp () {
+function SignUp ({ setPage }) {
 
   const [pseudo,setPseudo] = useState("") ;
   const [password,setPassword] = useState("") ;
@@ -31,7 +30,7 @@ function SignUp () {
           <Toaster />
           <button className={rgbStyle.button85} onClick={()=>{ setPseudo("");setPassword("");setConfirmPassword("")}}>Cancel</button>
           </div>
-          <Link className={styles.customlink} to="/LogIn">Log In ?</Link>
+	  <button className={ styles.linkBtn } onClick={ ()=> setPage('Login') }> Click on me </button>
         </div>
       </div>
      </div>

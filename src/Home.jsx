@@ -4,7 +4,7 @@ import Messages from"./SectionMessages.jsx"
 import styles from './Css/Home.module.css'
 
 
-function Home (){
+function Home ({setPage}){
 
   var listeMessages = [
     {
@@ -143,14 +143,14 @@ function Home (){
 
 return (
     <div className={styles.globalDiv}>
-      <Header />
+      <Header setPage={setPage} />
       <hr align="center" width="75%" />
       <div className={styles.mainSection}>
         <div className={styles.globalDiv2}>
           <input type="text" placeholder="New message ?" className={styles.myLabel}/>
           <hr align="center" width="75%" />
           <div className={styles.center}>
-            <Messages listeMessages={listeMessages} />
+            <Messages listeMessages={listeMessages} setPage={setPage} />
           </div>
         </div>
         <div className={styles.infoPanel}>

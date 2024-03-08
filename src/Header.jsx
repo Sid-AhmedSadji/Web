@@ -1,12 +1,11 @@
 import React from 'react';
 import Label from './StylisedLabel.jsx'
-import {Link} from "react-router-dom";
 import { useEffect,useState } from 'react'
 
 import styles from './Css/Header.module.css'
 
 
-function Header (){
+function Header ( { setPage } ){
 
   const[recherche,setRecherche] = useState("")
   useEffect(() =>{
@@ -15,9 +14,9 @@ function Header (){
 
   return(
     <div className={styles.Header}>
-      <Link to="/">
-        <img className={styles.logoSorbonne} src="/public/logoSorbonneUniversite.png" height="50vh" />
-        </Link>
+	  <button className={ styles.btnImage } onClick={ ()=>setPage('Home') }>
+          <img className={styles.logoSorbonne} src="/public/logoSorbonneUniversite.png" height="50vh" />
+	  </button>
 	<div>
         <Label value={recherche} setValue={setRecherche} />
       </div>
@@ -26,8 +25,6 @@ function Header (){
       <p> to </p>
       <input className={styles.dateIcon} type="date"/>
       <div className={styles.Link}>
-        <Link to="/SignUp">Sign Up</Link>
-        <Link to="/LogIn">Log In</Link>
       </div>
     </div>
   );
