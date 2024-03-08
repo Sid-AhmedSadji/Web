@@ -10,10 +10,10 @@ function MessageDetails ({setPage}) {
 
   return (
   <>
-    <Header setParam={setParam}/>
+    <Header setPage={setPage}/>
      <hr width="75%"/>
     <div>
-      <h2>Détails du message {10}</h2>
+      <h2>Détails du message 10</h2>
       {/* Affichez les détails du message */}
     </div>
   </>

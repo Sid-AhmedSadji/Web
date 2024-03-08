@@ -1,9 +1,8 @@
-
 import React, { useState, useEffect } from 'react';
 import LogIn from './LogIn.jsx';
 import SignUp from './SignUp.jsx';
-import Home from './Home.jsx' ;
-import MessagePage from './MessagePage.jsx'
+import Home from './Home.jsx';
+import MessagePage from './MessagePage.jsx';
 
 function App() {
   const [isConnected, setIsConnected] = useState(true);
@@ -15,6 +14,10 @@ function App() {
       setActualPage("Login");
     }
   }, [isConnected]);
+
+  useEffect(() => {
+    console.log({ actualPage });
+  }, [actualPage]);
 
   return (
     <>
