@@ -13,12 +13,11 @@ function App() {
     if (!isConnected) {
       setActualPage("Login");
     }
+    else {
+      setActualPage("Home");
+    }
   }, [isConnected]);
-
-  useEffect(() => {
-    console.log({ actualPage });
-  }, [actualPage]);
-
+  
   return (
     <>
       {actualPage === 'Home' && <Home setPage={setActualPage} />}
