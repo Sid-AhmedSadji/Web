@@ -1,7 +1,7 @@
-// MessageDetails.jsx
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import Header from './Header.jsx'
+import Header from './Header.jsx';
+import MainDiv from './AfficheMessage.jsx'; // Assurez-vous que le nom commence par une majuscule
 
 const MessageDetails = () => {
   const { id } = useParams(); // Récupère l'ID à partir de l'URL
@@ -10,16 +10,15 @@ const MessageDetails = () => {
   // const messageDetails = fetchMessageDetails(id);
 
   return (
-  <>
-    <Header />
-     <hr width="75%"/>
-    <div>
-      <h2>Détails du message {id}</h2>
-      {/* Affichez les détails du message */}
+    <div width="100vw" >
+      <Header />
+      <hr width="75%" />
+      <div width="100vw" >
+        <h2>Détails du message {id}</h2>
+        <MainDiv /> {/* Utilisez MainDiv avec une majuscule au début */}
+      </div>
     </div>
-  </>
   );
 };
 
 export default MessageDetails;
-

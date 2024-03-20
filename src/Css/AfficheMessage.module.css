@@ -1,0 +1,24 @@
+/* OrderListe.module.css */
+.styledBar{
+    width: 1px;
+    height: 80%;
+    color: white;
+    margin: 10px;
+    background-color: white;
+}
+.orderListe {
+    display:flex ;
+    flex-direction: row-reverse;
+    padding : 20px 10px 20px 10px;
+    width: 100%;
+    box-sizing: border-box; 
+    /* Styles de la div englobante */
+    transition: background-color 0.3s ease; /* Ajoute une transition pour un effet fluide */
+ 
+    border-radius: 5vh; /* Bords arrondis */
+    background: linear-gradient(to bottom, #5e5b5b, rgba(20, 20, 20, 0.5)); /* Dégradé avec transparence */
+}
+
+.orderListe ul {
+    flex-grow: 1; /* Pour permettre aux éléments enfants de remplir tout l'espace disponible */
+}
