@@ -2,7 +2,8 @@ import Header from "./Header.jsx"
 import Messages from"./SectionMessages.jsx"
 
 import styles from './Css/Home.module.css'
-
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Home (){
 
@@ -140,6 +141,7 @@ function Home (){
         "_id": "xhHgAu4UGJEiMgDk"
     }
 ]
+
 
 return (
     <div className={styles.globalDiv}>

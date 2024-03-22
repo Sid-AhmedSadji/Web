@@ -14,7 +14,6 @@ const MessageDetails = () => {
       <Header />
       <hr width="75%" />
       <div width="100vw" >
-        <h2>Détails du message {id}</h2>
         <MainDiv /> {/* Utilisez MainDiv avec une majuscule au début */}
       </div>
     </div>

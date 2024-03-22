@@ -10,18 +10,24 @@ function OrderListe({ listeMessages, id }) {
     }
 
     return (
-        <div className={styles.orderListe}>
-            <ul>
+        <>
+            <ul className={styles.myUl}>
                 {filteredMessages.map((message, index) => (
-                    <li key={message._id}>
-                        <h4>{message.text}</h4>
+                    <li className={styles.myLi} key={message._id}>
+                        <form className={styles.orderListe}>
+                            <div className={styles.hole}></div>
+                            <div className={styles.borderText}>@{message.author_name}</div>
+                            <p>{message.text}</p>
+                        </form>
                         <OrderListe listeMessages={listeMessages} id={message._id} />
                     </li>
                 ))}
             </ul>
-            <hr className={styles.styledBar} />
-        </div>
+        </>
     );
+    
+
+        
 }
 
 function App() {
@@ -44,14 +50,20 @@ function App() {
             "author_name": "CR7",
             "author_id": "18",
             "text": "Je saute haut",
+            "_id": "Az12pLoxwjcbycag",
+            "id_Parent": "9a0hnDw3nJljzViW"
+        },
+        {
+            "author_name": "CR7",
+            "author_id": "18",
+            "text": "Je saute haut",
             "_id": "Az12pLoxwjcbyCAg",
             "id_Parent": "9a0hnDw3nJljzViW"
         }
     ];
 
     return (
-        <div width="100%">
-            <h1>Messages</h1>
+        <div style={{ marginRight: '30px' }}>
             <OrderListe listeMessages={listeMessages} id="0" />
         </div>
     );
