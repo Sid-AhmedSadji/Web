@@ -1,0 +1,10 @@
+.myForm{
+  display : flex ;
+  flex-direction : row ;
+  gap : 50px  ;
+  align-items : center;
+}
+
+.myForm > * {
+  width : 20%
+}
