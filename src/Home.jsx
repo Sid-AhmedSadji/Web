@@ -142,7 +142,6 @@ function Home (){
     }
 ]
 
-
 return (
     <div className={styles.globalDiv}>
       <Header />

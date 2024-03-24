@@ -1,10 +1,57 @@
 .myForm{
   display : flex ;
   flex-direction : row ;
-  gap : 50px  ;
-  align-items : center;
+  align-items: center;
+  padding : 0 1rem ;
+  /* boxsizing prenant en compte les marges */
+  box-sizing: border-box; 
+  border : 2px solid white ;
+  border-radius: 1rem ;
+  margin : 1rem 1.5rem  ;
 }
 
-.myForm > * {
-  width : 20%
+.myForm>*{
+  width: 20%;
+  text-align: center;
+}
+
+.mainDiv{
+  padding: 2rem ;
+}
+
+.logo{
+  height: 6vh;
+}
+.space{
+  height: 4.5vh;
+}
+
+.header{
+  display : flex ;
+  flex-direction: row ;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  height: 6vh;
+}
+
+.main{
+  height: 100%;
+  width: 100%;
+}
+.myButton{
+  color : white ;
+  background-color: transparent;
+  border : 3px solid white ;
+  border-radius: 1rem ;
+  width : fit-content ;
+  font-size: 20px;
+  font-style: bold;
+}
+@media  (max-width:800px) {
+  .myButton{
+    font-size: 12px;
+    border: 1px solid white;
+  }
+
 }

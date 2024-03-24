@@ -8,7 +8,6 @@
 }
 
 .main {
-  padding-right: 10px;
   width: 100%;
   height: 5rem; /* Assurez-vous que le conteneur principal a la bonne hauteur */
 }
@@ -22,6 +21,9 @@
   height: 5rem; /* Assurez-vous que la hauteur des éléments de liste est correcte */
 }
 @media  (max-width:800px) {
+  :root {
+    font-size: 16px; /* Utilisez une taille de police plus adaptée à la petite écrans */
+  }
   .myLi {
     width: 100%;
     height: 7rem; /* Assurez-vous que la hauteur des éléments de liste est correcte */

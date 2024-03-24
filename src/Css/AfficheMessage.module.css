@@ -13,12 +13,18 @@
     box-sizing: border-box; 
     /* Styles de la div englobante */
     transition: background-color 0.3s ease; /* Ajoute une transition pour un effet fluide */
-    position: relative;
-    border-radius: 2.5vh; /* Bords arrondis */
+    border-radius: 0px 2.5vh ; /* Bords arrondis */
    /*faire une bordure blance a un form /*/
     
     border-left: 0.5px solid white;
+    border-bottom: 0.5px solid white;
+    color : white ;
+    /* ne pas souligner les link */
+    text-decoration: none;
+
+    
 }
+
 
 .myLi {
     margin :  20px 0px 0px 20px ;
@@ -39,21 +45,32 @@
     padding: 5px; 
     font-size: 16px; 
     color: white; 
+    /*mettre en gras le texte */
+    font-weight: bold;
 
 }
 
-.hole {
+.hole1 {
     position: absolute;
-    top: -2px; /* Décalez le trou vers le haut de la bordure principale */
-    left: 0;
-    width: 15%; /* La largeur du trou, ajustez selon vos besoins */
-    height: 2px; /* Épaisseur de la bordure */
+    top: 0px; /* Décalez le trou vers le haut de la bordure principale */
+    left: -3px;
+    width: 5px; /* La largeur du trou, ajustez selon vos besoins */
+    height: 10%; /* Épaisseur de la bordure */
+    background-color: #242424; /* Couleur transparente */
+}
+
+.hole2 {
+    position: absolute;
+    top: 68px; /* Décalez le trou vers le haut de la bordure principale */
+    left: 60%;
+    width: 40%; /* La largeur du trou, ajustez selon vos besoins */
+    height: 7px; /* Épaisseur de la bordure */
     background-color: #242424; /* Couleur transparente */
 }
 
 @media  (max-width:800px) {
     .myLi {
-        margin :  10px 0px 0px 5px ;
+        margin :  20px 0px 0px 5px ;
         padding: 0px ;
     }
     

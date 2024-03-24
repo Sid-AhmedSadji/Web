@@ -1,25 +1,38 @@
 import React from 'react';
 import styles from './Css/AfficheMessage.module.css'; // Importez le module CSS
+import { Link, useParams } from 'react-router-dom';
 
-function OrderListe({ listeMessages, id }) {
+let nbMessageAfficher = 2 ;
+
+function OrderListe({ listeMessages, id , i }) {
+
     const filteredMessages = listeMessages.filter(message => message.id_Parent === id);
+   
+    if (filteredMessages.length === 0) return null; 
 
-    // Vérifiez si la liste filtrée est vide
-    if (filteredMessages.length === 0) {
-        return null; // Si elle est vide, retournez null pour ne rien afficher
+    if ( i === 0 ){
+        return(
+            <Link to ={`/Messages/${id}`}>
+                <p style={{paddingLeft : "50px", paddingBottom : "15px"}}>More responses</p>
+            </Link>
+        )
     }
+
 
     return (
         <>
             <ul className={styles.myUl}>
                 {filteredMessages.map((message, index) => (
                     <li className={styles.myLi} key={message._id}>
-                        <form className={styles.orderListe}>
-                            <div className={styles.hole}></div>
-                            <div className={styles.borderText}>@{message.author_name}</div>
-                            <p>{message.text}</p>
-                        </form>
-                        <OrderListe listeMessages={listeMessages} id={message._id} />
+                        <Link to ={`/Messages/${message._id}`} className={styles.link} >
+                            <div className={styles.orderListe}>
+                                <div className={styles.hole1}></div>
+                                <div className={styles.hole2}></div>
+                                <div className={styles.borderText}>@{message.author_name}</div>
+                                <p>{message.text}</p>
+                            </div>
+                        </Link>
+                        <OrderListe listeMessages={listeMessages} id={message._id} i={i-1} />
                     </li>
                 ))}
             </ul>
@@ -31,6 +44,10 @@ function OrderListe({ listeMessages, id }) {
 }
 
 function App() {
+
+    /*get id from url */
+    const { id } = useParams(); // Récupère l'ID à partir de l'URL
+    
     const listeMessages = [
         {
             "author_name": "Dido",
@@ -56,17 +73,36 @@ function App() {
         {
             "author_name": "CR7",
             "author_id": "18",
-            "text": "Je saute haut",
-            "_id": "Az12pLoxwjcbyCAg",
+            "text": "Je saute MEGA haut",
+            "_id": "APODSOPQIDS",
             "id_Parent": "9a0hnDw3nJljzViW"
+        },
+        {
+            "author_name": "CR7",
+            "author_id": "18",
+            "text": "Je saute tres haut",
+            "_id": "Wuofdfus85798",
+            "id_Parent": "Az12pLoxwjcbycag"
         }
     ];
 
+    const message = listeMessages.find(message => message._id === id);
+
     return (
-        <div style={{ marginRight: '30px' }}>
-            <OrderListe listeMessages={listeMessages} id="0" />
+        <div style={{ margin: '30px' }}>
+            <div className={styles.orderListe}>
+                <div className={styles.hole1}></div>
+                <div className={styles.hole2}></div>
+                <div className={styles.borderText}>@{message.author_name}</div>
+                <p>{message.text}</p>
+            </div>
+            <OrderListe listeMessages={listeMessages} id={id} i={nbMessageAfficher} />
         </div>
     );
-}
+} 
 
 export default App;
+
+
+
+    

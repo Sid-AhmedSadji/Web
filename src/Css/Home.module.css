@@ -26,6 +26,8 @@
   border : 1px solid ;
   height: 5% ;
   width: 100%;
+  color : white ;
+  font-size: 20px;
 }
 
 .center{
@@ -78,5 +80,9 @@
     padding: 15px ;
     gap : 20px;
     justify-content: space-between;
+  }
+
+  .myLabel{
+    font-size: 12px;
   }
 }

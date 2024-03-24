@@ -1,7 +1,5 @@
 import styles from './Css/Message.module.css';
-import rgbStyle from './Css/RGB.module.css';
 import { Link } from 'react-router-dom';
-import Page from './MessagePage.jsx';
 
 function Message({ titre, message, id }) {
   var msg = message;
