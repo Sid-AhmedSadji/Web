@@ -7,7 +7,7 @@ import Menu from './MenuRoulant.jsx'
 import styles from './Css/Header.module.css'
 
 
-function Header (){
+function Header ( setData ){
 
   const[recherche,setRecherche] = useState("")
   useEffect(() =>{
@@ -31,7 +31,7 @@ function Header (){
        <input className={styles.dateIcon} type="date"/>
       </div>
       <div style={{width:"50px"}}>
-        <Menu/>
+        <Menu setData={setData}/>
       </div>
     </div>
   );

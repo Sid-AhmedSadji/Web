@@ -5,16 +5,14 @@ import styles from './Css/Home.module.css'
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-function Home (){
+function Home (user) {
 
-   const [isAuthenticated, setIsAuthenticated] = useState(true);
    const navigate = useNavigate();
 
-      useEffect(() => {
-        if (!isAuthenticated) {
-          navigate('/LogIn'); // Redirection vers la page de connexion
-        }
-      }, [isAuthenticated, navigate]);
+  useEffect(() => {
+    (user.user === -1) && navigate( "/Login");
+  },[user, navigate, location.state]);
+
 
   var listeMessages = [
     {
@@ -153,7 +151,7 @@ function Home (){
 
 return (
     <div className={styles.globalDiv}>
-      <Header />
+      <Header setData={user.setData}/>
       <hr align="center" width="75%" />
       <div className={styles.mainSection}>
         <div className={styles.globalDiv2}>

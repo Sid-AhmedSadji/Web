@@ -2,7 +2,7 @@ import styles from './Css/MenuRoulant.module.css';
 import { Link } from 'react-router-dom';
 
 
-function App() {
+function App(setData) {
 
 
   return (
@@ -12,7 +12,7 @@ function App() {
       <Link to='/'>Public Forum</Link>
       <Link to='/'>Private Forum</Link>
       <Link to='/request'>User Request</Link>
-      <Link to='/'>Sign out</Link>
+      <Link to='/' onClick={()=>{setData(-1)}}>Sign out</Link>
     </nav>
   </details>
   );

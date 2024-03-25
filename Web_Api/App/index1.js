@@ -13,18 +13,24 @@ const users = [
         "nom": "Sadji",
         "prenom": "Sid-Ahmed",
         "pseudo": "Dido",
+        "password": "12345",
+        "type": 2,
         "id": "0"
     },
     {
         "nom": "sadji",
         "prenom": "sid-ahmed",
         "pseudo": "dido",
+        "password": "12345",
+        "type": 1,
         "id": "1"
     },
     {
         "nom": "Cest",
         "prenom": "Moi",
         "pseudo": "Wesh",
+        "password": "12345",
+        "type": 0,
         "id": "2"
     }
 
@@ -43,11 +49,18 @@ app.get('/api/users', (req, res) => {
 
 /*methode pour ajouter un users  la methode prends un fichier en argum */
 app.post('/api/user', (req, res) => {
+
+    // Si il n y a pas 5 d argeument return erreur 
+    if (Object.keys(req.body).length !== 5) {
+        res.sendStatus(400);
+    }
+    
     // Récupère les données du corps de la requête
-    const { nom, prenom, pseudo, id } = req.body;
+    const { nom, prenom, pseudo, password, type } = req.body;
+
 
     // Crée un nouvel utilisateur avec les données fournies
-    const newUser = { nom, prenom, pseudo, id };
+    const newUser = { nom, prenom, pseudo, password, type, id: users.length.toString() };
 
     // Ajoute le nouvel utilisateur à la liste des utilisateurs
     users.push(newUser);
@@ -63,6 +76,18 @@ app.delete('/api/user/:id', (req, res) => {
     if (index !== -1) {
         users.splice(index, 1);
         res.sendStatus(200);
+    } else {
+        res.sendStatus(404);
+    }
+})
+
+// methode get return id d'un user avec son pseudo et son password sinon retourner erreur
+app.get('/api/user/:pseudo/:password', (req, res) => {
+    const pseudo = req.params.pseudo;
+    const password = req.params.password;
+    const user = users.find(user => user.pseudo === pseudo && user.password === password);
+    if (user) {
+        res.json(user.id);
     } else {
         res.sendStatus(404);
     }
