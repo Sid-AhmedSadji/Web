@@ -1,89 +1,92 @@
-  import {Link, useNavigate, useLocation} from "react-router-dom";
-  import { useEffect, useState } from 'react'
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from 'react';
+import styles from "./Css/Login.module.css";
+import rgbStyle from "./Css/RGB.module.css";
+import toast, { Toaster } from 'react-hot-toast';
 
-  import styles from "./Css/Login.module.css"
-  import rgbStyle from "./Css/RGB.module.css"
-  import toast, { Toaster } from 'react-hot-toast';
+function Login(props) {
+  const [pseudo, setPseudo] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
-
-  const errorPassword = (setPassword)=> {
-    toast.error("Impossible de vous connecter")
-    setPassword("")
-  };
-
-  const notUser = ()=>{
-    toast.error("Vous devez que votre compte soit validé par un Admin");
-    
-  }
-
-  async function getUser(setData,pseudo,password,setPassword) {
+  const getUser = async () => {
     try {
-      const response = await fetch("http://localhost:8000/api/user/"+pseudo+"/"+password);
+      const response = await fetch(`http://localhost:8000/api/user/${pseudo}/${password}`);
       if (!response.ok) {
         throw new Error('Erreur lors de la récupération des données');
       }
-      const jsonData = await response.json();
-      //Si  le type d'user est 0 alors setData a -1 sinon setData est l'id de l'utilisateur
-      if (jsonData.type === "0") {
-        notUser();
-        setPassword("");
-        setData(-1);
-      } else {
-        setData(jsonData.id);
-      }
-      console.log(jsonData);
-    } catch (error) {
-      console.error('Erreur:', error);
-      errorPassword(setPassword);
-    }
-  }
-  async function createcookies(id) {
-    try {
-      const response = await fetch(`http://localhost:8000/setUserCookie/${id}`);
-      if (!response.ok) {
-        throw new Error('Erreur lors de la création des cookies');
-      }
-      // Analyser la réponse JSON
       const data = await response.json();
-      console.log(data); 
+      if (data.type === "0") {
+        toast.error("Utilisateur inconnu");
+        setPassword("");
+        props.setData(-1);
+      } else {
+        props.setData(data.id);
+        navigate("/");
+        toast.success("Connexion reussie"); 
+        createCookie(pseudo,password,data.id);
+      }
     } catch (error) {
       console.error('Erreur:', error);
-      throw error; // Renvoyer l'erreur en cas d'échec de la requête
+      toast.error("Impossible de vous connecter");
     }
   }
-  
 
-  
-  function Login (props) {
+  const createCookie = async (pseudo,password,id) => {
+    try {
+      const response = await fetch(`http://192.168.1.168:8000/api/login`,{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ pseudo, password })
+    });
+      if (!response.ok) {
+        // Gère les erreurs si la réponse n'est pas OK
+        throw new Error('Erreur lors de la création de la session');
+      }
+      // Si la réponse est OK, retourne les données JSON de la réponse
+      const data = await response.json();
+      // Vérifie si un utilisateur est connecté
 
-    const [pseudo,setPseudo] = useState("")
-    const [password,setPassword] = useState("") ;
-    let navigate = useNavigate();
-    let location = useLocation();
+      if (data.ok) {
+        console.log("Cookie créé avec succès");
+        const cookie = await fetch("http://192.168.1.168:8000/setUserCookie/"+id);
+        if (!cookie.ok) {
+          throw new Error('Erreur lors de la création de la session');
+        } else {
+          const myCookie = await cookie.json();
+          console.log("Cookie mis à jour"); 
+          toast.success("Connexion reussie");
+        }
+        }
+       else {
+        // Traite les données de l'utilisateur
+        console.log('Impossible de créer un cookie');
+      }
+    } catch (error) {
+      // Gère les erreurs
+      console.error('Erreur:', error);
+    }
+  };
 
-    useEffect(() => {
-      (props.user !== -1) && createcookies(props.user) && navigate( "/");
-    },[props.user, navigate, location.state]);
-    
-
-    return (
-      <div className={styles.center}>
-        <Toaster />
-        <div className={rgbStyle.rgb}>
-          <div className={styles.mainsectionlogin}>
-            <h1 className={styles.h2} id='titre'>Connection</h1>
-            <input type="text" placeholder="Username" className={styles.myLabel} value={pseudo} onChange={(e)=>setPseudo(e.target.value)}/>
-            <input type="password" placeholder="Password" className={styles.myLabel} value={password} onChange={(e)=>setPassword(e.target.value)}/>
-            <div className={styles.sectionButtons}>
-              <button className={rgbStyle.button85} onClick={ ()=>{ getUser(props.setData,pseudo,password,setPassword)}}>Login</button>
-              <button className={rgbStyle.button85} onClick={()=>{setPseudo("");setPassword("");}} >Cancel</button>
-            </div>
-            <Link className={styles.customlink} to="/SignUp">Sign up ?</Link>
+  return (
+    <div className={styles.center}>
+      <Toaster />
+      <div className={rgbStyle.rgb}>
+        <div className={styles.mainsectionlogin}>
+          <h1 className={styles.h2} id='titre'>Connection</h1>
+          <input type="text" placeholder="Username" className={styles.myLabel} value={pseudo} onChange={(e) => setPseudo(e.target.value)} />
+          <input type="password" placeholder="Password" className={styles.myLabel} value={password} onChange={(e) => setPassword(e.target.value)} />
+          <div className={styles.sectionButtons}>
+            <button className={rgbStyle.button85} onClick={getUser}>Login</button>
+            <button className={rgbStyle.button85} onClick={() => { setPseudo(""); setPassword(""); }} >Cancel</button>
           </div>
+          <Link className={styles.customlink} to="/SignUp">Sign up ?</Link>
         </div>
       </div>
-
-    );
+    </div>
+  );
 }
 
-  export default Login ;
+export default Login;

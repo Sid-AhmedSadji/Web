@@ -1,13 +1,25 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-
+const session = require('express-session');
 const cors = require('cors');
 const app = express();
 const port = 8000;
+
+// Utilisation des middlewares
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(cors());
+
+// Configuration de express-session
+app.use(session({
+    secret: 'secretKey',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        maxAge: 900000
+    }
+}));
 
 /* const liste des users */
 const users = [
@@ -186,6 +198,8 @@ app.post('/api/messages', (req, res) => {
 app.get('/setUserCookie/:id', (req, res) => {
     // Rechercher l'utilisateur correspondant à l'ID dans la liste des utilisateurs
     const user = users.find(user => user.id === req.params.id);
+
+    console.log(req.params.id)
   
     if (user) {
       // Créer un cookie nommé 'user' avec les données de l'utilisateur
@@ -193,30 +207,34 @@ app.get('/setUserCookie/:id', (req, res) => {
       res.send({ msg: 'Cookie has been set', ok: true });
     } else {
       // Si aucun utilisateur n'est trouvé pour l'ID spécifié, renvoyer une réponse avec un message d'erreur
-      res.status(404).send({ msg: 'User not found', ok: false });
+      res.send({ msg: 'User not found',status:404 , ok: false });
     }
   });
   
 
 //get user cookie
-app.get('/readcookie', (req, res) => {
-    // Accéder aux cookies de la requête
-    const userCookie = req.cookies.user;
-  
-    // Vérifier si le cookie existe
-    if (userCookie) {
-      // Cookie trouvé, afficher sa valeur rnvoie la valeur de l'utilisateur dans le cookie et un champ "ok" à true en js 
-      res.send({cookieValue: userCookie,ok:true});
+app.post('/api/login', (req, res) => {
+    const { pseudo, password } = req.body;
+    const user = users.find(u => u.pseudo === pseudo && u.password === password);
+    if (user) {
+        res.json({ message: 'User logged in' , ok:true});
     } else {
-      // Cookie non trouvé
-      res.send({cookieValue: 'No cookie found',ok:false});
+        res.json({ message: 'Invalid credentials', status:401  , ok:false });
     }
-  });
+});
 
+// Route pour vérifier l'état de la session utilisateur
+app.get('/api/session', (req, res) => {
+    if (req.session.user) {
+        console.log(req.session.user);
+        res.send({ user: req.session.user , ok: true});
+    } else {
+        res.send({ message: 'No user logged in' , status : 401, ok: false});
+    }
+});
 
 app.use(function (req, res, next) {
-    res.setHeader('Content-Type', 'text/plain;charset=UTF-8');
-    res.status(404).send("Cette page n'existe pas.");
+    res.json({message:"Cette page n'existe pas.",status:404 , ok: false});
 });
 
 app.listen(port, function() {

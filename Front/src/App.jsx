@@ -9,20 +9,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
 //check si l'utilisateur est connecté via les cookies 
-async function getUser() {
-  try {
-    const response = await fetch("http://localhost:8000/readcookie");
-    const jsonData = await response.json();
-    console.log(jsonData);
-    if (!jsonData.ok) {
-      throw new Error(jsonData.cookieValue);
-    }
-    return (jsonData.cookieValue);
-  } catch (error) {
-    console.error('Error:', error);
-    return -1 ;
-  }
-}
+
 
 
 function App  () {
@@ -31,11 +18,31 @@ function App  () {
 
 
   useEffect(() => {
-    // Appelle fetchData initialement
-    getUser().then((value) => {
-      setData(value);
-    });
-  }, []);
+    const checkSession = async () => {
+      try {
+        const response = await fetch("http://192.168.1.168:8000/api/session");
+        if (!response.ok) {
+          // Gère les erreurs si la réponse n'est pas OK
+          throw new Error('Erreur lors de la vérification de la session');
+        }
+        // Si la réponse est OK, retourne les données JSON de la réponse
+        const data = await response.json();
+        // Vérifie si un utilisateur est connecté
+        if (data.message === "No user logged in") {
+          console.log('Aucun utilisateur connecté');
+        } else {
+          // Traite les données de l'utilisateur
+          console.log('Utilisateur connecté:', data.user);
+        }
+      } catch (error) {
+        // Gère les erreurs
+        console.error('Erreur:', error);
+      }
+    };
+  
+    checkSession();
+  }, []);  
+  
 
   return (
     <Router>

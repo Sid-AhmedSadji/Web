@@ -5,15 +5,15 @@ import styles from './Css/Home.module.css'
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-function Home (user) {
+function Home (props) {
 
    const navigate = useNavigate();
 
   useEffect(() => {
-    (user.user === -1) && navigate( "/Login");
-  },[user, navigate, location.state]);
+    (props.user === -1) && navigate( "/Login");
+  },[props, navigate, location.state]);
 
-
+  
   var listeMessages = [
     {
         "author_name": "Dido",
@@ -151,7 +151,7 @@ function Home (user) {
 
 return (
     <div className={styles.globalDiv}>
-      <Header setData={user.setData}/>
+      <Header setData={props.setData}/>
       <hr align="center" width="75%" />
       <div className={styles.mainSection}>
         <div className={styles.globalDiv2}>
