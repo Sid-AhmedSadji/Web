@@ -7,6 +7,15 @@ import { useNavigate } from "react-router-dom";
 
 function Home (){
 
+   const [isAuthenticated, setIsAuthenticated] = useState(true);
+   const navigate = useNavigate();
+
+      useEffect(() => {
+        if (!isAuthenticated) {
+          navigate('/LogIn'); // Redirection vers la page de connexion
+        }
+      }, [isAuthenticated, navigate]);
+
   var listeMessages = [
     {
         "author_name": "Dido",
