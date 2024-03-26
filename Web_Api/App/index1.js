@@ -1,16 +1,14 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
+//const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const cors = require('cors');
 const app = express();
 const port = 8000;
 
-// Utilisation des middlewares
+//app.use(cookieParser());
+app.use(cors({credentials: true, origin: 'http://localhost:5173'}));
 app.use(bodyParser.json());
-app.use(cookieParser());
-app.use(cors());
-
 // Configuration de express-session
 app.use(session({
     secret: 'secretKey',
@@ -21,70 +19,157 @@ app.use(session({
     }
 }));
 
-/* const liste des users */
+// Configuration de la politique CORS
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', 'http://localhost:5173');
+    res.header('Access-Control-Allow-Credentials', 'true');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type'); // Autoriser le champ Content-Type
+    next();
+});
+
+
+
+
 const users = [
     {
-        "pseudo": "Dido",
-        "password": "12345",
+        "pseudo": "JohnDoe123",
+        "password": "password1",
         "type": 2,
         "id": "0"
     },
     {
-        "pseudo": "dido",
-        "password": "12345",
+        "pseudo": "JaneDoe456",
+        "password": "password2",
         "type": 1,
         "id": "1"
     },
     {
-        "pseudo": "Wesh",
-        "password": "12345",
+        "pseudo": "Alice789",
+        "password": "password3",
         "type": 0,
         "id": "2"
     },
     {
-        "pseudo": "Didi",
-        "password": "12345",
+        "pseudo": "Bob1234",
+        "password": "password4",
         "type": 2,
         "id": "3"
-    }
-
-]
-
-const listeMessages = [
+    },
     {
-        "author_name": "Dido",
-        "author_id": "3",
-        "text": "New Message",
+        "pseudo": "Eve5678",
+        "password": "password5",
+        "type": 1,
+        "id": "4"
+    },
+    {
+        "pseudo": "Charlie9012",
+        "password": "password6",
+        "type": 0,
+        "id": "5"
+    },
+    {
+        "pseudo": "David3456",
+        "password": "password7",
+        "type": 2,
+        "id": "6"
+    },
+    {
+        "pseudo": "Emily7890",
+        "password": "password8",
+        "type": 1,
+        "id": "7"
+    },
+    {
+        "pseudo": "Frank2345",
+        "password": "password9",
+        "type": 0,
+        "id": "8"
+    },
+    {
+        "pseudo": "Grace5678",
+        "password": "password10",
+        "type": 2,
+        "id": "9"
+    },
+    {
+        "pseudo": "Dido",
+        "password": "12345",
+        "type": 2,
+        "id": "10"
+    }
+];
+    
+ const listeMessages = [
+    {
+        "author_name": "JohnDoe123",
+        "author_id": "0",
+        "text": "Salut tout le monde !",
         "id": "msg0",
         "id_Parent": "0"
     },
     {
-        "author_name": "dido",
-        "author_id": "0",
-        "text": "message1",
+        "author_name": "JaneDoe456",
+        "author_id": "1",
+        "text": "Bonjour ! Comment ça va ?",
         "id": "msg1",
         "id_Parent": "msg0"
     },
     {
-        "author_name": "Wesh",
+        "author_name": "Alice789",
         "author_id": "2",
-        "text": "Je saute haut",
+        "text": "Coucou les amis !",
         "id": "msg2",
         "id_Parent": "msg0"
     },
     {
-        "author_name": "Dido",
+        "author_name": "Bob1234",
         "author_id": "3",
-        "text": "Je saute MEGA haut",
+        "text": "Salutations !",
         "id": "msg3",
         "id_Parent": "msg2"
     },
     {
-        "author_name": "Didi",
-        "author_id": "3",
-        "text": "Je saute tres haut",
+        "author_name": "Eve5678",
+        "author_id": "4",
+        "text": "Hello world!",
         "id": "msg4",
         "id_Parent": "0"
+    },
+    {
+        "author_name": "Charlie9012",
+        "author_id": "5",
+        "text": "Bonjour tout le monde !",
+        "id": "msg5",
+        "id_Parent": "0"
+    },
+    {
+        "author_name": "David3456",
+        "author_id": "6",
+        "text": "Salut les amis !",
+        "id": "msg6",
+        "id_Parent": "msg5"
+    },
+    {
+        "author_name": "Emily7890",
+        "author_id": "7",
+        "text": "Coucou !",
+        "id": "msg7",
+        "id_Parent": "msg5"
+    },
+    {
+        "author_name": "Frank2345",
+        "author_id": "8",
+        "text": "Salutations à tous !",
+        "id": "msg8",
+        "id_Parent": "0"
+    },
+    {
+        "author_name": "Grace5678",
+        "author_id": "9",
+        "text": "Bonjour tout le monde !",
+        "id": "msg9",
+        "id_Parent": "msg8"
     },
 ];
 
@@ -193,49 +278,76 @@ app.post('/api/messages', (req, res) => {
     //ajoute le message dans la liste
     const newMessage = { author_name: author.pseudo, author_id, text, id, id_Parent };
 })
-
+/*
 //set user cookie
 app.get('/setUserCookie/:id', (req, res) => {
     // Rechercher l'utilisateur correspondant à l'ID dans la liste des utilisateurs
     const user = users.find(user => user.id === req.params.id);
 
-    console.log(req.params.id)
-  
     if (user) {
+
+        
       // Créer un cookie nommé 'user' avec les données de l'utilisateur
       res.cookie('user', user, { maxAge: 900000 });
+
+      // Ajouter les en-têtes CORS pour autoriser les requêtes depuis le frontend
+
+
       res.send({ msg: 'Cookie has been set', ok: true });
     } else {
       // Si aucun utilisateur n'est trouvé pour l'ID spécifié, renvoyer une réponse avec un message d'erreur
       res.send({ msg: 'User not found',status:404 , ok: false });
     }
   });
-  
 
-//get user cookie
-app.post('/api/login', (req, res) => {
-    const { pseudo, password } = req.body;
-    const user = users.find(u => u.pseudo === pseudo && u.password === password);
-    if (user) {
-        res.json({ message: 'User logged in' , ok:true});
-    } else {
-        res.json({ message: 'Invalid credentials', status:401  , ok:false });
-    }
-});
+app.get('/checkUserCookie', (req, res) => {
+    const userCookie = req.cookies.user;
 
-// Route pour vérifier l'état de la session utilisateur
-app.get('/api/session', (req, res) => {
-    if (req.session.user) {
-        console.log(req.session.user);
-        res.send({ user: req.session.user , ok: true});
+    if (userCookie) {
+        const user = users.find(u => u.id === userCookie.id && u.password === userCookie.password && u.pseudo === userCookie.pseudo && u.type === userCookie.type);
+        if (user) {
+            res.status(200).send({ authenticated: true, user });
+        } else {
+            res.status(401).send({ authenticated: false, message: 'Invalid user cookie' });
+        }
     } else {
-        res.send({ message: 'No user logged in' , status : 401, ok: false});
+        res.status(401).send({ authenticated: false, message: 'No user cookie found' });
     }
 });
 
 app.use(function (req, res, next) {
     res.json({message:"Cette page n'existe pas.",status:404 , ok: false});
 });
+  
+*/
+//get user cookie
+// Route de connexion pour vérifier les informations de connexion et définir l'état de la session
+app.post('/api/login', (req, res) => {
+    const { pseudo, password } = req.body;
+    const user = users.find(u => u.pseudo === pseudo && u.password === password);
+    if (user) {
+        // Définit l'utilisateur dans la session
+        req.session.user = user;
+        res.json({ message: 'User logged in', ok:true });
+    } else {
+        res.json({ message: 'Invalid credentials', status:401, ok:false });
+    }
+});
+
+
+// Route pour vérifier l'état de la session utilisateur
+app.get('/api/session', (req, res) => {
+    if (req.session.user) {
+        res.send({ user: req.session.user , ok: true});
+    } else {
+        res.send({ message: 'No user logged in' , status : 401, ok: false});
+    }
+});
+
+//route par defaut
+app.use ((req, res) => {
+    res.json({message:"Cette page n'existe pas.",status:404 , ok: false});
+})
 
 app.listen(port, function() {
     console.log(`Le serveur écoute le port ${port}`);

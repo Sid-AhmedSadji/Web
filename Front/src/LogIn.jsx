@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from "./Css/Login.module.css";
 import rgbStyle from "./Css/RGB.module.css";
 import toast, { Toaster } from 'react-hot-toast';
@@ -34,41 +34,34 @@ function Login(props) {
 
   const createCookie = async (pseudo,password,id) => {
     try {
-      const response = await fetch(`http://192.168.1.168:8000/api/login`,{
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ pseudo, password })
-    });
-      if (!response.ok) {
-        // Gère les erreurs si la réponse n'est pas OK
-        throw new Error('Erreur lors de la création de la session');
-      }
-      // Si la réponse est OK, retourne les données JSON de la réponse
-      const data = await response.json();
-      // Vérifie si un utilisateur est connecté
-
-      if (data.ok) {
-        console.log("Cookie créé avec succès");
-        const cookie = await fetch("http://192.168.1.168:8000/setUserCookie/"+id);
+      const cookie = await fetch("http://localhost:8000/api/login",{
+        method: 'POST',
+        //envoie json 
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({pseudo,password}),
+        credentials: 'include',
+      });
         if (!cookie.ok) {
           throw new Error('Erreur lors de la création de la session');
         } else {
           const myCookie = await cookie.json();
           console.log("Cookie mis à jour"); 
           toast.success("Connexion reussie");
-        }
-        }
-       else {
-        // Traite les données de l'utilisateur
-        console.log('Impossible de créer un cookie');
-      }
+    }
     } catch (error) {
       // Gère les erreurs
       console.error('Erreur:', error);
     }
   };
+
+  //use effect verrifie user === null sinon renoie vers home
+  useEffect(() => {
+    if (props.user !== null) {
+      navigate("/");
+    }
+  })
 
   return (
     <div className={styles.center}>

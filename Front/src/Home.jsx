@@ -5,157 +5,50 @@ import styles from './Css/Home.module.css'
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-function Home (props) {
 
-   const navigate = useNavigate();
+function Home(props) {
+
+  const [loading, setLoading] = useState(true);
+  const [listeMessages, setListeMessages] = useState([]);
+  let navigate = useNavigate();
+
 
   useEffect(() => {
-    (props.user === -1) && navigate( "/Login");
-  },[props, navigate, location.state]);
-
-  
-  var listeMessages = [
-    {
-        "author_name": "Dido",
-        "author_id": "27",
-        "text": "New Message",
-        "_id": "0jd6M8cEMRqVPuKK"
-    },
-    {
-        "author_name": "user1",
-        "author_id": "21",
-        "text": "message1",
-        "_id": "9a0hnDw3nJljzViW"
-    },
-    {
-        "author_name": "CR7",
-        "author_id": "18",
-        "text": "Je saute haut",
-        "_id": "Az12pLoxwjcbyCAg"
-    },
-    {
-        "author_name": "LM10",
-        "author_id": "17",
-        "text": "8 ballons d'or et 1 cdm",
-        "_id": "E52MuKA5nrbGKYDZ"
-    },
-    {
-        "author_name": "KM7",
-        "author_id": "19",
-        "text": "Je cours vite",
-        "_id": "HBJp4gmHMvZv2fti"
-    },
-    {
-        "author_name": "BobbyF",
-        "author_id": "2",
-        "text": "Je suis un monstre aux echecs + tout le monde peut être fort",
-        "_id": "Svn2foDgw74joe0u"
-    },
-    {
-        "author_name": "HikaruN",
-        "author_id": "3",
-        "text": "here here here takes takes takes takes there check move mate",
-        "_id": "Zz2ZJIiehd0Bd4TC"
-    },
-    {
-        "author_name": "CR7",
-        "author_id": "18",
-        "text": "5 ballons d'or et 0 cdm",
-        "_id": "h83bIP7FV27cz185"
-    },
-    {
-        "author_name": "MagnusC",
-        "author_id": "1",
-        "text": "Je suis le numéro 1 au monde aux échecs",
-        "_id": "k0ln2rrucfgWM7nk"
-    },
-    {
-        "author_name": "BobbyF",
-        "author_id": "2",
-        "text": "J'aime voir mes adversaires se battre pour esperer ne serait ce faire un nul contre moi",
-        "_id": "t8auJ50Jl4lbXkWH"
-    },
-    {
-        "author_name": "user2",
-        "author_id": "22",
-        "text": "message2",
-        "_id": "xhHgAu4UGJEiMgDk"
-    },
-    {
-        "author_name": "Dido",
-        "author_id": "27",
-        "text": "New Message",
-        "_id": "0jd6M8cEMRqVPuKK"
-    },
-    {
-        "author_name": "user1",
-        "author_id": "21",
-        "text": "message1",
-        "_id": "9a0hnDw3nJljzViW"
-    },
-    {
-        "author_name": "CR7",
-        "author_id": "18",
-        "text": "Je saute haut",
-        "_id": "Az12pLoxwjcbyCAg"
-    },
-    {
-        "author_name": "LM10",
-        "author_id": "17",
-        "text": "8 ballons d'or et 1 cdm",
-        "_id": "E52MuKA5nrbGKYDZ"
-    },
-    {
-        "author_name": "KM7",
-        "author_id": "19",
-        "text": "Je cours vite",
-        "_id": "HBJp4gmHMvZv2fti"
-    },
-    {
-        "author_name": "BobbyF",
-        "author_id": "2",
-        "text": "Je suis un monstre aux echecs + tout le monde peut être fort",
-        "_id": "Svn2foDgw74joe0u"
-    },
-    {
-        "author_name": "HikaruN",
-        "author_id": "3",
-        "text": "here here here takes takes takes takes there check move mate",
-        "_id": "Zz2ZJIiehd0Bd4TC"
-    },
-    {
-        "author_name": "CR7",
-        "author_id": "18",
-        "text": "5 ballons d'or et 0 cdm",
-        "_id": "h83bIP7FV27cz185"
-    },
-    {
-        "author_name": "MagnusC",
-        "author_id": "1",
-        "text": "Je suis le numéro 1 au monde aux échecs",
-        "_id": "k0ln2rrucfgWM7nk"
-    },
-    {
-        "author_name": "BobbyF",
-        "author_id": "2",
-        "text": "J'aime voir mes adversaires se battre pour esperer ne serait ce faire un nul contre moi",
-        "_id": "t8auJ50Jl4lbXkWH"
-    },
-    {
-        "author_name": "user2",
-        "author_id": "22",
-        "text": "message2",
-        "_id": "xhHgAu4UGJEiMgDk"
+    if (props.user === null) {
+      navigate("/Login");
     }
-]
 
-return (
+    async function fetchMessages() {
+      try {
+        const response = await fetch('http://localhost:8000/api/messages');
+        if (!response.ok) {
+          throw new Error('Erreur lors de la récupération des données');
+        }
+        const data = await response.json();
+
+        setListeMessages(data);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error:', error);
+        setLoading(false);
+      }
+    }
+
+    fetchMessages();
+  }, [props.user, navigate]);
+  
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+
+  return (
     <div className={styles.globalDiv}>
-      <Header setData={props.setData}/>
+      <Header setData={props.setData} />
       <hr align="center" width="75%" />
       <div className={styles.mainSection}>
         <div className={styles.globalDiv2}>
-          <input type="text" placeholder="New message ?" className={styles.myLabel}/>
+          <input type="text" placeholder="New message ?" className={styles.myLabel} />
           <hr align="center" width="75%" />
           <div className={styles.center}>
             <Messages listeMessages={listeMessages} />
@@ -170,4 +63,6 @@ return (
     </div>
   );
 }
-export default Home ;
+
+export default Home;
+

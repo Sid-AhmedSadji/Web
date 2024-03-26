@@ -7,7 +7,7 @@ function Messages({ listeMessages }) {
       <ul className={styles.myUl}>
         {listeMessages.map((message,index) => (
           <li key={index} className={styles.myLi}>
-            <SingleMessage titre={message.author_name} message={message.text} id={message._id}/>
+            <SingleMessage titre={message.author_name} message={message.text} id={message.id}/>
           </li>
         ))}
       </ul>

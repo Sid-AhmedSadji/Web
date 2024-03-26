@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './Css/AfficheMessage.module.css'; // Importez le module CSS
 import { Link, useParams } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
 let nbMessageAfficher = 2 ;
 
@@ -23,8 +24,8 @@ function OrderListe({ listeMessages, id , i }) {
         <>
             <ul className={styles.myUl}>
                 {filteredMessages.map((message, index) => (
-                    <li className={styles.myLi} key={message._id}>
-                        <Link to ={`/Messages/${message._id}`} className={styles.link} >
+                    <li className={styles.myLi} key={message.id}>
+                        <Link to ={`/Messages/${message.id}`} className={styles.link} >
                             <div className={styles.orderListe}>
                                 <div className={styles.hole1}></div>
                                 <div className={styles.hole2}></div>
@@ -32,7 +33,7 @@ function OrderListe({ listeMessages, id , i }) {
                                 <p>{message.text}</p>
                             </div>
                         </Link>
-                        <OrderListe listeMessages={listeMessages} id={message._id} i={i-1} />
+                        <OrderListe listeMessages={listeMessages} id={message.id} i={i-1} />
                     </li>
                 ))}
             </ul>
@@ -48,61 +49,52 @@ function App() {
     /*get id from url */
     const { id } = useParams(); // Récupère l'ID à partir de l'URL
     
-    const listeMessages = [
-        {
-            "author_name": "Dido",
-            "author_id": "27",
-            "text": "New Message",
-            "_id": "0jd6M8cEMRqVPuKK",
-            "id_Parent": "0"
-        },
-        {
-            "author_name": "user1",
-            "author_id": "21",
-            "text": "message1",
-            "_id": "9a0hnDw3nJljzViW",
-            "id_Parent": "0jd6M8cEMRqVPuKK"
-        },
-        {
-            "author_name": "CR7",
-            "author_id": "18",
-            "text": "Je saute haut",
-            "_id": "Az12pLoxwjcbycag",
-            "id_Parent": "9a0hnDw3nJljzViW"
-        },
-        {
-            "author_name": "CR7",
-            "author_id": "18",
-            "text": "Je saute MEGA haut",
-            "_id": "APODSOPQIDS",
-            "id_Parent": "9a0hnDw3nJljzViW"
-        },
-        {
-            "author_name": "CR7",
-            "author_id": "18",
-            "text": "Je saute tres haut",
-            "_id": "Wuofdfus85798",
-            "id_Parent": "Az12pLoxwjcbycag"
+    const [loading, setLoading] = useState(true);
+    const [listeMessages, setListeMessages] = useState([]);
+  
+  
+    useEffect(() => {
+  
+      async function fetchMessages() {
+        try {
+          const response = await fetch('http://localhost:8000/api/messages');
+          if (!response.ok) {
+            throw new Error('Erreur lors de la récupération des données');
+          }
+          const data = await response.json();
+  
+          setListeMessages(data);
+          setLoading(false);
+        } catch (error) {
+          console.error('Error:', error);
+          setLoading(false);
         }
-    ];
+      }
+  
+      fetchMessages();
+    }, []);
+    
+    if (loading) {
+      return <div>Loading...</div>;
+    }
 
-    const message = listeMessages.find(message => message._id === id);
+
+    // Utilisez la méthode `find()` pour rechercher l'élément par son ID
+    const messageRecherche = listeMessages.find(message => message.id === id);
 
     return (
         <div style={{ margin: '30px' }}>
-            <div className={styles.orderListe}>
-                <div className={styles.hole1}></div>
-                <div className={styles.hole2}></div>
-                <div className={styles.borderText}>@{message.author_name}</div>
-                <p>{message.text}</p>
-            </div>
+            {messageRecherche && (
+                <div className={styles.orderListe}>
+                    <div className={styles.hole1}></div>
+                    <div className={styles.hole2}></div>
+                    <div className={styles.borderText}>@{messageRecherche.author_name}</div>
+                    <p>{messageRecherche.text}</p>
+                </div>
+            )}
             <OrderListe listeMessages={listeMessages} id={id} i={nbMessageAfficher} />
         </div>
     );
-} 
+    } 
 
 export default App;
-
-
-
-    
