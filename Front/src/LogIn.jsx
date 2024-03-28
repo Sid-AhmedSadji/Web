@@ -3,65 +3,71 @@ import { useState, useEffect } from 'react';
 import styles from "./Css/Login.module.css";
 import rgbStyle from "./Css/RGB.module.css";
 import toast, { Toaster } from 'react-hot-toast';
+import axios from 'axios';
 
 function Login(props) {
   const [pseudo, setPseudo] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const getUser = async () => {
+  async function checkSession () {
     try {
-      const response = await fetch(`http://localhost:8000/api/user/${pseudo}/${password}`);
-      if (!response.ok) {
-        throw new Error('Erreur lors de la récupération des données');
-      }
-      const data = await response.json();
-      if (data.type === "0") {
-        toast.error("Utilisateur inconnu");
-        setPassword("");
-        props.setData(-1);
-      } else {
-        props.setData(data.id);
-        navigate("/");
-        toast.success("Connexion reussie"); 
-        createCookie(pseudo,password,data.id);
-      }
-    } catch (error) {
-      console.error('Erreur:', error);
-      toast.error("Impossible de vous connecter");
-    }
-  }
-
-  const createCookie = async (pseudo,password,id) => {
-    try {
-      const cookie = await fetch("http://localhost:8000/api/login",{
-        method: 'POST',
-        //envoie json 
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({pseudo,password}),
-        credentials: 'include',
+      /*
+      const response = await axios.get('http://localhost:4000/api/session', {
+        method: 'GET',
+        credentials: 'include'
       });
-        if (!cookie.ok) {
-          throw new Error('Erreur lors de la création de la session');
-        } else {
-          const myCookie = await cookie.json();
-          console.log("Cookie mis à jour"); 
-          toast.success("Connexion reussie");
-    }
+      */
+
+      const response = await fetch('http://localhost:4000/api/session', {
+        method: 'GET',
+        credentials: 'include'
+      })
+      if (response.status===200) {
+        const data = await response.json();
+        props.setUser(data.userid);
+        console.log("setUser : ", props.user);
+      }
     } catch (error) {
-      // Gère les erreurs
-      console.error('Erreur:', error);
+      console.error('Error:', error);
+    } finally {
     }
   };
 
-  //use effect verrifie user === null sinon renoie vers home
-  useEffect(() => {
-    if (props.user !== null) {
-      navigate("/");
+  async function getUser() {
+    try {
+      if (pseudo === "" || password === "") {
+        toast.error("Veuillez remplir tous les champs");
+        return;
+      }
+      const response = await fetch('http://localhost:4000/api/user/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+          credentials: "include",
+          body: JSON.stringify({
+            login: pseudo,
+            password: password,
+          })
+      });
+      if (!response) {
+        toast.error("Échec de la connexion");
+        return ;
+      }
+      const data = await response.json();
+      if ( data.status !== 200 ) {
+        toast.error(data.message);
+        setPassword("");
+      } else {
+        toast.success("Connexion réussie"); 
+       await checkSession();
+      }
+    } catch (error) {
+      console.error('Erreur:', error);
+      toast.error("Échec de la connexion");
     }
-  })
+  }
 
   return (
     <div className={styles.center}>

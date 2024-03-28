@@ -15,18 +15,9 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: {
-        maxAge: 900000
+        maxAge: 1000 * 60 * 60 * 3 // 3 heures
     }
 }));
-
-// Configuration de la politique CORS
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', 'http://localhost:5173');
-    res.header('Access-Control-Allow-Credentials', 'true');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Content-Type'); // Autoriser le champ Content-Type
-    next();
-});
 
 
 
@@ -200,7 +191,7 @@ app.post('/api/user', (req, res) => {
     const { pseudo, password } = req.body;
     
     // Ajoute le pseudo et le mot de passe à la liste, initialise le type à "0" et l'id à la longueur de la liste
-    users.push({ pseudo, password, type: "0", id: users.length.toString() });
+    users.push({ pseudo, password, type: 0, id: users.length.toString() });
 
     // Renvoie la réponse avec le nouvel utilisateur ajouté et un champ "ok" à true
     res.json({ user: users[users.length - 1], ok: true });
@@ -328,12 +319,31 @@ app.post('/api/login', (req, res) => {
     if (user) {
         // Définit l'utilisateur dans la session
         req.session.user = user;
+        console.log(users);
         res.json({ message: 'User logged in', ok:true });
     } else {
         res.json({ message: 'Invalid credentials', status:401, ok:false });
     }
 });
 
+//change le type d'utilisateur 
+app.post('/api/changeType', (req, res) => {
+    const { id,type } = req.body;
+    console.log(id,type);
+    const user = users.find(u => u.id === id);
+    
+    if (user) {
+        if (user.type > type) {
+            res.json({ message: 'User type cannot be decreased', status:401, ok:false });
+        }
+        user.type = type;
+        console.log(users);
+        res.json({ message: 'User type changed', ok:true });
+    }else {
+        res.json({ message: 'Invalid credentials', status:401, ok:false });
+    }
+}
+)
 
 // Route pour vérifier l'état de la session utilisateur
 app.get('/api/session', (req, res) => {

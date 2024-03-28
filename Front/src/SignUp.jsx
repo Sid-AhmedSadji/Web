@@ -23,7 +23,12 @@ const errorPseudo = () => {
 }
 
 async function postUser(pseudo, password, confirmPassword) {
-  if (password !== confirmPassword || password === '' || confirmPassword === '' || pseudo === '') {
+  if (pseudo === "" || password === "" || confirmPassword === "") {
+    //le toast en anglais 
+    toast.error("Please fill in all the fields");
+    return;
+  }
+  if (password !== confirmPassword ) {
     errorPassword();
     return false;
   }
@@ -35,6 +40,7 @@ async function postUser(pseudo, password, confirmPassword) {
       },
       body: JSON.stringify({ pseudo, password })
     });
+    console.log(response);
     if (response.status === 409) {
       errorPseudo();
       throw new Error('Pseudo already exists');
@@ -59,6 +65,8 @@ function SignUp() {
   const handleSignUp = async () => {
     await postUser(pseudo, password, confirmPassword) && setTimeout(() => {toLogIn()}, 1000) && setTimeout(() => {toast.dismiss();navigate('/LogIn')}, 6000);
   };
+
+
 
   return (
 

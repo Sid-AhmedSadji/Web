@@ -55,21 +55,21 @@ function App() {
   
     useEffect(() => {
   
-      async function fetchMessages() {
-        try {
-          const response = await fetch('http://localhost:8000/api/messages');
-          if (!response.ok) {
-            throw new Error('Erreur lors de la récupération des données');
+        async function fetchMessages() {
+            try {
+              const response = await fetch('http://localhost:4000/api/messages');
+              if (!response.ok) {
+                throw new Error('Erreur lors de la récupération des données');
+              }
+              const data = await response.json();
+      
+              setListeMessages(data);
+              setLoading(false);
+            } catch (error) {
+              console.error('Error:', error);
+              setLoading(false);
+            }
           }
-          const data = await response.json();
-  
-          setListeMessages(data);
-          setLoading(false);
-        } catch (error) {
-          console.error('Error:', error);
-          setLoading(false);
-        }
-      }
   
       fetchMessages();
     }, []);
