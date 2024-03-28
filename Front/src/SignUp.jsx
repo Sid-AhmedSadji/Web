@@ -90,7 +90,7 @@ function SignUp() {
          
           </div>
          
-          <Link className={styles.customlink} to="/LogIn">Log In ?</Link>
+          <Link className={styles.customlink} to="/">Log In ?</Link>
 
         </div>
 

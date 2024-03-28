@@ -1,7 +1,7 @@
 import styles from './Css/Message.module.css';
 import { Link } from 'react-router-dom';
 
-function Message({ titre, message, id }) {
+function Message({ showAuthor, author_name, message, id }) {
   var msg = message;
 
   if (message.length > 60) {
@@ -10,7 +10,9 @@ function Message({ titre, message, id }) {
 
   return (
     <div className={styles.message}>
-      <p>{titre}</p>
+      {showAuthor ? <Link className={styles.linkBtn} to={`/profil/${author_name}`}>
+        <button className={styles.linkBtn}>{author_name}</button>
+      </Link> : null}
       <Link className={styles.linkBtn} to={`/Messages/${id}`}>
         <button className={styles.linkBtn}>{msg}</button>
       </Link>

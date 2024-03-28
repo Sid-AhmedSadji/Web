@@ -21,7 +21,7 @@ function Home(props) {
     async function fetchMessages() {
       try {
         const response = await fetch('http://localhost:4000/api/messages');
-        if (!response.ok) {
+        if (response.status!==200) {
           throw new Error('Erreur lors de la récupération des données');
         }
         const data = await response.json();
@@ -44,14 +44,13 @@ function Home(props) {
 
   return (
     <div className={styles.globalDiv}>
-      <Header setData={props.setData} />
-      <hr align="center" width="75%" />
+      <Header setData={props.setData} shearchBar={true} />
       <div className={styles.mainSection}>
         <div className={styles.globalDiv2}>
           <input type="text" placeholder="New message ?" className={styles.myLabel} />
           <hr align="center" width="75%" />
           <div className={styles.center}>
-            <Messages listeMessages={listeMessages} />
+            <Messages showAuthor={true} listeMessages={listeMessages} />
           </div>
         </div>
         <div className={styles.infoPanel}>

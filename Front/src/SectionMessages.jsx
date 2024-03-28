@@ -1,13 +1,13 @@
 import SingleMessage from "./Message";
 import styles from './Css/SectionMessages.module.css';
 
-function Messages({ listeMessages }) {
+function Messages({ showAuthor, listeMessages }) {
   return (
     <div className={styles.main}>
       <ul className={styles.myUl}>
         {listeMessages.map((message,index) => (
           <li key={index} className={styles.myLi}>
-            <SingleMessage titre={message.author_name} message={message.text} id={message.id}/>
+            <SingleMessage showAuthor={showAuthor} author_name={message.author_name} message={message.text} />
           </li>
         ))}
       </ul>

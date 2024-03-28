@@ -1,6 +1,7 @@
 import styles from './Css/fileDAttente.module.css';
 import { Link } from 'react-router-dom';
 import Menu from './MenuRoulant.jsx';
+import Header from './Header.jsx';
 import { useEffect, useState } from 'react';
 
 async function getUsers(setData) {
@@ -105,14 +106,9 @@ function App( props ) {
 
   return (
     <div className={styles.main}>
-      <div className={styles.header}>
-        <Link to="/">
-          <img src="/logoSorbonneUniversite.png" alt="logo" className={styles.logo} />
-        </Link>
-        <Menu />
-      </div>
-
-      <div className={styles.space} />
+      
+      <Header setData={props.setData} shearchBar={false} />
+      
 
       <div className={styles.myForm}>
         <h4>Nom</h4>
@@ -122,7 +118,7 @@ function App( props ) {
         <h4>Actions</h4>
       </div>
 
-      <hr style={{ width: "65%" }} />
+      <hr style={{ width: "55%" }} />
 
       {listeUser.map((user, index) => (
         <form key={index} className={styles.myForm}>

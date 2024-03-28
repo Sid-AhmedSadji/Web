@@ -59,7 +59,7 @@ function App() {
       <Routes>
         <Route path="/" element={user ? <Home user={user} setUser={setUser} /> : <LogIn user={user} setUser={setUser} />} />
         <Route path="/SignUp" element={<SignUp user={user} setUser={setUser}/>} />
-        <Route path="/Profil" element={ <Profil />} />
+        <Route path="/Profil/:pseudo" element={ <Profil />} />
         <Route path="/Messages/:id" element={ <MessagePage /> } />
         <Route path="/Request" element={<Request user={user} setUser={setUser} /> } />
       </Routes>

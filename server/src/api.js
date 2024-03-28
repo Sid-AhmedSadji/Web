@@ -89,14 +89,6 @@ function init(db) {
         next();
     });
     const users = new Users.default(db);
-
-    router.get("users", (req, res) => {
-        try {
-            res.status(200).send({message: "Users found", users : users.getAll() });
-        }catch (e) {
-            res.status(500).send({message: "Internal server error", error : e });
-        }
-    });
     
     router.get("messages/:id", (req, res) => {
         try {
@@ -234,6 +226,43 @@ function init(db) {
                 message: "erreur interne",
                 details: (e || "Erreur inconnue").toString()
             });
+        }
+    });
+
+    //logout 
+    router.get("/user/logout", (req, res) => {
+        req.session.destroy((err) => {
+            if (err) {
+                res.status(500).json({
+                    message: "Erreur interne"
+                });
+            }
+            else {
+                res.status(200).json({
+                    message: "Logout reussi"
+                });
+            }
+        });
+    })
+
+    router.get("users", (req, res) => {
+        try {
+            res.status(200).send({message: "Users found", users : users.getAll() });
+        }catch (e) {
+            res.status(500).send({message: "Internal server error", error : e });
+        }
+    });
+
+    router.get("/user/pseudo/:pseudo", (req, res) => {
+        try {
+            const user = users.getByPseudo(req.params.pseudo);
+            if (!user)
+                res.sendStatus(404);
+            else
+                res.status(200).send(user);
+        }
+        catch (e) {
+            res.status(500).send(e);
         }
     });
 
