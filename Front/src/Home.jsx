@@ -26,7 +26,7 @@ function Home(props) {
         }
         const data = await response.json();
 
-        setListeMessages(data);
+        setListeMessages(data.messages);
         setLoading(false);
       } catch (error) {
         console.error('Error:', error);

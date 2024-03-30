@@ -1,83 +1,14 @@
 //App.js
-    
- const listeMessages = [
-    {
-        "author_name": "JohnDoe123",
-        "author_id": "0",
-        "text": "Salut tout le monde !",
-        "id": "msg0",
-        "id_Parent": "0"
-    },
-    {
-        "author_name": "JaneDoe456",
-        "author_id": "1",
-        "text": "Bonjour ! Comment ça va ?",
-        "id": "msg1",
-        "id_Parent": "msg0"
-    },
-    {
-        "author_name": "Alice789",
-        "author_id": "2",
-        "text": "Coucou les amis !",
-        "id": "msg2",
-        "id_Parent": "msg0"
-    },
-    {
-        "author_name": "Bob1234",
-        "author_id": "3",
-        "text": "Salutations !",
-        "id": "msg3",
-        "id_Parent": "msg2"
-    },
-    {
-        "author_name": "Eve5678",
-        "author_id": "4",
-        "text": "Hello world!",
-        "id": "msg4",
-        "id_Parent": "0"
-    },
-    {
-        "author_name": "Charlie9012",
-        "author_id": "5",
-        "text": "Bonjour tout le monde !",
-        "id": "msg5",
-        "id_Parent": "0"
-    },
-    {
-        "author_name": "David3456",
-        "author_id": "6",
-        "text": "Salut les amis !",
-        "id": "msg6",
-        "id_Parent": "msg5"
-    },
-    {
-        "author_name": "Emily7890",
-        "author_id": "7",
-        "text": "Coucou !",
-        "id": "msg7",
-        "id_Parent": "msg5"
-    },
-    {
-        "author_name": "Frank2345",
-        "author_id": "8",
-        "text": "Salutations à tous !",
-        "id": "msg8",
-        "id_Parent": "0"
-    },
-    {
-        "author_name": "Grace5678",
-        "author_id": "9",
-        "text": "Bonjour tout le monde !",
-        "id": "msg9",
-        "id_Parent": "msg8"
-    },
-];
+ 
 
 const express = require("express");
 const Users = require("./entities/users.js");
+const Messages = require("./entities/messages.js");
 const MongoClient = require("mongodb").MongoClient;
 
-function init(db) {
+
+function init(dbUrl) {
+
     const router = express.Router();
     // On utilise JSON
     router.use(express.json());
@@ -88,49 +19,10 @@ function init(db) {
         console.log('Body', req.body);
         next();
     });
-    const users = new Users.default(db);
+    const users = new Users.default(dbUrl);
+    const messages = new Messages.default(dbUrl);
     
-    router.get("messages/:id", (req, res) => {
-        try {
-            const id = req.params.id;
-            const message = listeMessages.find(message => message.id === id || message.id_Parent === id);
-            if (message) 
-                res.status(200).send({message: "Message found", messages : message });
-            else
-                res.sendStatus(404);
-        }catch(e){
-            res.status(500).send({message: "Internal server error", error : e });
-        }
-    });
-
-    router.post("/acceptUser", (req, res) => {
-        try {
-            const { id,type } = req.body;
-            const user = users.find(u => u.id === id);
-            if (user) {
-                if (user.type > type) {
-                    res.status(401).json({ message: 'User type cannot be decreased' });
-                }
-                user.type = type;
-                res.status(200).json({ message: 'User type changed' });
-            }else {
-                res.status(401).json({ message: 'Invalid credentials' });
-            }
-            
-        }catch(e){
-            res.status(500).send({message: "Internal server error", error : e });
-    }})
-
-    router.get("/messages", (req, res) => {
-        try {
-            res.status(200).send(listeMessages);
-
-        }catch(e){
-            res.status(500).send({message: "Internal server error", error : e });
-        }
-    });
-
-    router.put("/newMessage", (req, res) => {
+    router.get("messages/:id",async (req, res) => {
         try {
             if (!req.session.userid) {
                 res.status(401).json({
@@ -138,19 +30,73 @@ function init(db) {
                 });
                 return;
             }
-            if (!req.body.author_name || !req.body.author_id || !req.body.text || !req.body.id_Parent) {
+            const { id } = req.params;
+            const result = await messages.get(id);
+            if (!result) {
+                res.status(404).json({ message: "No messages found" });
+                return;
+            }
+            res.status(200).json({ message: "Messages found", messages: result });
+        }catch (e) {
+            res.status(500).send({ message: "Internal server error", error: e });
+        }
+    });
+
+    router.post("/acceptUser", async (req, res) => {
+        try {
+            const { id,type } = req.body;
+            const user = await users.get(id);
+            if (!user) {
+                res.status(404).json({ message: "User not found" });
+                return;
+            }
+            if (user.type === type || user.type > type) {
+                res.status(401).send(({ message: "Action unauthorized" }));
+                return;
+            }
+            const reponse = await users.update(id, type);
+            if (!reponse) {
+                res.status(500).send({ message: "Internal server error" });
+                return;
+            }
+            res.status(200).send({ message: "User updated" });         
+        }catch(e){
+            res.status(500).send({message: "Internal server error", error : e });
+    }})
+
+    router.get("/messages", async (req, res) => {
+        try {
+            const result = await messages.get();
+            if (!result) {
+                res.status(404).json({ message: "No messages found" });
+                return;
+            }
+            res.status(200).json({ message: "Messages found", messages: result });
+        }catch (e) {
+            res.status(500).send({ message: "Internal server error", error: e });
+        }
+    });
+
+    router.put("/message", async (req, res) => {
+        try {
+            const { author_name, message, id_Parent, title, date } = req.body;
+            if (!author_name || !message || !title || !date) {
                 res.status(400).json({
-                    message: "Requête invalide : author_name, author_id, text et id_Parent requis"
+                    message: "Requête invalide : message, date, author_name, id_Parent, title"
                 });
                 return;
             }
-            const { author_name, author_id, text, id_Parent } = req.body;
-            const id = messages.length + 1;
-            const message = { author_name, author_id, text, id, id_Parent };
-            listeMessages.push(message);
-            res.status(201).json({ message: "Message created", message });
-        }catch(e){
-            res.status(500).send({message: "Internal server error", error : e });
+            const id = (await messages.get()).length + 1;
+            if (await messages.exists(title)) {
+                res.status(400).json({
+                    message: "Title already exists"
+                })
+                return;
+            }
+            const reponse = await messages.create(message, id, date, author_name, id_Parent, title);
+            res.status(201).json({ message: "Message created", message: reponse });
+        } catch (e) {
+            res.status(500).send({ message: "Internal server error", error: e });
         }
     });
 
@@ -190,7 +136,7 @@ function init(db) {
                 });
                 return;
             }
-            let userid = await users.checkpassword(login, password);
+            let userid = await users.checkPassword(login, password);
             if (userid) {
                 // Avec middleware express-session
                 req.session.regenerate(function (err) {
@@ -245,17 +191,10 @@ function init(db) {
         });
     })
 
-    router.get("users", (req, res) => {
+    //Fait
+    router.get("/users", async (req, res) => {
         try {
-            res.status(200).send({message: "Users found", users : users.getAll() });
-        }catch (e) {
-            res.status(500).send({message: "Internal server error", error : e });
-        }
-    });
-
-    router.get("/user/pseudo/:pseudo", (req, res) => {
-        try {
-            const user = users.getByPseudo(req.params.pseudo);
+            const user = await users.get();
             if (!user)
                 res.sendStatus(404);
             else
@@ -266,6 +205,21 @@ function init(db) {
         }
     });
 
+    //Fait
+    router.get("/user/pseudo/:pseudo", async (req, res) => {
+        try {
+            const user = await users.get(null ,req.params.pseudo);
+            if (!user)
+                res.sendStatus(404);
+            else
+                res.status(200).send(user[0]);
+        }
+        catch (e) {
+            res.status(500).send(e);
+        }
+    });
+
+    //fait pour get 
     router
         .route("/user/:user_id")
         .get(async (req, res) => {
@@ -279,19 +233,49 @@ function init(db) {
         catch (e) {
             res.status(500).send(e);
         }
-    })
-        .delete((req, res, next) => res.send(`delete user ${req.params.user_id}`));
+    })//fait
+    .delete(async(req, res, next) => {
+    try {
+        const user = await users.deleteUser(req.params.user_id);
+        if (!user)
+            res.sendStatus(404);
+        else
+            res.status(200).send("User deleted");
+    }
+    catch (e) {
+        res.status(500).send(e);
+    }
+    });
 
-    router.put("/user", (req, res) => {
+    //fait
+    router.put("/user", async (req, res) => {
         const { login, password, lastname, firstname } = req.body;
         if (!login || !password || !lastname || !firstname) {
             res.status(400).send("Missing fields");
         } else {
-            users.create(login, password, lastname, firstname)
-                .then((user_id) => res.status(201).send({ id: user_id }))
-                .catch((err) => res.status(500).send(err));
+            try{
+                if (await users.exists(login)) {
+                    res.status(409).send("User already exists");
+                    return;
+                }
+                const id = await users.get();
+                if (!id) {
+                    res.status(500).send("Error creating user");
+                    return;
+                }
+
+                const result = await users.create(login, password, lastname, firstname,id.length+1);
+                if (result) {
+                    res.status(200).send("User created");
+                } else {
+                    res.status(500).send("Error creating user");
+                }
+            }catch(e){
+                res.status(500).send(e);
+            }
         }
     });
+
 
     
 

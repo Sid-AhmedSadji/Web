@@ -8,15 +8,11 @@
 }
 
 .mainDiv{
-    box-sizing: border-box;
     height: 100% ;
     width: 100%;
-    display : flex;
-    flex-direction: row;
-    justify-content: space-between;
+    display: flex ;
+    justify-content: center;
     align-items: center;
-    gap : 10px;
-
 
 }
 .messageDiv{
@@ -24,6 +20,8 @@
     width: 100%;     
     box-sizing: border-box;
     text-align: center;
+    padding-right : 15px;
+    
 
     
 }
@@ -35,8 +33,8 @@
 }
 .user{
     display : flex ;
-    
     flex-direction: column;
+    justify-content: center;
     align-items: center;
     text-align: center;
     border : 1px solid white;
@@ -45,6 +43,14 @@
     height : 400px;
     width: 300px;
 
+}
+
+.userButton{
+    position: absolute;
+    top : 90vh;
+    left: 97vw;
+    font-size : 10px;
+    text-align: center;
 }
 
 .avatar{
@@ -64,16 +70,11 @@
     }
     
     .mainDiv{
-        box-sizing: border-box;
         height: 100% ;
         width: 100%;
-        display : flex;
-        flex-direction: row;
-        justify-content: space-between;
+        display: flex ;
+        justify-content: center;
         align-items: center;
-        gap : 10px;
-    
-    
     }
     .messageDiv{
         height: 80% ;
@@ -105,10 +106,23 @@
 
         
     }
+
+    .userButton{
+        position: absolute;
+        top : 90vh;
+        left: 91vw;
+        font-size : 10px;
+        text-align: center;
+    }
     
     .avatar{
         height: 50px;
         position: relative;
         top :  0px;
+        /*
+        height: 50px;
+        position: absolute;
+        top :  222px;
+        */
     }
 }

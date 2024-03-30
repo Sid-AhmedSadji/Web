@@ -11,6 +11,10 @@ express = require('express');
 const app = express()
 const session = require("express-session");
 
+const MongoClient = require('mongodb').MongoClient;
+const dbUrl  = "mongodb://127.0.0.1:27017/AssosDataBase";
+const db = MongoClient.connect(dbUrl);
+
 app.use(cors({
     origin: "http://localhost:5173",
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
@@ -28,7 +32,7 @@ app.use(session({
         httpOnly: false, }
 }));
 
-app.use('/api', api.default());
+app.use('/api', api.default(dbUrl));
 
 // Démarre le serveur
 app.on('close', () => {

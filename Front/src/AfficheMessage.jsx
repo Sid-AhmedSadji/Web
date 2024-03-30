@@ -7,7 +7,7 @@ let nbMessageAfficher = 2 ;
 
 function OrderListe({ listeMessages, id , i }) {
 
-    const filteredMessages = listeMessages.filter(message => message.id_Parent === id);
+    const filteredMessages = listeMessages.messages.filter(message => message.id_Parent === Number(id));
    
     if (filteredMessages.length === 0) return null; 
 
@@ -24,16 +24,14 @@ function OrderListe({ listeMessages, id , i }) {
         <>
             <ul className={styles.myUl}>
                 {filteredMessages.map((message, index) => (
-                    <li className={styles.myLi} key={message.id}>
-                        <Link to ={`/Messages/${message.id}`} className={styles.link} >
+                    <li className={styles.myLi} key={message._id}>
+                        <Link to ={`/Messages/${message._id}`} className={styles.link} >
                             <div className={styles.orderListe}>
-                                <div className={styles.hole1}></div>
-                                <div className={styles.hole2}></div>
                                 <div className={styles.borderText}>@{message.author_name}</div>
-                                <p>{message.text}</p>
+                                <p>{message.message}</p>
                             </div>
                         </Link>
-                        <OrderListe listeMessages={listeMessages} id={message.id} i={i-1} />
+                        <OrderListe listeMessages={listeMessages} id={message._id} i={i-1} />
                     </li>
                 ))}
             </ul>
@@ -80,16 +78,15 @@ function App() {
 
 
     // Utilisez la méthode `find()` pour rechercher l'élément par son ID
-    const messageRecherche = listeMessages.find(message => message.id === id);
+    console.log(listeMessages.messages);
+    const messageRecherche = listeMessages.messages.find(message => message._id === Number(id));
 
     return (
         <div style={{ margin: '30px' }}>
             {messageRecherche && (
                 <div className={styles.orderListe}>
-                    <div className={styles.hole1}></div>
-                    <div className={styles.hole2}></div>
-                    <div className={styles.borderText}>@{messageRecherche.author_name}</div>
-                    <p>{messageRecherche.text}</p>
+                    <Link to = {`/profil/${messageRecherche.author_name}`}><div className={styles.borderText}>@{messageRecherche.author_name}</div></Link>
+                    <p>{messageRecherche.message}</p>
                 </div>
             )}
             <OrderListe listeMessages={listeMessages} id={id} i={nbMessageAfficher} />
