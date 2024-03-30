@@ -53,13 +53,13 @@ L'application expose les routes API suivantes :
 - `PUT /api/messages/:id` : Met à jour un message existant.
 - `DELETE /api/messages/:id` : Supprime un message par son ID.
 
-##Ce qui reste a faire : 
-- ** Fonction pour ajouter des messages API + FRONT **
-- ** Fonction pour faire des reponses **
-- ** Ajout d'un forum privé **
-- ** Retiré les options d'acces au user en attente et acces au forums privé pour les non admin **
-- ** Ajout a l'info panel le nombre d'utilisateur et de topic **
--     ** regler le probleme d'acces aux p  
+## Ce qui reste a faire : 
+- **Fonction pour ajouter des messages API + FRONT**
+- **Fonction pour faire des reponses**
+- **Ajout d'un forum privé**
+- **Retiré les options d'acces au user en attente et acces au forums privé pour les non admin**
+- **Ajout a l'info panel le nombre d'utilisateur et de topic**
+- **regler le probleme d'acces aux profils**
 
 
 ## Auteurs
