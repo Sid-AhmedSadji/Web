@@ -8,11 +8,8 @@ import Request from './fileDAttente.jsx';
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, createBrowserRouter } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
+import api from './ApiCalls';
 import axios from 'axios';
-
-const toLogIn = () => {
-  toast.loading('Please wait...');
-}
 
 function App() {
   const [user, setUser] = useState(null);
@@ -24,17 +21,11 @@ function App() {
   const checkSession = async () => {
     try {
       console.log('Checking session...');
-      const response = await fetch('http://localhost:4000/api/session', {
-        method: 'GET',
-        credentials: 'include'
-      });
-      if (response.status===200) {
-        const data = await response.json();
-        setUser(data.userid);
-      }
-      if (response.status===401) {
-        const data = await response.json();
-        throw new Error(data.message);
+      const userid = await api.checkSession();
+      if (userid) {
+        setUser(userid);
+      }else {
+        setUser(null);
       }
     } catch (error) {
       console.log('Error:', error);
@@ -42,7 +33,6 @@ function App() {
       setLoading(false); // Marque la fin du chargement, que ce soit avec succès ou non
     }
   };
-  //attendre la fin de checkUserCookie
 
   checkSession();
 }, []);

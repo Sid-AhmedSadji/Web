@@ -3,6 +3,7 @@ import Messages from"./SectionMessages.jsx"
 import { useState,useEffect } from "react";
 import styles from "./Css/Profil.module.css"
 import { useParams } from "react-router-dom";
+import api from "./ApiCalls.js"
 
 
 
@@ -12,7 +13,6 @@ function Profil (){
   const [listeMessages, setListeMessages] = useState([]);
   const [user, setUser] = useState(null);
   const {login} =  useParams();
-  console.log(login);
   const [clicked, setclicked ] = useState(true);
 
   useEffect(() => {
@@ -32,13 +32,8 @@ function Profil (){
   
     async function fetchMessages() {
       try {
-        const response = await fetch('http://localhost:4000/api/messages');
-        if (!response.ok) {
-          throw new Error('Erreur lors de la récupération des données des messages');
-        }
-        const data = await response.json();
-
-        setListeMessages(data);
+        const data = await api.getMessages();
+        setListeMessages(data.filter(message => message.author_name===login ));
       } catch (error) {
         console.error('Error:', error);
       }

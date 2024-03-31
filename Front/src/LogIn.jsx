@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import styles from "./Css/Login.module.css";
 import rgbStyle from "./Css/RGB.module.css";
 import toast, { Toaster } from 'react-hot-toast';
+import api from './ApiCalls';
 import axios from 'axios';
 
 function Login(props) {
@@ -11,27 +12,10 @@ function Login(props) {
   const navigate = useNavigate();
 
   async function checkSession () {
-    try {
-      /*
-      const response = await axios.get('http://localhost:4000/api/session', {
-        method: 'GET',
-        credentials: 'include'
-      });
-      */
-
-      const response = await fetch('http://localhost:4000/api/session', {
-        method: 'GET',
-        credentials: 'include'
-      })
-      if (response.status===200) {
-        const data = await response.json();
-        props.setUser(data.userid);
-        console.log("setUser : ", props.user);
+    const userId = await api.checkSession();
+      if (userId) {
+        props.setUser(userId);
       }
-    } catch (error) {
-      console.error('Error:', error);
-    } finally {
-    }
   };
 
   async function getUser() {
@@ -40,29 +24,15 @@ function Login(props) {
         toast.error("Veuillez remplir tous les champs");
         return;
       }
-      const response = await fetch('http://localhost:4000/api/user/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-          credentials: "include",
-          body: JSON.stringify({
-            login: pseudo,
-            password: password,
-          })
-      });
-      if (!response) {
+      const islogged = await api.login({ login: pseudo, password: password });
+      if (!islogged) {
         toast.error("Échec de la connexion");
+        setPassword("");
+
         return ;
       }
-      const data = await response.json();
-      if ( data.status !== 200 ) {
-        toast.error(data.message);
-        setPassword("");
-      } else {
-        toast.success("Connexion réussie"); 
-       await checkSession();
-      }
+      toast.success("Connexion réussie");
+      await checkSession(); 
     } catch (error) {
       console.error('Erreur:', error);
       toast.error("Échec de la connexion");

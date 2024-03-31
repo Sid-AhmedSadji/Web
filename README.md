@@ -54,12 +54,12 @@ L'application expose les routes API suivantes :
 - `DELETE /api/messages/:id` : Supprime un message par son ID.
 
 ## Ce qui reste a faire : 
-- **Fonction pour ajouter des messages API + FRONT**
-- **Fonction pour faire des reponses**
+- **Front pour les liste de messages**
 - **Ajout d'un forum privé**
 - **Retiré les options d'acces au user en attente et acces au forums privé pour les non admin**
 - **Ajout a l'info panel le nombre d'utilisateur et de topic**
-- **regler le probleme d'acces aux profils**
+- **Regler inscription User (first name last name)**
+- **Ajouter toutes les options de filtre**
 
 
 ## Auteurs

@@ -79,13 +79,20 @@ function init(dbUrl) {
 
     router.put("/message", async (req, res) => {
         try {
-            const { author_name, message, id_Parent, title, date } = req.body;
-            if (!author_name || !message || !title || !date) {
+            const { userid,message, id_Parent, title, date } = req.body;
+
+
+            // verifie que les paramettres ne sont pas nul et affiche celui qui est nul 
+            if ( !userid || !message || !id_Parent || !title || !date) {
+
                 res.status(400).json({
-                    message: "Requête invalide : message, date, author_name, id_Parent, title"
-                });
+                    message: "Missing parameters"
+                })
                 return;
             }
+            const user = await users.get(userid);
+            const author_name = user[0].login;
+            console.log("author_name", author_name);
             const id = (await messages.get()).length + 1;
             if (await messages.exists(title)) {
                 res.status(400).json({
@@ -93,7 +100,9 @@ function init(dbUrl) {
                 })
                 return;
             }
-            const reponse = await messages.create(message, id, date, author_name, id_Parent, title);
+            const reponse = await messages.create(message, id.toString(), date, author_name, id_Parent, title);
+            console.log("reponse",reponse);
+
             res.status(201).json({ message: "Message created", message: reponse });
         } catch (e) {
             res.status(500).send({ message: "Internal server error", error: e });
@@ -258,13 +267,13 @@ function init(dbUrl) {
                     res.status(409).send("User already exists");
                     return;
                 }
-                const id = await users.get();
+                const id = (await users.get()).length +1;
                 if (!id) {
                     res.status(500).send("Error creating user");
                     return;
                 }
 
-                const result = await users.create(login, password, lastname, firstname,id.length+1);
+                const result = await users.create(login, password, lastname, firstname,id.toString());
                 if (result) {
                     res.status(200).send("User created");
                 } else {

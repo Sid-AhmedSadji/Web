@@ -2,12 +2,14 @@ import React from 'react';
 import styles from './Css/AfficheMessage.module.css'; // Importez le module CSS
 import { Link, useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import TimeAgo from 'react-timeago'
+import api from './ApiCalls';
 
 let nbMessageAfficher = 2 ;
 
 function OrderListe({ listeMessages, id , i }) {
 
-    const filteredMessages = listeMessages.messages.filter(message => message.id_Parent === Number(id));
+    const filteredMessages = listeMessages.filter(message => message.id_Parent === id);
    
     if (filteredMessages.length === 0) return null; 
 
@@ -21,23 +23,28 @@ function OrderListe({ listeMessages, id , i }) {
 
 
     return (
-        <>
-            <ul className={styles.myUl}>
-                {filteredMessages.map((message, index) => (
-                    <li className={styles.myLi} key={message._id}>
-                        <Link to ={`/Messages/${message._id}`} className={styles.link} >
-                            <div className={styles.orderListe}>
-                                <div className={styles.borderText}>@{message.author_name}</div>
-                                <p>{message.message}</p>
+        <ul className={styles.myUl}>
+            {filteredMessages.map((messageRecherche, index) => (
+                <li className={styles.myLi} key={messageRecherche._id}>
+                    <div className={styles.orderListe}>
+                        <Link to={`/profil/${messageRecherche.author_name}`} className={styles.link} >
+                            <div className={styles.borderText}>
+                                <p className={styles.myP} >@{messageRecherche.author_name} : {messageRecherche.title}</p>
+                                <TimeAgo style={{fontSize: "8px" , paddingLeft : "30px", fontStyle : "italic" }} date={messageRecherche.date} />
+
                             </div>
                         </Link>
-                        <OrderListe listeMessages={listeMessages} id={message._id} i={i-1} />
-                    </li>
-                ))}
-            </ul>
-        </>
+                        <Link to={`/Messages/${messageRecherche._id}`} className={styles.link}>
+                            <p>{messageRecherche.message}</p>
+                        </Link>
+                    </div>
+
+                        <OrderListe listeMessages={listeMessages} id={messageRecherche._id} i={i-1} />
+                    
+                </li>
+            ))}
+        </ul>
     );
-    
 
         
 }
@@ -55,11 +62,8 @@ function App() {
   
         async function fetchMessages() {
             try {
-              const response = await fetch('http://localhost:4000/api/messages');
-              if (!response.ok) {
-                throw new Error('Erreur lors de la récupération des données');
-              }
-              const data = await response.json();
+              
+              const data = await api.getMessages();
       
               setListeMessages(data);
               setLoading(false);
@@ -78,20 +82,26 @@ function App() {
 
 
     // Utilisez la méthode `find()` pour rechercher l'élément par son ID
-    console.log(listeMessages.messages);
-    const messageRecherche = listeMessages.messages.find(message => message._id === Number(id));
+    const messageRecherche = listeMessages.find(message => message._id === id);
 
     return (
         <div style={{ margin: '30px' }}>
             {messageRecherche && (
                 <div className={styles.orderListe}>
-                    <Link to = {`/profil/${messageRecherche.author_name}`}><div className={styles.borderText}>@{messageRecherche.author_name}</div></Link>
+                    <Link to={`/profil/${messageRecherche.author_name}`} className={styles.link} >
+                        <div className={styles.borderText}>
+                            <p className={styles.myP} >@{messageRecherche.author_name} : {messageRecherche.title}</p>
+                            <TimeAgo style={{fontSize: "8px" , paddingLeft : "30px"}} date={messageRecherche.date} />
+                        </div>
+                    </Link>
+
                     <p>{messageRecherche.message}</p>
                 </div>
             )}
             <OrderListe listeMessages={listeMessages} id={id} i={nbMessageAfficher} />
         </div>
     );
-    } 
+
+} 
 
 export default App;

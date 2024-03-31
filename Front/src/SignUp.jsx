@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
-
+import api from './ApiCalls';
 import styles from './Css/Login.module.css';
 import rgbStyle from './Css/RGB.module.css';
 
@@ -33,19 +33,12 @@ async function postUser(pseudo, password, confirmPassword) {
     return false;
   }
   try {
-    const response = await fetch('http://localhost:8000/api/user', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ pseudo, password })
-    });
-    console.log(response);
+    const response = api.postUser({ pseudo, password });
     if (response.status === 409) {
       errorPseudo();
       throw new Error('Pseudo already exists');
-    }
-    else if (!response.ok) {
+    }else if (response.status !== 201) {
+      toast.error('Failed to post user');
       throw new Error('Failed to post user');
     }
     signUpOk();

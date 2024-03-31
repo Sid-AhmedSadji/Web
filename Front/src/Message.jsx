@@ -16,7 +16,6 @@ function Message({ showAuthor, author_name, message, id }) {
       <Link className={styles.linkBtn} to={`/Messages/${id}`}>
         <button className={styles.linkBtn}>{msg}</button>
       </Link>
-      <button className={styles.button85}>+</button>
     </div>
   );
 }

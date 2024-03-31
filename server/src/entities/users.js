@@ -58,7 +58,7 @@ class Users {
         login: login,
         password: password
       });
-      return result;
+      return result._id;
     } catch (err) {
       throw err;
     }
@@ -69,7 +69,7 @@ class Users {
   async deleteUser(id) {
     try {
       const result = await this.client.db().collection('Users').deleteOne({
-        _id: Number(id)
+        _id: id
       });
       console.log("result",result);
       return result;
@@ -81,7 +81,7 @@ class Users {
   async update(id, type) {
     try {
       const result = await this.client.db().collection('Users').updateOne({
-        _id: Number(id)
+        _id: id
       }, {
         $set: {
           type: type
