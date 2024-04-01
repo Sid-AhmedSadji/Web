@@ -11,31 +11,26 @@ function Login(props) {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  async function checkSession () {
-    const userId = await api.checkSession();
-      if (userId) {
-        props.setUser(userId);
-      }
-  };
+
 
   async function getUser() {
     try {
       if (pseudo === "" || password === "") {
-        toast.error("Veuillez remplir tous les champs");
+        toast.error("Please fill all the fields");
         return;
       }
-      const islogged = await api.login({ login: pseudo, password: password });
-      if (!islogged) {
-        toast.error("Échec de la connexion");
-        setPassword("");
-
-        return ;
+      const response = await api.login({ login: pseudo, password: password });
+      const user = await api.getUser({ login: pseudo, id: response.id, type: null });
+      if (user.data[0].type !== "admin" && user.data[0].type !== "user") {
+        toast.error("Please wait for the account confirmation");
+      }else {
+        toast.success("Connexion success");
+        console.log(response);
+        props.setUser(response.data.id);
       }
-      toast.success("Connexion réussie");
-      await checkSession(); 
     } catch (error) {
-      console.error('Erreur:', error);
-      toast.error("Échec de la connexion");
+      toast.error("Connexion failed: " + error.response.data.message);
+      console.error('Error:', error.response.data.message);
     }
   }
 
@@ -44,14 +39,14 @@ function Login(props) {
       <Toaster />
       <div className={rgbStyle.rgb}>
         <div className={styles.mainsectionlogin}>
-          <h1 className={styles.h2} id='titre'>Connection</h1>
+          <h1 className={styles.h2} id='titre'>Connexion</h1>
           <input type="text" placeholder="Username" className={styles.myLabel} value={pseudo} onChange={(e) => setPseudo(e.target.value)} />
           <input type="password" placeholder="Password" className={styles.myLabel} value={password} onChange={(e) => setPassword(e.target.value)} />
           <div className={styles.sectionButtons}>
-            <button className={rgbStyle.button85} onClick={getUser}>Login</button>
-            <button className={rgbStyle.button85} onClick={() => { setPseudo(""); setPassword(""); }} >Cancel</button>
+            <button className={rgbStyle.button85} onClick={getUser}>Connexion</button>
+            <button className={rgbStyle.button85} onClick={() => { setPseudo(""); setPassword(""); }} >Annuler</button>
           </div>
-          <Link className={styles.customlink} to="/SignUp">Sign up ?</Link>
+          <Link className={styles.customlink} to="/SignUp">S'inscrire ?</Link>
         </div>
       </div>
     </div>

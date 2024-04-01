@@ -33,8 +33,6 @@ function App(setData) {
     <details>
     <summary></summary>
     <nav className={styles.menu}>
-      <Link to='/'>Public Forum</Link>
-      <Link to='/'>Private Forum</Link>
       <Link to='/request'>User Request</Link>
       <Link to='/' onClick={()=>{ logOut();setData(null)}}>Sign out</Link>
     </nav>

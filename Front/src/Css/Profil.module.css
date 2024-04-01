@@ -54,9 +54,9 @@
 }
 
 .avatar{
-    height: 50px;
+    height: 70px;
     position: absolute;
-    top :  120px;
+    top :  225px;
 }
 
 @media  (max-width:800px) {

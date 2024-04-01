@@ -10,9 +10,15 @@ function Message({ showAuthor, author_name, message, id }) {
 
   return (
     <div className={styles.message}>
-      {showAuthor ? <Link className={styles.linkBtn} to={`/profil/${author_name}`}>
-        <button className={styles.linkBtn}>{author_name}</button>
-      </Link> : null}
+      {showAuthor ? 
+        <>
+          <Link className={styles.linkBtntitle} to={`/profil/${author_name}`}>
+            <button className={styles.linkBtntitle}>{author_name}</button>
+          </Link> 
+          <hr className={styles.separator} />
+        </>
+
+      : null}
       <Link className={styles.linkBtn} to={`/Messages/${id}`}>
         <button className={styles.linkBtn}>{msg}</button>
       </Link>

@@ -18,12 +18,8 @@ function Profil (){
   useEffect(() => {
     async function fetchUser() {
       try {
-        const response = await fetch('http://localhost:4000/api/user/pseudo/'+login);
-        if (response.status!==200) {
-          throw new Error('Erreur lors de la récupération des données utilisateur');
-        }
-        const data = await response.json();
-        setUser(data);
+        const data = await api.getUser({login:login, id:null, type:null});
+        setUser(data.data[0]);
       } catch (error) {
         console.error('Error:', error);
         setLoading(false); // Mettre fin au chargement en cas d'erreur
@@ -32,8 +28,8 @@ function Profil (){
   
     async function fetchMessages() {
       try {
-        const data = await api.getMessages();
-        setListeMessages(data.filter(message => message.author_name===login ));
+        const data = await api.getMessages("public");
+        setListeMessages(data.data.messages.filter(message => message.author_name===login ));
       } catch (error) {
         console.error('Error:', error);
       }
@@ -60,7 +56,7 @@ function Profil (){
           <p>user : {user.login}</p>
           <p>firstName : {user.firstname}</p>
           <p>lastName : {user.lastname}</p>
-          <p>role : {user.type === 2 ? "admin" : "user" }</p> 
+          <p>role : {user.type}</p> 
           <p>date :  On verra</p>
 
         </div>
@@ -111,7 +107,4 @@ function Profil (){
   );
 };
 export default Profil ;
-/*
 
-
-*/

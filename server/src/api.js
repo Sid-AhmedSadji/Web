@@ -17,6 +17,7 @@ function init(dbUrl) {
     router.use((req, res, next) => {
         console.log('API: method %s, path %s', req.method, req.path);
         console.log('Body', req.body);
+        console.log('Query', req.query);
         next();
     });
     const users = new Users.default(dbUrl);
@@ -42,7 +43,7 @@ function init(dbUrl) {
         }
     });
 
-    router.post("/acceptUser", async (req, res) => {
+    router.post("/changeType", async (req, res) => {
         try {
             const { id,type } = req.body;
             const user = await users.get(id);
@@ -50,10 +51,7 @@ function init(dbUrl) {
                 res.status(404).json({ message: "User not found" });
                 return;
             }
-            if (user.type === type || user.type > type) {
-                res.status(401).send(({ message: "Action unauthorized" }));
-                return;
-            }
+
             const reponse = await users.update(id, type);
             if (!reponse) {
                 res.status(500).send({ message: "Internal server error" });
@@ -64,9 +62,10 @@ function init(dbUrl) {
             res.status(500).send({message: "Internal server error", error : e });
     }})
 
-    router.get("/messages", async (req, res) => {
+    router.get("/messages/:privacy", async (req, res) => {
         try {
-            const result = await messages.get();
+            const { privacy } = req.params;
+            const result = await messages.get(null, privacy);
             if (!result) {
                 res.status(404).json({ message: "No messages found" });
                 return;
@@ -79,7 +78,7 @@ function init(dbUrl) {
 
     router.put("/message", async (req, res) => {
         try {
-            const { userid,message, id_Parent, title, date } = req.body;
+            const { userid,message, id_Parent, title, date, privacy } = req.body;
 
 
             // verifie que les paramettres ne sont pas nul et affiche celui qui est nul 
@@ -92,7 +91,6 @@ function init(dbUrl) {
             }
             const user = await users.get(userid);
             const author_name = user[0].login;
-            console.log("author_name", author_name);
             const id = (await messages.get()).length + 1;
             if (await messages.exists(title)) {
                 res.status(400).json({
@@ -100,8 +98,7 @@ function init(dbUrl) {
                 })
                 return;
             }
-            const reponse = await messages.create(message, id.toString(), date, author_name, id_Parent, title);
-            console.log("reponse",reponse);
+            const reponse = await messages.create(message, id.toString(), date, author_name, id_Parent, title, privacy);
 
             res.status(201).json({ message: "Message created", message: reponse });
         } catch (e) {
@@ -134,7 +131,7 @@ function init(dbUrl) {
             if (!login || !password) {
             	res.status(400).json({
                     status: 400,
-                    "message": "Requête invalide : login et password nécessaires"
+                    message: "Requête invalide : login et password nécessaires"
                 }); 
                 return;
             }
@@ -160,6 +157,7 @@ function init(dbUrl) {
                         req.session.userid = userid;
                         res.status(200).json({
                             status: 200,
+                            id: userid,
                             message: "Login et mot de passe accepté"
                         });
                     }
@@ -200,41 +198,17 @@ function init(dbUrl) {
         });
     })
 
-    //Fait
-    router.get("/users", async (req, res) => {
-        try {
-            const user = await users.get();
-            if (!user)
-                res.sendStatus(404);
-            else
-                res.status(200).send(user);
-        }
-        catch (e) {
-            res.status(500).send(e);
-        }
-    });
 
-    //Fait
-    router.get("/user/pseudo/:pseudo", async (req, res) => {
-        try {
-            const user = await users.get(null ,req.params.pseudo);
-            if (!user)
-                res.sendStatus(404);
-            else
-                res.status(200).send(user[0]);
-        }
-        catch (e) {
-            res.status(500).send(e);
-        }
-    });
-
-    //fait pour get 
     router
-        .route("/user/:user_id")
+        .route("/users")
         .get(async (req, res) => {
+
         try {
-            const user = await users.get(req.params.user_id);
-            if (!user)
+            const {login=null,id=null,type=null} = req.query;
+            
+
+            const user = await users.get(id,login,type);
+            if (user.length == 0)
                 res.sendStatus(404);
             else
                 res.status(200).send(user);

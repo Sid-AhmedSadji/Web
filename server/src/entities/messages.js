@@ -8,7 +8,8 @@ class Messages {
         })();
     }
 
-    async create(message, id, date, author_name, id_Parent, title) {
+    async create(message, id, date, author_name, id_Parent, title,privacy) {
+
         try {
             const result = await this.client.db().collection('Messages').insertOne({
                 _id:id,
@@ -16,7 +17,8 @@ class Messages {
                 date: date,
                 author_name: author_name,
                 id_Parent: id_Parent,
-                title: title
+                title: title,
+                privacy: privacy
             })
             return result;
         } catch (err) {
@@ -24,12 +26,13 @@ class Messages {
         }
     }
 
-    async get(id) {
+    async get(id,privacy) {
         try {
             const query = id == null ? {} : { _id: id };
-            console.log(query);
+            if(privacy){
+                query.privacy = privacy
+            }
             const result = await this.client.db().collection('Messages').find(query).toArray();
-            console.log(result);
             return result;
         } catch (err) {
             throw err;
@@ -41,7 +44,6 @@ class Messages {
             const result = await this.client.db().collection('Messages').findOne({
                 title: title
             });
-            console.log(result);
             return result;
         } catch (err) {
             throw err;

@@ -3,20 +3,18 @@ import { Link } from 'react-router-dom';
 import Menu from './MenuRoulant.jsx';
 import Header from './Header.jsx';
 import { useEffect, useState } from 'react';
+import api from './ApiCalls.js';
 
-async function getUsers(setData) {
-  try {
-    const response = await fetch("http://localhost:4000/api/users");
-    if (!response.ok) {
-      throw new Error('Erreur lors de la récupération des données');
-    }
-    const jsonData = await response.json();
-    setData(jsonData.filter(user => user.type === 0));
+async function getUsers() {
+  try{
+    const data = await api.getUser({login:null, id:null, type:"0"});
+    return data;
+
   } catch (error) {
-    console.error('Erreur:', error);
+    console.error('Erreur:', error.response.data);
+    return {data:[]};
   }
 }
-
 
 
 
@@ -30,18 +28,22 @@ function App( props ) {
   useEffect(() => {
 
     async function fetchData() {
-      await getUsers(setData);
+      const response = await getUsers();
+      setData(response.data);
     }
 
     async function fetchType() {
       //recherche dans listeUser le type de l'utilisateur connecté qui est dans props.user
-      const user_type = listeUser.find(user => user.id === props.user.id).type;
-      setType(user_type);
+      const user_type = await api.getUser({login:null, id:props.user, type:null}).catch((error) => {
+        console.error('Error:', error.response.data);
+      });
+      setType(user_type.data[0].type);
       setLoading(false);
     }
 
+    fetchData()
+
     fetchType()
-    fetchData();
 
     const interval = setInterval(async () => {
       await fetchData();
@@ -54,55 +56,28 @@ function App( props ) {
 
 
 
-  function deleteUser(id) {
-    // Envoie une requête DELETE à l'API pour supprimer l'utilisateur avec l'ID spécifié
-    fetch(`http://localhost:8000/api/user/${id}`, {
-      method: 'DELETE',
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Erreur lors de la suppression de l\'utilisateur');
-        }
-        // Si la suppression est réussie, actualise la liste des utilisateurs
-        getUsers(setData);
-      })
-      .catch(error => {
-        console.error('Erreur:', error);
-      });
-  }
-
-  function acceptUser(userId) {
-    // Envoie une requête POST à l'API pour accepter l'utilisateur avec l'ID spécifié
-    fetch(`http://localhost:8000/api/changeType`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ id:userId, type: 1 }),
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Erreur lors de l\'acceptation de l\'utilisateur');
-        }
-        // Si l'acceptation est spécie, actualise la liste des utilisateurs
-        getUsers(setData);
-      })
-      .catch(error => {
-        console.error('Erreur:', error);
-      });
+  async function changeType(props) {
+    try{
+      const {id,type} = props;
+      console.log(id,type)
+      const reponse = await api.changeTypeUser({id:id,type:type});
+    } catch (error) {
+      console.error('Erreur:', error);
+    }
   }
 
   if (loading) {
     return <div>Loading...</div>;
   }
 
-  if (type !== 2) {
+  if (type !== "admin") {
     return ( 
       <div>
         <h1>Page Interdite</h1>
       </div>
     )
   }
+
 
   return (
     <div className={styles.main}>
@@ -122,13 +97,13 @@ function App( props ) {
 
       {listeUser.map((user, index) => (
         <form key={index} className={styles.myForm}>
-          <h4>{user.nom}</h4>
-          <h4>{user.prenom}</h4>
-          <h4>{user.pseudo}</h4>
-          <h4>{user.id}</h4>
+          <h4>{user.lastname}</h4>
+          <h4>{user.firstname}</h4>
+          <h4>{user.login}</h4>
+          <h4>{user._id}</h4>
           <div>
-            <button className={styles.myButton} onClick={() => acceptUser(user.id)} type={'submit'}>Accepte</button>
-            <button onClick={() => deleteUser(user.id)} type={'submit'} className={styles.myButton}>Reject </button>
+            <button className={styles.myButton} onClick={() => changeType({id:user._id,type:"user"})} type={'submit'}>Accepte</button>
+            <button onClick={() => changeType({id:user._id,type:"banned"})}  className={styles.myButton}>Reject </button>
           </div>
         </form>
       ))}

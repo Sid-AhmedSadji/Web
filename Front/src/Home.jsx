@@ -13,7 +13,12 @@ function Home(props) {
   const [title, setTitle] = useState('');
   const [message, setMessage] = useState('');
   const [isSettingTitle, setIsSettingTitle] = useState(true);
+  const [nbUser, setNbUser] = useState(0);
+  const [nbMessage, setNbMessage] = useState(0);
+  const [userType, setUserType] = useState('');
+  const [isPrivate , setIsPrivate] = useState("public");
   let navigate = useNavigate();
+
 
 
   useEffect(() => {
@@ -21,21 +26,34 @@ function Home(props) {
       navigate("/Login");
     }
 
-    async function fetchMessages() {
+    async function fetchUsers() {
       try {
-        const data = await api.getMessages();
-        if (!data) {
-          throw new Error('Failed to get messages');
-        }
-        setListeMessages(data);
-        setLoading(false);
+        const response = await api.getUser({login: null, id: null, type: null});
+        setNbUser(response.data.length);
+        const id = await api.checkSession();
+        const currentUserType = response.data.filter((user) => user._id === id.data.userid)[0].type ;
+        setUserType(currentUserType);
       } catch (error) {
         console.error('Error:', error);
+      } finally {
         setLoading(false);
       }
     }
+
+    async function fetchMessages() {
+      try {
+        const data = await api.getMessages(isPrivate);
+        setNbMessage(data.data.messages.length);
+        setListeMessages(data.data.messages);
+      } catch (error) {
+        console.error('Error:', error);
+      }finally{
+        setLoading(false);
+      }
+    }
+    fetchUsers();
     fetchMessages();
-  }, [props.user, navigate,isSettingTitle]);
+  }, [props.user, navigate,isSettingTitle,isPrivate]);
   
   if (loading) {
     return <div>Loading...</div>;
@@ -51,7 +69,7 @@ function Home(props) {
       } else {
         // L'utilisateur appuie sur "Enter" lorsqu'il saisit le message
         if (message.length > 0) {
-          await api.postMessage({ title, id_Parent: "0", message });
+          await api.postMessage({ title, id_Parent: "0", message, privacy:isPrivate });
           setTitle('');
           setMessage('');
     
@@ -74,13 +92,17 @@ function Home(props) {
         </div>
         <div className={styles.infoPanel}>
           <p>Info panel</p>
-          <p>Nombre d'utilisateur : 0</p>
-          <p>Nombre de message : 0 </p>
+          <p>Nombre d'utilisateur :{nbUser}</p>
+          <p>Nombre de message : {nbMessage} </p>
         </div>
       </div>
-    </div>
+      {
+        userType === "admin" ? <button onClick={() => setIsPrivate(isPrivate === "public" ? "private" : "public")} className={styles.privacyBtn}> {isPrivate}</button> : null 
+      }
+      </div>
   );
 }
 
 export default Home;
+
 

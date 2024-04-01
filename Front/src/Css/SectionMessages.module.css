@@ -16,6 +16,7 @@
   margin: 0; /* Assurez-vous qu'il n'y a pas de marges externes pour la liste */
   /* enleve le style de la liste */
   list-style: none;
+  padding-left: 15px;
 }
 
 .myLi {

@@ -33,30 +33,33 @@ async function postUser(pseudo, password, confirmPassword) {
     return false;
   }
   try {
-    const response = api.postUser({ pseudo, password });
-    if (response.status === 409) {
-      errorPseudo();
-      throw new Error('Pseudo already exists');
-    }else if (response.status !== 201) {
-      toast.error('Failed to post user');
-      throw new Error('Failed to post user');
-    }
+    const response = await api.postUser({ pseudo, password });
     signUpOk();
     return true;
   } catch (error) {
-    console.error('Error:', error);
+    toast.error('Error: ' + error.response.data);
+    console.error('Error:', error.response.data);
     return false;
   }
 }
 
 function SignUp() {
   const [pseudo, setPseudo] = useState('');
+  const [firstname, setFirstname] = useState('');
+  const [lastname, setLastname] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [boolean, setBoolean] = useState(true);
   const navigate = useNavigate();
 
   const handleSignUp = async () => {
-    await postUser(pseudo, password, confirmPassword) && setTimeout(() => {toLogIn()}, 1000) && setTimeout(() => {toast.dismiss();navigate('/LogIn')}, 6000);
+    try {
+      await postUser({ pseudo, password, lastname, firstname } ) && setTimeout(() => {toLogIn()}, 1000) && setTimeout(() => {toast.dismiss();navigate('/')}, 6000);
+  
+    } catch (error) {
+      toast.error('Error: ' + error.response.data.message);
+      console.error('Error:', error.response.data.message);  
+    }
   };
 
 
@@ -72,13 +75,22 @@ function SignUp() {
         <div className={styles.mainsectionlogin}>
 
           <h1 className={styles.h2} id="titre">Register Account</h1>
-          <input type="text" value={pseudo} onChange={(e) => setPseudo(e.target.value)} placeholder="Username" className={styles.myLabel} />
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" className={styles.myLabel}/>
-          <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder="Confirm Password" className={styles.myLabel} />
-          
+          {
+            boolean ? 
+              <>
+                <input type="text" value={pseudo} onChange={(e) => setPseudo(e.target.value)} placeholder="Username" className={styles.myLabel} />
+                <input type="text" value={firstname} onChange={(e) => setFirstname(e.target.value)} placeholder="Firstname" className={styles.myLabel}/>
+                <input type="text" value={lastname} onChange={(e) => setLastname(e.target.value)} placeholder="Lastname" className={styles.myLabel} />
+              </> :
+              <>
+                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" className={styles.myLabel}/>
+                 <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder="Confirm Password" className={styles.myLabel} />    
+              </>
+
+          }
           <div className={styles.sectionButtons}>
 
-            <button className={rgbStyle.button85} onClick={handleSignUp}>Register</button>
+            <button className={rgbStyle.button85} onClick={boolean ? () => setBoolean(false) : handleSignUp}>Register</button>
             <button className={rgbStyle.button85} onClick={() => { setPseudo(''); setPassword(''); setConfirmPassword('');}} >Cancel</button>
          
           </div>

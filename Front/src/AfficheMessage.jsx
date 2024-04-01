@@ -51,8 +51,7 @@ function OrderListe({ listeMessages, id , i }) {
 
 function App() {
 
-    /*get id from url */
-    const { id } = useParams(); // Récupère l'ID à partir de l'URL
+    const { id } = useParams();
     
     const [loading, setLoading] = useState(true);
     const [listeMessages, setListeMessages] = useState([]);
@@ -62,14 +61,18 @@ function App() {
   
         async function fetchMessages() {
             try {
-              
-              const data = await api.getMessages();
-      
-              setListeMessages(data);
-              setLoading(false);
+              const publicMesssage = await api.getMessages("public");
+              const id = await api.checkSession();
+              const currentUser = await api.getUser({login: null, id: id.data.userid, type: null});
+              const priveeMessage = await api.getMessages("private");
+              const allMessage = [...publicMesssage.data.messages, ...priveeMessage.data.messages];
+
+              setListeMessages([...publicMesssage.data.messages, ...priveeMessage.data.messages]);
+
             } catch (error) {
               console.error('Error:', error);
-              setLoading(false);
+            }finally{
+                setLoading(false);
             }
           }
   
@@ -81,7 +84,6 @@ function App() {
     }
 
 
-    // Utilisez la méthode `find()` pour rechercher l'élément par son ID
     const messageRecherche = listeMessages.find(message => message._id === id);
 
     return (

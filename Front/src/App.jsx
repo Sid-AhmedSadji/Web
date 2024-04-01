@@ -21,14 +21,10 @@ function App() {
   const checkSession = async () => {
     try {
       console.log('Checking session...');
-      const userid = await api.checkSession();
-      if (userid) {
-        setUser(userid);
-      }else {
-        setUser(null);
-      }
+      const response = await api.checkSession();
+      setUser(response.data.userid);
     } catch (error) {
-      console.log('Error:', error);
+      console.error( error.response.data.message);
     } finally {
       setLoading(false); // Marque la fin du chargement, que ce soit avec succès ou non
     }

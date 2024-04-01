@@ -7,28 +7,50 @@ import api from './ApiCalls.js';
 import styles from './Css/AfficheMessage.module.css';
 
 const MessageDetails = () => {
-  const { id } = useParams();
+  const idMessage  = useParams().id; // Renommer id en idMessage
+  const [idUser, setIdUser] = useState(null); // Renommer id en idUser
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
-  const [title, setTitle] = useState('');
-  const [message, setMessage] = useState('');
+  const [title, setTitle] = useState("");
+  const [message, setMessage] = useState("");
   const [isSettingTitle, setIsSettingTitle] = useState(true);
   const [mainDivKey, setMainDivKey] = useState(0); // Clé pour forcer le re-render du composant MainDiv
   let navigate = useNavigate();
 
-  useEffect(() => {
-    // Récupérer les données de l'utilisateur depuis l'API
-    api.getUser(id, null)
-      .then(userFromApi => {
-        setUser(userFromApi[0]);
-        setLoading(false);
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        setLoading(false);
-      });
-  }, [id]); // Déclencher cet effet chaque fois que l'ID change
 
+  useEffect(() => {
+  
+    async function fetchUser() {
+      try {
+        const id = await api.checkSession();
+        setIdUser(id.data.userid);
+        const data = await api.getUser({ login: null, id: id.data.userid, type: null });
+        if (data) {
+          setUser(data.data[0]);
+        }
+      } catch (error) {
+        setUser(null);
+        console.error('Error:', error.response);
+      }finally {
+        setLoading(false);
+      }
+    }
+  
+    async function fetchMessage() {
+      try {
+        const data = await api.getMessages({ id: idMessage });
+        if (data) {
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+  
+    fetchUser();
+    fetchMessage();
+  
+  }, [idMessage]); // Déclencher cet effet chaque fois que l'ID change
+  
   async function handleKeyPress(e) {
     if (e.key === 'Enter') {
       if (isSettingTitle) {
@@ -37,9 +59,7 @@ const MessageDetails = () => {
         }
       } else {
         if (message.length > 0) {
-          // Envoyer le nouveau message à l'API
-          await api.postMessage({ title, id_Parent: id.toString(), message });
-          // Réinitialiser les champs de saisie
+          await api.postMessage({ title, id_Parent: idMessage, message, privacy: "public" }).catch(error => console.error('Error:', error.response.data.message));; // Utiliser idMessage au lieu de id
           setTitle('');
           setMessage('');
           setIsSettingTitle(true);
@@ -49,12 +69,13 @@ const MessageDetails = () => {
       }
     }
   }
+  
 
   return (
     <div style={{ width: "100%" }}>
       <Header />
       <div style={{ width: "100%" }}>
-        <MainDiv key={mainDivKey} id={id} /> {/* Utilisez la clé pour forcer le re-render */}
+        <MainDiv key={mainDivKey} id={idMessage} /> 
       </div>
       {!loading &&
         <>
@@ -73,3 +94,4 @@ const MessageDetails = () => {
 };
 
 export default MessageDetails;
+

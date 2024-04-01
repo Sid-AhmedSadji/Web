@@ -7,16 +7,16 @@ class Users {
     })();
   }
 
-  async create(login, password ,id,type) {
+  async create(login, password, lastname, firstname,id) {
     try {
-      console.log(id);
       const result = await this.client.db().collection('Users').insertOne({
         _id:id,
         login: login,
         password: password,
-        type: type
+        lastname: lastname,
+        firstname: firstname,
+        type: "0"
       });
-      console.log(result);
       return result;
     } catch (err) {
       throw err;
@@ -24,16 +24,16 @@ class Users {
   }
 
 
-  async get(userid, login) {
+  async get(userid, login,type) {
     try {
       const query = userid == null ? {} : { _id: userid };
-      if (login != null) {
+      if (login) {
         query.login = login;
       }
-      const result = await this.client.db().collection('Users').find(query).toArray();
-      if (result.length === 0) {
-        throw new Error('User not found');
+      if (type) {
+        query.type = type;
       }
+      const result = await this.client.db().collection('Users').find(query).toArray();
 
       return result;
     } catch (err) {
