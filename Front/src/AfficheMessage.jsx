@@ -24,22 +24,22 @@ function OrderListe({ listeMessages, id , i }) {
 
     return (
         <ul className={styles.myUl}>
-            {filteredMessages.map((messageRecherche, index) => (
-                <li className={styles.myLi} key={messageRecherche._id}>
+            {filteredMessages.map((topic, index) => (
+                <li className={styles.myLi} key={topic._id}>
                     <div className={styles.orderListe}>
-                        <Link to={`/profil/${messageRecherche.author_name}`} className={styles.link} >
+                        <Link to={`/profil/${topic.author_name}`} className={styles.link} >
                             <div className={styles.borderText}>
-                                <p className={styles.myP} >@{messageRecherche.author_name} : {messageRecherche.title}</p>
-                                <TimeAgo style={{fontSize: "8px" , paddingLeft : "30px", fontStyle : "italic" }} date={messageRecherche.date} />
+                                <p className={styles.myP} >@{topic.author_name} : {topic.title}</p>
+                                <TimeAgo style={{fontSize: "8px" , paddingLeft : "30px", fontStyle : "italic" }} date={topic.date} />
 
                             </div>
                         </Link>
-                        <Link to={`/Messages/${messageRecherche._id}`} className={styles.link}>
-                            <p>{messageRecherche.message}</p>
+                        <Link to={`/Messages/${topic._id}`} className={styles.link}>
+                            <p>{topic.message}</p>
                         </Link>
                     </div>
 
-                        <OrderListe listeMessages={listeMessages} id={messageRecherche._id} i={i-1} />
+                        <OrderListe listeMessages={listeMessages} id={topic._id} i={i-1} />
                     
                 </li>
             ))}
@@ -49,25 +49,21 @@ function OrderListe({ listeMessages, id , i }) {
         
 }
 
-function App() {
+function App(props) {
 
-    const { id } = useParams();
+    const { id, topic } = props;
     
     const [loading, setLoading] = useState(true);
     const [listeMessages, setListeMessages] = useState([]);
+
   
   
     useEffect(() => {
   
         async function fetchMessages() {
             try {
-              const publicMesssage = await api.getMessages("public");
-              const id = await api.checkSession();
-              const currentUser = await api.getUser({login: null, id: id.data.userid, type: null});
-              const priveeMessage = await api.getMessages("private");
-              const allMessage = [...publicMesssage.data.messages, ...priveeMessage.data.messages];
-
-              setListeMessages([...publicMesssage.data.messages, ...priveeMessage.data.messages]);
+              const Message = await api.getMessages(topic.privacy);
+              setListeMessages(Message.messages);
 
             } catch (error) {
               console.error('Error:', error);
@@ -83,21 +79,18 @@ function App() {
       return <div>Loading...</div>;
     }
 
-
-    const messageRecherche = listeMessages.find(message => message._id === id);
-
     return (
         <div style={{ margin: '30px' }}>
-            {messageRecherche && (
+            {topic && (
                 <div className={styles.orderListe}>
-                    <Link to={`/profil/${messageRecherche.author_name}`} className={styles.link} >
+                    <Link to={`/profil/${topic.author_name}`} className={styles.link} >
                         <div className={styles.borderText}>
-                            <p className={styles.myP} >@{messageRecherche.author_name} : {messageRecherche.title}</p>
-                            <TimeAgo style={{fontSize: "8px" , paddingLeft : "30px"}} date={messageRecherche.date} />
+                            <p className={styles.myP} >@{topic.author_name} : {topic.title}</p>
+                            <TimeAgo style={{fontSize: "8px" , paddingLeft : "30px"}} date={topic.date} />
                         </div>
                     </Link>
 
-                    <p>{messageRecherche.message}</p>
+                    <p>{topic.message}</p>
                 </div>
             )}
             <OrderListe listeMessages={listeMessages} id={id} i={nbMessageAfficher} />

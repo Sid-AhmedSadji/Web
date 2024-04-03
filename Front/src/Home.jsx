@@ -28,13 +28,11 @@ function Home(props) {
 
     async function fetchUsers() {
       try {
-        const response = await api.getUser({login: null, id: null, type: null});
-        setNbUser(response.data.length);
-        const id = await api.checkSession();
-        const currentUserType = response.data.filter((user) => user._id === id.data.userid)[0].type ;
+        const response = await api.checkSession();
+        const currentUserType = response.usertype ;
         setUserType(currentUserType);
       } catch (error) {
-        console.error('Error:', error);
+        console.error('Error:', error.response.message);
       } finally {
         setLoading(false);
       }
@@ -42,11 +40,11 @@ function Home(props) {
 
     async function fetchMessages() {
       try {
-        const data = await api.getMessages(isPrivate);
-        setNbMessage(data.data.messages.length);
-        setListeMessages(data.data.messages);
+        const data = await api.getMessages({privacy:isPrivate,id:null});
+        setNbMessage(data.messages.length);
+        setListeMessages(data.messages);
       } catch (error) {
-        console.error('Error:', error);
+        console.error('Error:', error.response);
       }finally{
         setLoading(false);
       }

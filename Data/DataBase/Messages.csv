@@ -1,11 +1,11 @@
-_id,message,date,author_name,id_Parent,title,privacy
-"1","Bonjour, comment ça va ?",2024-03-29,JohnDoe123,"0",Message d'accueil,public
-"2","Je vais bien, merci !",2024-03-29,Alice789,"1",Réponse,public
-"3","Quoi de neuf ?",2024-03-30,Alice789,"0",Question,public
-"4","Rien de spécial, et toi ?",2024-03-30,JohnDoe123,"3",Suivi de conversation,public
-"5","Je me repose un peu.",2024-03-31,Alice789,"3",Suivi de conversation,public
-"6","Je viens de rentrer du travail.",2024-03-31,Charlie9012,"3",Suivi de conversation,public
-"7","J'ai passé une bonne journée.",2024-03-31,Bob1234,"3",Suivi de conversation,public
-"8","Contente de l'entendre !",2024-03-31,Alice789,"6",Suivi de conversation,public
-"9","C'est super !",2024-03-31,Eve5678,"7",Suivi de conversation,public
-"10","Oui, vraiment.",2024-03-31,Emily7890,"7",Suivi de conversation,public
+message,date,author_name,id_Parent,title,privacy
+"Bonjour, comment ça va ?",2024-03-29,JohnDoe123,"0",Message d'accueil,public
+"Je vais bien, merci !",2024-03-29,Alice789,"0",Réponse,public
+"Quoi de neuf ?",2024-03-30,Alice789,"0",Question,public
+"Rien de spécial, et toi ?",2024-03-30,JohnDoe123,"0",Suivi de conversation,public
+"Je me repose un peu.",2024-03-31,Alice789,"0",Suivi de conversation,public
+"Je viens de rentrer du travail.",2024-03-31,Charlie9012,"0",Suivi de conversation,public
+"J'ai passé une bonne journée.",2024-03-31,Bob1234,"0",Suivi de conversation,public
+"Contente de l'entendre !",2024-03-31,Alice789,"0",Suivi de conversation,public
+"C'est super !",2024-03-31,Eve5678,"0",Suivi de conversation,public
+"Oui, vraiment.",2024-03-31,Emily7890,"0",Suivi de conversation,public

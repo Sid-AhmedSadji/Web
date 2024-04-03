@@ -4,6 +4,8 @@
   height : 100% ;
   align-items: center ;
   justify-content: space-between;
+  position: relative;
+  padding-left: 30px ;
 
 }
 
@@ -33,9 +35,23 @@
   text-align: center;
 }
 
+.avatar{
+  height: 60px;
+  position: absolute;
+  top :  25px;
+  left : -15px;
+}
+
+
+
 @media  (max-width:800px) {
   .linkBtn,.linkBtntitle{
     font-size : 12px;
     width: 75px;
+  }
+  .avatar{
+    height: 50px;
+    top :  45px;
+    left : -15px;
   }
 }

@@ -58,7 +58,7 @@ class Users {
         login: login,
         password: password
       });
-      return result._id;
+      return result;
     } catch (err) {
       throw err;
     }
@@ -71,7 +71,6 @@ class Users {
       const result = await this.client.db().collection('Users').deleteOne({
         _id: id
       });
-      console.log("result",result);
       return result;
     } catch (err) {
       throw err;

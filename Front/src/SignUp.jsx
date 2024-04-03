@@ -22,18 +22,20 @@ const errorPseudo = () => {
   toast.error('Pseudo already used');
 }
 
-async function postUser(pseudo, password, confirmPassword) {
-  if (pseudo === "" || password === "" || confirmPassword === "") {
+async function postUser(props) {
+  const { pseudo, password, confirmPassword, firstname, lastname } = props;
+
+  if (pseudo === "" || password === "" || confirmPassword === "" || firstname === "" || lastname === "") {
     //le toast en anglais 
     toast.error("Please fill in all the fields");
-    return;
+    return false ;
   }
   if (password !== confirmPassword ) {
     errorPassword();
     return false;
   }
   try {
-    const response = await api.postUser({ pseudo, password });
+    const response = await api.postUser({ pseudo, password, firstname, lastname });
     signUpOk();
     return true;
   } catch (error) {
@@ -53,13 +55,7 @@ function SignUp() {
   const navigate = useNavigate();
 
   const handleSignUp = async () => {
-    try {
-      await postUser({ pseudo, password, lastname, firstname } ) && setTimeout(() => {toLogIn()}, 1000) && setTimeout(() => {toast.dismiss();navigate('/')}, 6000);
-  
-    } catch (error) {
-      toast.error('Error: ' + error.response.data.message);
-      console.error('Error:', error.response.data.message);  
-    }
+    await postUser({ pseudo, password, confirmPassword, lastname, firstname } ) && setTimeout(() => {toLogIn()}, 1000) && setTimeout(() => {toast.dismiss();navigate('/')}, 6000);
   };
 
 

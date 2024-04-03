@@ -1,5 +1,5 @@
 import styles from './Css/fileDAttente.module.css';
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 import Menu from './MenuRoulant.jsx';
 import Header from './Header.jsx';
 import { useEffect, useState } from 'react';
@@ -24,31 +24,36 @@ function App( props ) {
   const [listeUser, setData] = useState([]);
   const [type, setType] = useState(0);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
 
     async function fetchData() {
-      const response = await getUsers();
-      setData(response.data);
+      const data = await getUsers({type:"0"});
+      data.data === undefined ? setData(data) : [] ;
     }
 
-    async function fetchType() {
-      //recherche dans listeUser le type de l'utilisateur connecté qui est dans props.user
-      const user_type = await api.getUser({login:null, id:props.user, type:null}).catch((error) => {
-        console.error('Error:', error.response.data);
-      });
-      setType(user_type.data[0].type);
-      setLoading(false);
-    }
+    async function checkSession () {
+      try {
+        console.log('Checking session...');
+        const response = await api.checkSession();
+        setType(response.usertype);
+        fetchData();
+        setLoading(false);
+      } catch (error) {
+        console.error("Error", error.response.data.message);
+        navigate ("/");
+      }
+    };
 
-    fetchData()
+    checkSession();
 
-    fetchType()
+    
 
     const interval = setInterval(async () => {
       await fetchData();
       setLoading(false);
-    }, 1000);
+    }, 5000);
 
     return () => clearInterval(interval);
   }, []);
@@ -89,7 +94,6 @@ function App( props ) {
         <h4>Nom</h4>
         <h4>Prenom</h4>
         <h4>Pseudo</h4>
-        <h4>Id</h4>
         <h4>Actions</h4>
       </div>
 
@@ -100,7 +104,6 @@ function App( props ) {
           <h4>{user.lastname}</h4>
           <h4>{user.firstname}</h4>
           <h4>{user.login}</h4>
-          <h4>{user._id}</h4>
           <div>
             <button className={styles.myButton} onClick={() => changeType({id:user._id,type:"user"})} type={'submit'}>Accepte</button>
             <button onClick={() => changeType({id:user._id,type:"banned"})}  className={styles.myButton}>Reject </button>

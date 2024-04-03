@@ -19,18 +19,17 @@ function Login(props) {
         toast.error("Please fill all the fields");
         return;
       }
-      const response = await api.login({ login: pseudo, password: password });
-      const user = await api.getUser({ login: pseudo, id: response.id, type: null });
-      if (user.data[0].type !== "admin" && user.data[0].type !== "user") {
+      const user = await api.getUser({ login: pseudo, id: null, type: null });
+      if (user[0].type !== "admin" && user[0].type !== "user") {
         toast.error("Please wait for the account confirmation");
       }else {
+        const response = await api.login({ login: pseudo, password: password });
         toast.success("Connexion success");
-        console.log(response);
-        props.setUser(response.data.id);
+        props.setUser(response.id);
       }
     } catch (error) {
-      toast.error("Connexion failed: " + error.response.data.message);
-      console.error('Error:', error.response.data.message);
+      toast.error("Connexion failed: " + error.response.message);
+      console.error('Error:', error);
     }
   }
 

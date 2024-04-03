@@ -22,7 +22,7 @@ function App() {
     try {
       console.log('Checking session...');
       const response = await api.checkSession();
-      setUser(response.data.userid);
+      setUser(response.userid);
     } catch (error) {
       console.error( error.response.data.message);
     } finally {

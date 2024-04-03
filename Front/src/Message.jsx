@@ -13,6 +13,8 @@ function Message({ showAuthor, author_name, message, id }) {
       {showAuthor ? 
         <>
           <Link className={styles.linkBtntitle} to={`/profil/${author_name}`}>
+          <img className={styles.avatar} src={"https://api.multiavatar.com/"+author_name+".png"} alt="Avatar" />
+
             <button className={styles.linkBtntitle}>{author_name}</button>
           </Link> 
           <hr className={styles.separator} />

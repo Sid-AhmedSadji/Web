@@ -28,12 +28,12 @@ class Messages {
 
     async get(id,privacy) {
         try {
+
             const query = id == null ? {} : { _id: id };
-            if(privacy){
-                query.privacy = privacy
-            }
+            privacy ? query.privacy = privacy : null
+            console.log(query)
             const result = await this.client.db().collection('Messages').find(query).toArray();
-            return result;
+            return result;  
         } catch (err) {
             throw err;
         }

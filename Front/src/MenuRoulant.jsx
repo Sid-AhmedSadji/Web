@@ -1,24 +1,11 @@
 import styles from './Css/MenuRoulant.module.css';
 import { Link } from 'react-router-dom';
-
+import api from './ApiCalls.js';
 //logout api 
 
 async function logOut() {
   try {
-    const response = await fetch('http://localhost:4000/api/user/logout',
-      {
-        method: "GET",
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include'
-      }
-    );
-    if (!response) {
-      throw new Error('Erreur lors de la déconnexion');
-    }
-    console.log('Response:', response);
-    
+    const response = await api.logout();
 
   } catch (error) {
     console.error(error);
