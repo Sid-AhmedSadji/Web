@@ -34,18 +34,45 @@ function Login(props) {
   }
 
   return (
-    <div className={styles.center}>
+    <div className={styles.container}>
       <Toaster />
-      <div className={rgbStyle.rgb}>
-        <div className={styles.mainsectionlogin}>
-          <h1 className={styles.h2} id='titre'>Connexion</h1>
-          <input type="text" placeholder="Username" className={styles.myLabel} value={pseudo} onChange={(e) => setPseudo(e.target.value)} />
-          <input type="password" placeholder="Password" className={styles.myLabel} value={password} onChange={(e) => setPassword(e.target.value)} />
-          <div className={styles.sectionButtons}>
-            <button className={rgbStyle.button85} onClick={getUser}>Connexion</button>
-            <button className={rgbStyle.button85} onClick={() => { setPseudo(""); setPassword(""); }} >Annuler</button>
+      <div className={styles.box}>
+        <div className={styles.boxLogin} id="login">
+          <div className={styles.topHeader}>
+            <h3>Hello, Again!</h3>
+            <small>We are happy to have you back.</small>
           </div>
-          <Link className={styles.customlink} to="/SignUp">S'inscrire ?</Link>
+          <div className={styles.inputGroup}>
+            <div className={styles.inputField}>
+              <input
+                type="text"
+                className={styles.inputBox}
+                placeholder="Login"
+                value={pseudo}
+                onChange={(e) => setPseudo(e.target.value)}
+                required
+              />
+            </div>
+            <div className={styles.inputField}>
+              <input
+                type="password"
+                className={styles.inputBox}
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+            <div className={styles.inputField}>
+              <button className={styles.inputSubmit} onClick={getUser}>
+                Sign In
+              </button>
+            </div>
+          </div>
+        </div>
+        <div className={styles.switch}>
+          <p className={styles.active}>Log In?</p>
+          <Link to="/SignUp">Sign Up?</Link>
         </div>
       </div>
     </div>

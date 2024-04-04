@@ -1,52 +1,136 @@
-.mainsectionsignup, .mainsectionlogin {
-  border: 1px solid;
+.container{
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
-  gap: 10px;
-  border-radius: 20px;
-  padding: 1rem  ;
-
+  min-height: 100vh;
 }
 
-.center{
-  height: 100vh;
+.box{
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center ;
+  flex-direction: row;
+  position: relative;
+  padding: 60px 20px 30px 20px;
+  height: 450px;
+  width: 350px;
+  border-radius: 30px;
+  background-color: rgba(255, 220, 220, 0.406);
+  -webkit-backdrop-filter: blur(15px);
+  backdrop-filter: blur(15px);
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  overflow: hidden;
 }
 
-.sectionButtons{
-  display : flex ;
-  gap : 1rem ;
+.boxLogin{
+  position: absolute;
+  width: 85%;
+  left: 27px;
+  transition: .5s ease-in-out;
+}
+.boxRegister{
+  position: absolute;
+  width: 85%;
+  right: -350px;
+  transition: .5s ease-in-out;
 }
 
-.customlink {
-  color: #5c5cd6 ; /* Change la couleur du lien en bleu */
-  /* Autres styles CSS pour le lien */
+.topHeader{
+  text-align: center;
+  margin: 30px 0;
 }
-.myLabel{
-  border-radius: 20px ;
-  border : 1px solid ;
-  height: 2rem ;
-  width: 25vh;
+.topHeader h3{
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 8px;
 }
-.h2{
-  font-size: 1.9em;
-}
-@media  (max-width:800px) {
 
-  .mainsectionsignup, .mainsectionlogin {
-    border: 1px solid;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    gap: 10px;
-    border-radius: 20px;
-    padding: 0rem 1rem 3rem 1rem;
-  }
+.inputGroup{
+  width: 100%;
+ 
+}
+.inputField{
+ margin: 12px 0;
+ position: relative;
+}
 
+.inputBox{
+ width: 100%;
+ height: 50px;
+ font-size: 15px;
+ color: #040404;
+ border: none;
+ border-radius: 10px;
+ padding: 7px 20px 0 20px;
+ background: rgba(224, 223, 223, 0.6);
+ outline: none;
+ box-sizing: border-box;
+}
+.inputField label{
+ position: absolute;
+ left: 20px;
+ top: 15px;
+ font-size: 15px;
+ transition: .3s ease-in-out;
+ 
+}
+.check{
+ margin-right: 8px;
+ width: 14px;
+}
+.inputSubmit{
+ width: 100%;
+ height: 50px;
+ font-size: 15px;
+ font-weight: 500;
+ border: none;
+ border-radius: 10px;
+ background: #62E2D5;
+ color: #fff;
+ box-shadow: 0px 4px 20px rgba(62, 9, 9, 0.144);
+ cursor: pointer;
+ transition: .4s;
+}
+.inputSubmit:hover{
+ background:  #1A3F51;
+ box-shadow: 0px 4px 20px rgba(62, 9, 9, 0.32);
+}
+
+.switch{
+ display: flex;
+ position: absolute;
+ bottom: 50px;
+ left: 25px;
+ width: 85%;
+ height: 50px;
+ background: rgba(255, 255, 255, 0.16);
+ backdrop-filter: 10px;
+ border-radius: 10px;
+ box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+ overflow: hidden;
+}
+.switch a, .switch p{
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ font-size: 14px;
+ font-weight: 500;
+ color: #000;
+ text-decoration: none;
+ width: 50%;
+ height: 50px;
+ border-radius: 10px;
+ z-index: 10;
+ margin: 0px;
+}
+
+.active{
+  background: rgba(255, 255, 255, 0.20);
+}
+@media only screen and (max-width: 576px){
+ .box{
+     margin: 0 5px;
+ }
+ #btn{
+     position: absolute;
+     width: 153px;
+ }
 }
