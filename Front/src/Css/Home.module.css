@@ -1,33 +1,29 @@
+
 .globalDiv{
-  height: 100%;
+  height: 100vh;
+  width: 100vw;
   display : flex ;
   flex-direction: column;
-}
+  padding: 15px;
+  box-sizing: border-box;;
 
-.globalDiv2{
-  height: 100%;
-  width: 80%;
-  display: flex;
-  flex-direction: column ;
-  gap : 1rem;
 }
 
 .mainSection{
   height: 100% ;
   display : flex;
-  flex-direction: row-reverse;
+  flex-direction: column;
   padding: 15px ;
-  gap : 20px;
-  justify-content: space-between;
 }
 
 .myLabel{
   border-radius: 20px ;
-  border : 1px solid ;
+  border : 1px solid #242424 ;
   height: 60px ;
   width: 100%;
   color : white ;
   font-size: 20px;
+
 }
 
 .center{
@@ -55,7 +51,38 @@
 
 
 }
+.switch{
+ display: flex;
+ position: relative;
+ bottom: 5px;
+ left: 25px;
+ width: 85%;
+ height: 50px;
+ background: #E3E9F9;
+ backdrop-filter: 10px;;
+ border-radius: 10px;
+ box-shadow: 0px 2px 10px #E3E9F9;
+ overflow: hidden;
+}
+.switch button{
+  display: flex;
+ justify-content: center;
+ align-items: center;
+ font-size: 14px;
+ font-weight: 500;
+ color: #000;
+ text-decoration: none;
+ width: 50%;
+ height: 50px;
+ border-radius: 10px;
+ z-index: 10;
+ margin: 0px;
+}
 
+.active{
+  background-color: #62E2D5
+
+}
 @media  (max-width:800px) {
   .globalDiv{
     height: 100%;
@@ -86,10 +113,9 @@
   .mainSection{
     height: 100% ;
     display : flex;
-    flex-direction: row-reverse;
+    flex-direction: column;
     padding: 15px ;
-    gap : 20px;
-    justify-content: space-between;
+    overflow: scroll;
   }
 
   .myLabel{
@@ -98,12 +124,12 @@
 
   .privacyBtn{
     border-radius: 10px ;
-    position: absolute;
+    position: fixed;
     width: 70px;
     border : none ;
-    top : 97%;
+    top : 80%;
     left : 80%;
-  
-  
+
+
   }
 }

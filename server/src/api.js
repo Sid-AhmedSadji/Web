@@ -1,5 +1,5 @@
 //App.js
- 
+
 const { ObjectId } = require('mongodb');
 const express = require("express");
 const Users = require("./entities/users.js");
@@ -22,7 +22,7 @@ function init(dbUrl) {
     });
     const users = new Users.default(dbUrl);
     const messages = new Messages.default(dbUrl);
-    
+
     router.get("/messages",async (req, res) => {
 
         try {
@@ -34,7 +34,7 @@ function init(dbUrl) {
             //     });
             //     return;
             // }
-            const { id, privacy } = req.body;
+            const { id, privacy } = req.query;
             const newObectId = id ? new ObjectId(id) : null;
 
             const result = await messages.get(newObectId,privacy);
@@ -63,19 +63,19 @@ function init(dbUrl) {
                 res.status(500).send({ message: "Internal server error" });
                 return;
             }
-            res.status(200).send({ message: "User updated" });         
+            res.status(200).send({ message: "User updated" });
         }catch(e){
             res.status(500).send({message: "Internal server error", error : e });
     }})
 
     router.put("/message", async (req, res) => {
         try {
-            
+
             const { userid,message, id_Parent, title, date, privacy } = req.body;
             console.log(userid,message, id_Parent, title, date, privacy)
 
 
-            // verifie que les paramettres ne sont pas nul et affiche celui qui est nul 
+            // verifie que les paramettres ne sont pas nul et affiche celui qui est nul
             if ( !userid || !message || !id_Parent || !title || !date) {
 
                 res.status(400).json({
@@ -127,7 +127,7 @@ function init(dbUrl) {
             	res.status(400).json({
                     status: 400,
                     message: "Requête invalide : login et password nécessaires"
-                }); 
+                });
                 return;
             }
             if(! await users.exists(login)) {
@@ -179,7 +179,7 @@ function init(dbUrl) {
         }
     });
 
-    //logout 
+    //logout
     router.get("/user/logout", (req, res) => {
         req.session.destroy((err) => {
             if (err) {
@@ -202,7 +202,7 @@ function init(dbUrl) {
 
         try {
             const {login=null,id=null,type=null} = req.query;
-            
+
             const newObectId = id ? new ObjectId(id) : null;
 
             const user = await users.get(newObectId,login,type);
@@ -253,9 +253,8 @@ function init(dbUrl) {
     });
 
 
-    
+
 
     return router;
 }
 exports.default = init;
-

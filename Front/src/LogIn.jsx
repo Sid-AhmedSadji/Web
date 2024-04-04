@@ -1,10 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from 'react';
 import styles from "./Css/Login.module.css";
-import rgbStyle from "./Css/RGB.module.css";
 import toast, { Toaster } from 'react-hot-toast';
 import api from './ApiCalls';
-import axios from 'axios';
 
 function Login(props) {
   const [pseudo, setPseudo] = useState("");

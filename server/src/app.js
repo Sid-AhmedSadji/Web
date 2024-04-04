@@ -12,9 +12,9 @@ const app = express()
 const session = require("express-session");
 
 const MongoClient = require('mongodb').MongoClient;
-const dbUrl  = "mongodb://127.0.0.1:27017/AssosDataBase";
+//const dbUrl  = "mongodb://127.0.0.1:27017/AssosDataBase";
 // const dbUrl = "mongodb://192.168.1.55:27017/AssosDataBase";
-// mongod --bind_ip 0.0.0.0 --dbpath .\Data\
+const dbUrl = "mongodb+srv://sid:sid@cluster0.gunaxvp.mongodb.net/AssosDataBase"
 const db = MongoClient.connect(dbUrl);
 
 app.use(cors({
@@ -29,7 +29,7 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
 
-    cookie: { 
+    cookie: {
         maxAge: 1000 * 60 * 60 * 24 * 7,
         secure: false,
         httpOnly: false, }
@@ -41,4 +41,3 @@ app.use('/api', api.default(dbUrl));
 app.on('close', () => {
 });
 exports.default = app;
-
