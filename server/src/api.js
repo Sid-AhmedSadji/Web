@@ -71,8 +71,7 @@ function init(dbUrl) {
     router.put("/message", async (req, res) => {
         try {
 
-            const { userid,message, id_Parent, title, date, privacy } = req.body;
-            console.log(userid,message, id_Parent, title, date, privacy)
+            let { userid,message, id_Parent, title, date, privacy } = req.body;
 
 
             // verifie que les paramettres ne sont pas nul et affiche celui qui est nul
@@ -86,13 +85,18 @@ function init(dbUrl) {
             const newObjectId = new ObjectId(userid)
             const user = await users.get(newObjectId);
             const author_name = user[0].login;
+            if (id_Parent !== "0"){
+                id_Parent = new ObjectId(id_Parent)
+            }
             if (await messages.exists(title)) {
                 res.status(400).json({
                     message: "Title already exists"
                 })
                 return;
             }
-            const reponse = await messages.create(message,newObjectId, date, author_name, id_Parent, title, privacy);
+            console.log("message", message,"newObjectId", newObjectId,"date", date,"author_name", author_name,"id_Parent", id_Parent,"title", title,"privacy", privacy)
+            const reponse = await messages.create(message, date, author_name, id_Parent, title, privacy);
+            console.log(reponse)
 
             res.status(201).json({ message: "Message created", message: reponse });
         } catch (e) {

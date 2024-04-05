@@ -8,11 +8,10 @@ class Messages {
         })();
     }
 
-    async create(message, id, date, author_name, id_Parent, title,privacy) {
+    async create(message,  date, author_name, id_Parent, title,privacy) {
 
         try {
             const result = await this.client.db().collection('Messages').insertOne({
-                _id:id,
                 message: message,
                 date: date,
                 author_name: author_name,

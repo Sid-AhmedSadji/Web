@@ -42,4 +42,4 @@ app.on('close', () => {
 });
 exports.default = app;
 
-app.use('/api/private-messages', privateMessagesRouter);
+app.use('api', privateMessagesRouter);
