@@ -102,6 +102,28 @@ class Api {
     return response.data;
   }
 
+  static async getConversation(userId, peerId) {
+    const response = await fetch(`/api/private-messages/conversation?user1=${userId}&user2=${peerId}`);
+    if (!response.ok) {
+      throw new Error('Network response was not ok.');
+    }
+    return response.json();
+  }
+  
+  static async sendPrivateMessage(senderId, receiverId, text) {
+    const response = await fetch('/api/private-messages/send', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ senderId, receiverId, text }),
+    });
+    if (!response.ok) {
+      throw new Error('Network response was not ok.');
+    }
+    return response.json();
+  }
+
 }
 
 export default Api;
