@@ -1,18 +1,18 @@
-import React from 'react';
-import Label from './StylisedLabel.jsx'
-import {Link} from "react-router-dom";
-import { useEffect,useState } from 'react'
-import Menu from './MenuRoulant.jsx'
+import React, { useState, useEffect } from 'react';
+import Label from './StylisedLabel.jsx';
+import { Link } from "react-router-dom";
+import Menu from './MenuRoulant.jsx';
+import PrivateChat from './PrivateChat.jsx';
 
-import styles from './Css/Header.module.css'
+import styles from './Css/Header.module.css';
 
+function Header(props) {
+  const [recherche, setRecherche] = useState("");
+  const [showChat, setShowChat] = useState(false); // Pour contrôler l'affichage du chat
 
-function Header ( props ){
-
-  const[recherche,setRecherche] = useState("")
-  useEffect(() =>{
+  useEffect(() => {
     console.log(recherche);
-  },[recherche]);
+  }, [recherche]);
 
   return (
     <>
@@ -20,7 +20,7 @@ function Header ( props ){
         <Link to="/">
           <img className={styles.logoSorbonne} src="/logoSorbonneUniversite.png" />
         </Link>
-        {props.shearchBar && (
+        {props.searchBar && (
           <>
             <div>
               <Label value={recherche} setValue={setRecherche} />
@@ -35,10 +35,12 @@ function Header ( props ){
             </div>
           </>
         )}
+        <button onClick={() => setShowChat(!showChat)}>Chat</button>
         <div style={{ width: "50px" }}>
           <Menu setData={props.setData} />
         </div>
       </div>
+      {showChat && <PrivateChat userId={"userID"} peerId={"peerID"} />}
       <div style={{ padding: "15px 0px" }}>
         <hr align="center" width="75%" />
       </div>
@@ -46,4 +48,4 @@ function Header ( props ){
   );
 };
 
-export default Header ;
+export default Header;
