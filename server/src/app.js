@@ -1,6 +1,6 @@
 const path = require('path');
 const api = require('./api.js');
-
+const privateMessagesRouter = require('./routes/privateMessages');
 const cors = require('cors');
 
 // Détermine le répertoire de base
@@ -41,3 +41,5 @@ app.use('/api', api.default(dbUrl));
 app.on('close', () => {
 });
 exports.default = app;
+
+app.use('/api/private-messages', privateMessagesRouter);
