@@ -16,7 +16,7 @@ function Home(props) {
   const [nbUser, setNbUser] = useState(0);
   const [nbMessage, setNbMessage] = useState(0);
   const [userType, setUserType] = useState('');
-  const [isPrivate , setIsPrivate] = useState("private");
+  const [isPrivate , setIsPrivate] = useState("public");
   let navigate = useNavigate();
 
 

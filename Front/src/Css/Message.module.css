@@ -1,57 +1,77 @@
-.message{
-  display: flex ;
-  flex-direction: row ;
-  height : 100% ;
-  align-items: center ;
-  justify-content: space-between;
+.mainDiv{
+  width : 100%;
+  border-radius: 20px;
+  min-height: 100% ;
+  display : flex ;
+  flex-direction: column ;
+  justify-content: center ;
+  text-align: left;
+  padding: 25px;
   position: relative;
-  padding-left: 30px ;
-
+  font-size: 16px;
+  box-sizing: border-box;
+  background-color: rgba(255, 220, 220, 0.406);
+  backdrop-filter: blur(15px);
+  transition: transform 0.3s;
+  color : black
+  
 }
 
-.separator{
-  height: 35%;
-  width: 0px ;
-  /*Je veux des bords jutes un peu plu sfonce */
-  border-color: #252525;
-  opacity: 0.5;
+.headerDiv{
+  display : flex ; 
+  flex-direction: row ;
+  position : absolute ;
+  top : -10px ;
+  left : 0px
 }
 
-.linkBtn{
-
-  border : none ;
-  width: 100%;
-  height: 100%;
-  background-color: transparent;
-  font-size : 20px;
-}
-.linkBtntitle{
-
-  border : none ;
-  width: 200px;
-  height: 100%;
-  background-color: transparent;
-  font-size : 20px;
-  text-align: center;
+.headerDiv a{
+  color : rgb(43, 10, 142) ;
 }
 
-.avatar{
-  height: 60px;
+.mainDiv a:hover{
+  font-size: 20px;
+  transition: 0.3s;
+}
+
+.mainDiv:hover{
+  transform: scale(1.03);
+}
+
+
+.timeAgo {
+  position : absolute ;
+  left : 20px;
+  top : 35px;
+  white-space: nowrap;
+  font-size: 12px;
+  color : rgb(79, 74, 74);
+  font-style: italic;
+}
+
+.btnDiv{
+  display: flex;
+  flex-direction: row;
   position: absolute;
-  top :  25px;
-  left : -15px;
+  bottom: 10px;
+  right : 0;
+  justify-content: space-between;
+  width: min-content;
+  padding: 0 10px;
+  box-sizing: border-box;
+  background-color: transparent;
+  font-size: 16px;
+}
+.btnDiv:hover{
+  font-size: 20px;
+  color: red;
+  transition: 0.3s;
 }
 
-
+a{
+  color : black ;
+}
 
 @media  (max-width:800px) {
-  .linkBtn,.linkBtntitle{
-    font-size : 12px;
-    width: 75px;
-  }
-  .avatar{
-    height: 50px;
-    top :  45px;
-    left : -15px;
-  }
+
 }

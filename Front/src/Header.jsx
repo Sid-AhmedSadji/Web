@@ -35,17 +35,19 @@ function Header(props) {
             </div>
           </>
         )}
-        <button onClick={() => setShowChat(!showChat)}>Chat</button>
         <div style={{ width: "50px" }}>
           <Menu setData={props.setData} />
         </div>
       </div>
-      {showChat && <PrivateChat userId={"userID"} peerId={"peerID"} />}
       <div style={{ padding: "15px 0px" }}>
         <hr align="center" width="75%" />
       </div>
     </>
   );
 };
+/*
+<button onClick={() => setShowChat(!showChat)}>Chat</button>
+{showChat && <PrivateChat userId={"userID"} peerId={"peerID"} />}
 
+*/
 export default Header;

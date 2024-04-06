@@ -17,12 +17,16 @@
   /* enleve le style de la liste */
   list-style: none;
   padding-left: 15px;
+  box-sizing: border-box;
+  padding: 0;
 }
 
 .myLi {
+  box-sizing: border-box;
   width: 100%;
-  height: 5rem; /* Assurez-vous que la hauteur des éléments de liste est correcte */
+  padding-bottom: 20px;
 }
+
 @media  (max-width:800px) {
   :root {
     font-size: 16px; /* Utilisez une taille de police plus adaptée à la petite écrans */

@@ -4,6 +4,7 @@ import { Link, useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import TimeAgo from 'react-timeago'
 import api from './ApiCalls';
+import Message from './Message';
 
 let nbMessageAfficher = 2 ;
 
@@ -15,39 +16,32 @@ function OrderListe({ listeMessages, id , i }) {
 
     if ( i === 0 ){
         return(
-            <Link to ={`/Messages/${id}`}>
-                <p style={{paddingLeft : "50px", paddingBottom : "15px"}}>More responses</p>
-            </Link>
+            <p style={{paddingLeft : "50px", paddingBottom : "15px"}}>
+                <Link to={`/Messages/${id}`}>More responses</Link>
+            </p>
         )
     }
 
 
     return (
+        <>
         <ul className={styles.myUl}>
             {filteredMessages.map((topic, index) => (
                 <li className={styles.myLi} key={topic._id}>
-                    <div className={styles.orderListe}>
-                        <Link to={`/profil/${topic.author_name}`} className={styles.link} >
-                            <div className={styles.borderText}>
-                                <p className={styles.myP} >@{topic.author_name} : {topic.title}</p>
-                                <TimeAgo style={{fontSize: "8px" , paddingLeft : "30px", fontStyle : "italic" }} date={topic.date} />
+                    <>
+                    <Message Message={topic} nbMax={0} />
 
-                            </div>
-                        </Link>
-                        <Link to={`/Messages/${topic._id}`} className={styles.link}>
-                            <p>{topic.message}</p>
-                        </Link>
-                    </div>
-
-                        <OrderListe listeMessages={listeMessages} id={topic._id} i={i-1} />
-                    
+                    </>
+                    <OrderListe listeMessages={listeMessages} id={topic._id} i={i-1} />
                 </li>
             ))}
+            <hr style={{width : "65%"}} />
         </ul>
-    );
-
         
+        </>
+    );
 }
+
 
 function App(props) {
 
@@ -82,16 +76,7 @@ function App(props) {
     return (
         <div style={{ margin: '30px' }}>
             {topic && (
-                <div className={styles.orderListe}>
-                    <Link to={`/profil/${topic.author_name}`} className={styles.link} >
-                        <div className={styles.borderText}>
-                            <p className={styles.myP} >@{topic.author_name} : {topic.title}</p>
-                            <TimeAgo style={{fontSize: "8px" , paddingLeft : "30px"}} date={topic.date} />
-                        </div>
-                    </Link>
-
-                    <p>{topic.message}</p>
-                </div>
+                  <Message Message={topic} nbMax={0} />
             )}
             <OrderListe listeMessages={listeMessages} id={id} i={nbMessageAfficher} />
         </div>

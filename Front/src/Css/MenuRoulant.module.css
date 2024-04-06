@@ -31,8 +31,11 @@ summary::before {
 }
 
 summary::after {
-  content: "III";
-  letter-spacing: -1px;
+    content: "•••";
+    font-family: 'Material Icons';
+    font-size: 22px ;
+    position : absolute ;
+    left : 20%;
 }
 
 summary:hover {
@@ -112,10 +115,11 @@ details[open] summary::after {
 
 @media  (max-width:800px) {
 
-summary::after {
-  position: absolute;
-  top: 7px;
-  left: 1px;
+  summary::after {
+    font-family: 'Material Icons';
+    font-size: 16px ;
+    position : absolute ;
+    left : 15%;
 }
 
 summary {

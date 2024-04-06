@@ -7,7 +7,7 @@ function Messages({ showAuthor, listeMessages }) {
       <ul className={styles.myUl}>
         {listeMessages.filter(message => message.id_Parent === "0").map((message,index) => (
           <li key={index} className={styles.myLi}>
-            <SingleMessage showAuthor={showAuthor} author_name={message.author_name} message={message.message} id={message._id}/>
+            <SingleMessage Message={message} nbMax={60} />
           </li>
         ))}
       </ul>

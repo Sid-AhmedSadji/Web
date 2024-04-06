@@ -104,9 +104,9 @@ function App( props ) {
           <h4>{user.lastname}</h4>
           <h4>{user.firstname}</h4>
           <h4>{user.login}</h4>
-          <div>
-            <button className={styles.myButton} onClick={() => changeType({id:user._id,type:"user"})} type={'submit'}>Accepte</button>
-            <button onClick={() => changeType({id:user._id,type:"banned"})}  className={styles.myButton}>Reject </button>
+          <div className={ styles.btnDiv}>
+            <button className={`${styles.myButton} ${styles.Accept}`} onClick={() => changeType({id:user._id,type:"user"})} type="submit">Accepter</button>
+            <button className={`${styles.myButton} ${styles.Refuse}`} onClick={() => changeType({id:user._id,type:"banned"})} >Rejeter</button>
           </div>
         </form>
       ))}
