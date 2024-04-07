@@ -23,12 +23,11 @@
     text-align: center;
     padding-right : 15px;
     
-
-    
 }
 .messages{
     height: 85% ;
     width: 100%;
+    padding: 20px;
     box-sizing: border-box;
     overflow-y: scroll;
 }
@@ -55,9 +54,11 @@
 }
 
 .avatar{
-    height: 100px;
-    position:absolute;
-    top :  -75px;
+    height: 80px;
+    position: absolute;
+    top :  -40px;
+    left: calc(50% - 40px);
+
 }
 
 .linkBtn{
@@ -80,16 +81,72 @@
 
       
   }
+
+  .privacyBtn{
+    border-radius: 10px ;
+    position: absolute;
+    width: 70px;
+    border : none ;
+    top : 96%;
+    left : 80%;
+  
+  
+  }
+
+  .box{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    padding: 80px 25px 40px 25px;
+    width: 350px;
+    border-radius: 30px;
+    background-color: rgba(255, 220, 220, 0.406);
+    backdrop-filter: blur(15px);
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    font-size: large;
+    align-items: space-between;
+    box-sizing: border-box ;
+
+  }
+
+  .switch{
+    display: flex;
+    position: absolute;
+    bottom: 5px;
+    left: 10%;
+    width: 80%;
+    height: 50px;
+    background: #E3E9F9;
+    backdrop-filter: 10px;;
+    border-radius: 10px;
+    box-shadow: 0px 2px 10px #E3E9F9;
+    overflow: hidden;
+    bottom: 30px;
+   }
+   .switch button{
+     display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+    color: #000;
+    text-decoration: none;
+    width: 50%;
+    height: 50px;
+    border-radius: 10px;
+    z-index: 10;
+    margin: 0px;
+   }
+   
+   .active{
+     background-color: #62E2D5
+   
+   }
 @media  (max-width:800px) {
 
 
     
-    .avatar{
-        height: 60px;
-        position: absolute;
-        top :  -40px;
 
-    }
 
     .userButton{
         position: absolute;

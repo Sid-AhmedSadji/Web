@@ -15,7 +15,7 @@
   flex-direction: column;
   padding: 15px ;
   box-sizing: border-box;
-  overflow: scroll;
+  overflow-y: scroll;
 }
 
 .myLabel{
@@ -43,7 +43,6 @@ color : black
 
 .center{
   height: 100% ;
-  overflow-y: scroll;
 }
 .infoPanel{
   border : solid ;

@@ -3,6 +3,7 @@ import { useState,useEffect } from "react";
 import styles from "./Css/Profil.module.css"
 import { useParams, useNavigate, Link } from "react-router-dom";
 import api from "./ApiCalls.js"
+import Messages from"./SectionMessages.jsx"
 
 function Message({ message, id }) {
   var msg = message;
@@ -76,15 +77,16 @@ function Profil (){
 
   function userDiv() {
     return (
-      <div className={styles.user}>
+      
+      <div className={styles.box}>
        
-          <img className={styles.avatar} src={"https://api.multiavatar.com/"+login+".png"} alt="Avatar" />
-          <p>Login : {user.login}</p>
-          <p>Firstname : {user.firstname}</p>
-          <p>Lastname : {user.lastname}</p>
-          <p>Role : {user.type}</p> 
-          <p>Number of Messages : {listeMessages.length}</p>
-        </div>
+        <img className={styles.avatar} src={"https://api.multiavatar.com/"+login+".png"} alt="Avatar" />
+        <p>Login : {user.login}</p>
+        <p>Firstname : {user.firstname}</p>
+        <p>Lastname : {user.lastname}</p>
+        <p>Role : {user.type}</p> 
+        <p>Number of Messages : {listeMessages.length}</p>
+      </div>
     );
   }
 
@@ -92,17 +94,10 @@ function Profil (){
     return (
       <div className={styles.messageDiv}    >
 
-         <h2>Messages</h2>
 
          <div className={styles.messages}>
-          
-            <ul className={styles.myUl}>
-            {listeMessages.map((message) => (
-              <li key={message._id} className={styles.myIl}> 
-                <Message showAuthor={false} author_name={message.author_name} message={message.message} id={message._id} />
-              </li>
-            ))}
-          </ul>
+
+         <Messages listeMessages={listeMessages} />
           
           </div>
 
@@ -119,8 +114,10 @@ function Profil (){
 
       <div className={styles.mainDiv}> 
 
-        <button className={styles.userButton} onClick={()=>setclicked(!clicked)}>{clicked ? "X" : "<=" }</button>
-       
+      <div className={styles.switch}>
+          <button className={clicked ? styles.active : null} onClick={() => { setclicked(!clicked);  }}>Profil</button>
+          <button className={!clicked ? styles.active : null} onClick={() => {setclicked(!clicked); }}>Messages</button>
+        </div>
         
 
         {clicked ? userDiv() : messageDiv()}

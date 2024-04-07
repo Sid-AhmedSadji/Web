@@ -8,35 +8,30 @@ import styles from './Css/Header.module.css';
 
 function Header(props) {
   const [recherche, setRecherche] = useState("");
-  const [showChat, setShowChat] = useState(false); // Pour contrôler l'affichage du chat
-
-  useEffect(() => {
-    console.log(recherche);
-  }, [recherche]);
-
+  const [showChat, setShowChat] = useState(true); // Pour contrôler l'affichage du chat
   return (
     <>
       <div className={styles.Header}>
         <Link to="/">
           <img className={styles.logoSorbonne} src="/logoSorbonneUniversite.png" />
         </Link>
-        {props.searchBar && (
+        {props.shearchBar && (
           <>
             <div>
-              <Label value={recherche} setValue={setRecherche} />
+              <Label value={props.filter} setValue={props.setFilter} />
             </div>
             <div className={styles.dateDiv}>
               <p>from : </p>
-              <input className={styles.dateIcon} type="date" />
+              <input className={styles.dateIcon} type="date" onChange={(event)=>{props.setFilterBegging(event.target.value)}}/>
             </div>
             <div className={styles.dateDiv}>
               <p>to :</p>
-              <input className={styles.dateIcon} type="date" />
+              <input className={styles.dateIcon} type="date" onChange={(event)=>{props.setFilterEnd(event.target.value)}}/>
             </div>
           </>
         )}
         <div style={{ width: "50px" }}>
-          <Menu setData={props.setData} />
+          <Menu type={props.user} />
         </div>
       </div>
       <div style={{ padding: "15px 0px" }}>

@@ -91,10 +91,10 @@ const MessageDetails = () => {
   
 
   return (
-    <div style={{ width: "100%" }}>
+    <div className={ styles.mainDiv }>
       <Toaster />
       <Header />
-      <div style={{ width: "100%" }}>
+      <div className={styles.msgDiv}>
         <MainDiv key={mainDivKey} id={idMessage} topic={topic} /> 
       </div>
       {!loading &&

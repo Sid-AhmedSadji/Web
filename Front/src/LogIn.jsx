@@ -26,7 +26,7 @@ function Login(props) {
         props.setUser(response.id);
       }
     } catch (error) {
-      toast.error("Connexion failed: " + error.response.message);
+      toast.error("Connexion failed: " + error.response.data.message);
       console.error('Error:', error);
     }
   }

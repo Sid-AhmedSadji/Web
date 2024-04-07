@@ -13,14 +13,19 @@ async function logOut() {
 }
 
 
-function App(setData) {
+function App(user) {
 
 
   return (
     <details>
     <summary></summary>
     <nav className={styles.menu}>
-      <Link to='/request'>User Request</Link>
+      {user.type === "admin" && (
+        <>
+          <Link to="/request">User Request</Link>
+          <Link to="/gestionUsers">User Management</Link>
+        </>
+      )}
       <Link to='/' onClick={()=>{ logOut();setData(null)}}>Sign out</Link>
     </nav>
   </details>

@@ -74,7 +74,7 @@ function init(dbUrl) {
     router.put("/message", async (req, res) => {
         try {
 
-            const { userid, message, id_Parent, title, date, privacy } = req.body;
+            let { userid, message, id_Parent, title, date, privacy } = req.body;
 
 
             // verifie que les paramettres ne sont pas nul et affiche celui qui est nul

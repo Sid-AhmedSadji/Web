@@ -17,6 +17,9 @@
 .dateIcon{
   width: 18px;
   height : 30px ;
+  background-color: transparent;
+  color : white ;
+  border-color: white;
 }
 .logoSorbonne{
   height:6vh 
@@ -28,6 +31,7 @@
   align-items: center;
   justify-content: center ;
   gap: 1rem ;
+  color : white ;
 }
 
 a{

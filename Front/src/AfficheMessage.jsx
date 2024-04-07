@@ -74,7 +74,7 @@ function App(props) {
     }
 
     return (
-        <div style={{ margin: '30px' }}>
+        <div style={{ margin: '30px' , boxSizing: 'border-box' }}>
             {topic && (
                   <Message Message={topic} nbMax={0} />
             )}

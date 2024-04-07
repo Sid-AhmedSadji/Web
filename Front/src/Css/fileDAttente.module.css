@@ -47,20 +47,23 @@
   border: 3px solid rgba(255, 255, 255, 0.2);
   border-radius: 1rem ;
   width : fit-content ;
+  height: fit-content;
   font-size: 20px;
   font-style: bold;
   transition: .3s ease-in-out;
+  padding: 5px ;
+  box-sizing: border-box;
 }
-.myButton:focus, .myButton:hover {
+  .myButton:hover {
   transform: scale(1.3);
 }
 
-.Accept:hover, .Accept:focus{
+.Accept:hover{
   color: green;
   border-color: green;
 }
 
-.Refuse:hover, .Refuse:focus{
+.Refuse:hover{
   color: red;
   border-color: red;
 }

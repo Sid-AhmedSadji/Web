@@ -2,12 +2,11 @@ import styles from './Css/Message.module.css';
 import { Link } from 'react-router-dom';
 import TimeAgo from 'react-timeago';
 import { HiTrash } from "react-icons/hi";
-import { HiChatBubbleLeft } from "react-icons/hi2";
+import Api from './ApiCalls.js';
 
 
 
 function Message(props) {
-
 
   const { message, date, author_name, _id, title} = props.Message ;
   const { nbMax } = props;
@@ -28,7 +27,7 @@ function Message(props) {
         <Link to={`/Messages/${_id}`} className={styles.link}>
           <p className={styles.text}>{msg}</p>
         </Link>
-        <button className={styles.btnDiv}><HiTrash /></button>
+        {props.type === 'admin' && <button className={styles.btnDiv} onClick={() => {Api.deleteMessage(_id); props.loading && props.loading(true)}}><HiTrash /></button>}
       </div>
     );
   
