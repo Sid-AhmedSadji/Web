@@ -7,8 +7,8 @@ import PrivateChat from './PrivateChat.jsx';
 import styles from './Css/Header.module.css';
 
 function Header(props) {
-  const [recherche, setRecherche] = useState("");
-  const [showChat, setShowChat] = useState(true); // Pour contrôler l'affichage du chat
+  const [search, setSearch] = useState("");
+  const [showChat, setShowChat] = useState(true); // To control chat display
   return (
     <>
       <div className={styles.Header}>
@@ -46,3 +46,4 @@ function Header(props) {
 
 */
 export default Header;
+

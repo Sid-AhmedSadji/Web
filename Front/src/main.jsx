@@ -4,6 +4,7 @@ import App from './App.jsx'
 import './Css/index.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-    <App />
-
+    <>
+        <App />
+    </>
 )

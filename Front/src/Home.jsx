@@ -53,14 +53,14 @@ function Home(props) {
     if (e.key === 'Enter') {
       if (isSettingTitle) {
         if (title.length > 0) {
-          setIsSettingTitle(false); // Passer à la saisie du message
+          setIsSettingTitle(false); // Switch to message input
         }
       } else {
         if (message.length > 0) {
           await api.postMessage({ title, id_Parent: "0", message, privacy: isPrivate });
           setTitle('');
           setMessage('');
-          setIsSettingTitle(true); // Revenir à la saisie du titre
+          setIsSettingTitle(true); // Switch back to title input
           setLoading(true);
         }
       }
@@ -74,9 +74,9 @@ function Home(props) {
 
   return (
     <div className={styles.globalDiv}>
-      <Header setFilter={setFilter} filter={filter} setFilterBegging={setFilterBegging} setFilterEnd={setFilterEnd} shearchBar={true} user={userType}/>
+      <Header setFilter={setFilter} filter={filter} setFilterBegging={setFilterBegging} setFilterEnd={setFilterEnd} searchBar={true} user={userType}/>
       <div className={styles.mainSection}>
-        <input type="text" placeholder={isSettingTitle ? "New message ? Chose a title for your message" : "What is your message ?"} value={isSettingTitle ? title : message} onChange={(e) => { isSettingTitle ? setTitle(e.target.value) : setMessage(e.target.value) }} onKeyPress={handleKeyPress} className={styles.myLabel} />
+        <input type="text" placeholder={isSettingTitle ? "New message ? Choose a title for your message" : "What is your message ?"} value={isSettingTitle ? title : message} onChange={(e) => { isSettingTitle ? setTitle(e.target.value) : setMessage(e.target.value) }} onKeyPress={handleKeyPress} className={styles.myLabel} />
         <hr align="center" width="75%" />
         <Messages listeMessages={listeMessages} loading={setLoading} type={userType}/>
       </div>
@@ -91,3 +91,4 @@ function Home(props) {
 }
 
 export default Home;
+

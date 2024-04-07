@@ -14,19 +14,19 @@ function Login(props) {
   async function getUser() {
     try {
       if (pseudo === "" || password === "") {
-        toast.error("Please fill all the fields");
+        toast.error("Please fill all fields");
         return;
       }
       const user = await api.getUser({ login: pseudo, id: null, type: null });
       if (user[0].type !== "admin" && user[0].type !== "user") {
         toast.error("Please wait for the account confirmation");
-      }else {
+      } else {
         const response = await api.login({ login: pseudo, password: password });
-        toast.success("Connexion success");
+        toast.success("Login successful");
         props.setUser(response.id);
       }
     } catch (error) {
-      toast.error("Connexion failed: " + error.response.data.message);
+      toast.error(`Login failed: ${error.response.data.message}`);
       console.error('Error:', error);
     }
   }
@@ -37,8 +37,8 @@ function Login(props) {
       <div className={styles.box}>
         <div className={styles.boxLogin} id="login">
           <div className={styles.topHeader}>
-            <h3>Hello, Again!</h3>
-            <small>We are happy to have you back.</small>
+            <h3>Welcome back!</h3>
+            <small>We are happy to see you again.</small>
           </div>
           <div className={styles.inputGroup}>
             <div className={styles.inputField}>
@@ -78,3 +78,4 @@ function Login(props) {
 }
 
 export default Login;
+

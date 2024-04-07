@@ -6,7 +6,9 @@ function MessageItem({ message, currentUserId }) {
   return (
     <div style={{ textAlign: isOwnMessage ? 'right' : 'left' }}>
       <div>{message.text}</div>
-      <div><small>{new Date(message.timestamp).toLocaleString()}</small></div>
+      <div>
+        <small>{new Date(message.timestamp).toLocaleString('en-GB')}</small>
+      </div>
     </div>
   );
 }

@@ -5,7 +5,7 @@ import api from './ApiCalls';
 import styles from './Css/Login.module.css';
 
 const errorPassword = () => {
-  toast.error("Passwords don't match or fields are empty");
+  toast.error('Passwords do not match or fields are empty');
 };
 
 const signUpOk = () => {
@@ -18,7 +18,7 @@ const toLogIn = () => {
 
 //toast speudo already used
 const errorPseudo = () => {
-  toast.error('Pseudo already used');
+  toast.error('Username already in use');
 }
 
 async function postUser(props) {
@@ -152,29 +152,3 @@ function SignUp() {
 }
 
 export default SignUp;
-/*
-
-
-
-            <div className={styles.inputField}>
-              <input
-                type="password"
-                className={styles.inputBox}
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
-            <div className={styles.inputField}>
-              <input
-                type="password"
-                className={styles.inputBox}
-                placeholder="Confirm Password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-              />
-            </div>
-
-*/

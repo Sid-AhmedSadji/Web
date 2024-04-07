@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './Css/AfficheMessage.module.css'; // Importez le module CSS
+import styles from './Css/AfficheMessage.module.css'; // Import CSS module
 import { Link, useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import TimeAgo from 'react-timeago'
@@ -17,7 +17,7 @@ function OrderListe({ listeMessages, id , i }) {
     if ( i === 0 ){
         return(
             <p style={{paddingLeft : "50px", paddingBottom : "15px"}}>
-                <Link to={`/Messages/${id}`}>More responses</Link>
+                <Link to={`/Messages/${id}`}>Show responses</Link>
             </p>
         )
     }
@@ -85,3 +85,4 @@ function App(props) {
 } 
 
 export default App;
+

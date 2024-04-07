@@ -38,7 +38,7 @@ function Profil (){
         setUser(data[0]);
       } catch (error) {
         console.error('Error:', error);
-        setLoading(false); // Mettre fin au chargement en cas d'erreur
+        setLoading(false); // Finish loading in case of error
       }finally {
         setLoading(false);
       }
@@ -61,7 +61,7 @@ function Profil (){
         fetchMessages();
       } catch (error) {
         console.error("Error", error.response.data.message);
-        navigate ("/");// Marque la fin du chargement, que ce soit avec succès ou non
+        navigate ("/");// Mark the end of loading, whether successful or not
 
       }
     };
@@ -115,7 +115,7 @@ function Profil (){
       <div className={styles.mainDiv}> 
 
       <div className={styles.switch}>
-          <button className={clicked ? styles.active : null} onClick={() => { setclicked(!clicked);  }}>Profil</button>
+          <button className={clicked ? styles.active : null} onClick={() => { setclicked(!clicked);  }}>Profile</button>
           <button className={!clicked ? styles.active : null} onClick={() => {setclicked(!clicked); }}>Messages</button>
         </div>
         
@@ -135,6 +135,5 @@ function Profil (){
   );
 };
 export default Profil ;
-
 
 

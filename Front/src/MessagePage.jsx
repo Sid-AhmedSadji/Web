@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Header from './Header.jsx';
-import MainDiv from './AfficheMessage.jsx'; // Assurez-vous que le nom commence par une majuscule
+import MainDiv from './AfficheMessage.jsx'; // Ensure component name starts with a capital letter
 import { useState, useEffect } from 'react';
 import api from './ApiCalls.js';
 import styles from './Css/AfficheMessage.module.css';
@@ -9,15 +9,15 @@ import toast, { Toaster } from 'react-hot-toast';
 
 
 const MessageDetails = () => {
-  const idMessage  = useParams().id; // Renommer id en idMessage
-  const [idUser, setIdUser] = useState(null); // Renommer id en idUser
+  const idMessage  = useParams().id; // Rename `id` to `idMessage`
+  const [idUser, setIdUser] = useState(null); // Rename `id` to `idUser`
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
   const [title, setTitle] = useState("");
   const [topic, setTopic] = useState("");
   const [message, setMessage] = useState("");
   const [isSettingTitle, setIsSettingTitle] = useState(true);
-  const [mainDivKey, setMainDivKey] = useState(0); // Clé pour forcer le re-render du composant MainDiv
+  const [mainDivKey, setMainDivKey] = useState(0); // Key to force MainDiv re-render
   let navigate = useNavigate();
 
 
@@ -64,7 +64,7 @@ const MessageDetails = () => {
   
 
   
-  }, [idMessage]); // Déclencher cet effet chaque fois que l'ID change
+  }, [idMessage]); // Trigger this effect each time the ID changes
   
   async function handleKeyPress(e) {
     if (e.key === 'Enter') {
@@ -101,7 +101,7 @@ const MessageDetails = () => {
         <>
           <input
             type="text"
-            placeholder={isSettingTitle ? "Nouveau message ? Choisissez un titre pour votre message" : "Quel est votre message ?"}
+            placeholder={isSettingTitle ? "Create a new message? Choose a title for your message" : "What is your message?"}
             value={isSettingTitle ? title : message}
             onChange={(e) => { isSettingTitle ? setTitle(e.target.value) : setMessage(e.target.value) }}
             onKeyPress={handleKeyPress}
@@ -114,5 +114,6 @@ const MessageDetails = () => {
 };
 
 export default MessageDetails;
+
 
 

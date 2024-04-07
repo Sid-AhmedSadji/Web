@@ -1,39 +1,38 @@
 import styles from './Css/fileDAttente.module.css';
-import { Link,useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Menu from './MenuRoulant.jsx';
 import Header from './Header.jsx';
 import { useEffect, useState } from 'react';
 import api from './ApiCalls.js';
 
 async function getUsers() {
-  try{
-    const data = await api.getUser({login:null, id:null, type:"0"});
+  try {
+    const data = await api.getUser({
+      login: null,
+      id: null,
+      type: '0',
+    });
     return data;
 
   } catch (error) {
-    console.error('Erreur:', error.response.data);
-    return {data:[]};
+    console.error('Error:', error.response.data);
+    return { data: [] };
   }
 }
 
-
-
-
-
-function App( props ) {
-  const [listeUser, setData] = useState([]);
-  const [type, setType] = useState(0);
+function App(props) {
+  const [users, setData] = useState([]);
+  const [userType, setType] = useState(0);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
-
     async function fetchData() {
-      const data = await getUsers({type:"0"});
-      data.data === undefined ? setData(data) : [] ;
+      const data = await getUsers({ type: '0' });
+      data.data === undefined ? setData(data) : [];
     }
 
-    async function checkSession () {
+    async function checkSession() {
       try {
         console.log('Checking session...');
         const response = await api.checkSession();
@@ -41,14 +40,12 @@ function App( props ) {
         fetchData();
         setLoading(false);
       } catch (error) {
-        console.error("Error", error.response.data.message);
-        navigate ("/");
+        console.error('Error', error.response.data.message);
+        navigate('/');
       }
-    };
+    }
 
     checkSession();
-
-    
 
     const interval = setInterval(async () => {
       await fetchData();
@@ -58,16 +55,13 @@ function App( props ) {
     return () => clearInterval(interval);
   }, []);
 
-
-
-
   async function changeType(props) {
-    try{
-      const {id,type} = props;
-      console.log(id,type)
-      const reponse = await api.changeTypeUser({id:id,type:type});
+    try {
+      const { id, type } = props;
+      console.log(id, type);
+      const reponse = await api.changeTypeUser({ id: id, type: type });
     } catch (error) {
-      console.error('Erreur:', error);
+      console.error('Error:', error);
     }
   }
 
@@ -75,38 +69,43 @@ function App( props ) {
     return <div>Loading...</div>;
   }
 
-  if (type !== "admin") {
-    return ( 
+  if (userType !== 'admin') {
+    return (
       <div>
-        <h1>Page Interdite</h1>
+        <h1>Page Forbidden</h1>
       </div>
-    )
+    );
   }
-
 
   return (
     <div className={styles.main}>
-      
-      <Header setData={props.setData} shearchBar={false} />
-      
-
+      <Header setData={props.setData} searchBar={false} />
       <div className={styles.myForm}>
-        <h4>Nom</h4>
-        <h4>Prenom</h4>
-        <h4>Pseudo</h4>
+        <h4>Lastname</h4>
+        <h4>Firstname</h4>
+        <h4>Username</h4>
         <h4>Actions</h4>
       </div>
-
-      <hr style={{ width: "55%" }} />
-
-      {listeUser.map((user, index) => (
+      <hr style={{ width: '55%' }} />
+      {users.map((user, index) => (
         <form key={index} className={styles.myForm}>
           <h4>{user.lastname}</h4>
           <h4>{user.firstname}</h4>
           <h4>{user.login}</h4>
-          <div className={ styles.btnDiv}>
-            <button className={`${styles.myButton} ${styles.Accept}`} onClick={() => changeType({id:user._id,type:"user"})} type="submit">Accepter</button>
-            <button className={`${styles.myButton} ${styles.Refuse}`} onClick={() => changeType({id:user._id,type:"banned"})} >Rejeter</button>
+          <div className={styles.btnDiv}>
+            <button
+              className={`${styles.myButton} ${styles.Accept}`}
+              onClick={() => changeType({ id: user._id, type: 'user' })}
+              type="submit"
+            >
+              Accept
+            </button>
+            <button
+              className={`${styles.myButton} ${styles.Refuse}`}
+              onClick={() => changeType({ id: user._id, type: 'banned' })}
+            >
+              Refuse
+            </button>
           </div>
         </form>
       ))}
@@ -115,3 +114,4 @@ function App( props ) {
 }
 
 export default App;
+

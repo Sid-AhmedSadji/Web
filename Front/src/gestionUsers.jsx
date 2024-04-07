@@ -6,13 +6,13 @@ import api from './ApiCalls.js';
 import toast, { Toaster } from 'react-hot-toast';
 
 async function getUsers() {
-  try{
-    const data = await api.getUser({login:null, id:null, type:null});
+  try {
+    const data = await api.getUser({ login: null, id: null, type: null });
     return data;
 
   } catch (error) {
-    console.error('Erreur:', error.response.data);
-    return {data:[]};
+    console.error('Error:', error.response.data);
+    return { data: [] };
   }
 }
 
@@ -20,16 +20,16 @@ async function getUsers() {
 
 
 
-function App( props ) {
-  const [listeUser, setData] = useState([]);
-  const [type, setType] = useState(0);
+function App(props) {
+  const [listOfUsers, setData] = useState([]);
+  const [userType, setType] = useState(0);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const [i, setI] = useState(0);
-  
+
   async function fetchData() {
     const data = await getUsers();
-    data.data === undefined ? setData(data.filter(user => user.type !== "0")) : [] ;
+    data.data === undefined ? setData(data.filter(user => user.type !== '0')) : [];
   }
 
   
@@ -64,12 +64,12 @@ useEffect(() => {
 
 
   async function changeType(props) {
-    try{
-      const {id,type} = props;
-      console.log(id,type)
-      const reponse = await api.changeTypeUser({id:id,type:type});
+    try {
+      const { id, type } = props;
+      console.log(id, type)
+      const reponse = await api.changeTypeUser({ id: id, type: type });
     } catch (error) {
-      console.error('Erreur:', error);
+      console.error('Error:', error);
     }
   }
 
@@ -77,10 +77,10 @@ useEffect(() => {
     return <div>Loading...</div>;
   }
 
-  if (type !== "admin") {
+  if (userType !== 'admin') {
     return ( 
       <div>
-        <h1>Page Interdite</h1>
+        <h1>Forbidden Page</h1>
       </div>
     )
   }
@@ -94,16 +94,16 @@ useEffect(() => {
       
 
       <div className={styles.myForm}>
-        <h4>Nom</h4>
-        <h4>Prenom</h4>
-        <h4>Pseudo</h4>
+        <h4>Lastname</h4>
+        <h4>Firstname</h4>
+        <h4>Login</h4>
         <h4>Type</h4>
         <h4>Actions</h4>
       </div>
 
       <hr style={{ width: "55%" }} />
 
-      {listeUser.map((user, index) => (
+      {listOfUsers.map((user, index) => (
         <form key={index} className={styles.myForm} onSubmit={(e) => {e.preventDefault() }}>
           <h4>{user.lastname}</h4>
           <h4>{user.firstname}</h4>
@@ -126,3 +126,4 @@ useEffect(() => {
 }
 
 export default App;
+
