@@ -48,6 +48,19 @@ class Messages {
             throw err;
         }
     }
+
+    async delete(id) {
+
+        try {
+            const result = await this.client.db().collection('Messages').deleteOne({
+                _id: id
+            });
+            console.log(result)
+            return result;
+        } catch (err) {
+            throw err;
+        }
+    }
 }
 
 exports.default = Messages ;

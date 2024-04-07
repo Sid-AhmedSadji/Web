@@ -27,13 +27,13 @@ function init(dbUrl) {
 
         try {
 
-            // const userid = req.session?.userid;
-            // if (!userid) {
-            //     res.status(401).json({
-            //         message: "User not logged in"
-            //     });
-            //     return;
-            // }
+            const userid = req.session?.userid;
+            if (!userid) {
+                res.status(401).json({
+                    message: "User not logged in"
+                });
+                return;
+            }
             const { id, privacy } = req.query;
             const newObectId = id ? new ObjectId(id) : null;
 
@@ -52,13 +52,16 @@ function init(dbUrl) {
     router.post("/changeType", async (req, res) => {
         try {
             const { id,type } = req.body;
-            const user = await users.get(id);
+            const newObectId = new ObjectId(id) 
+            const user = await users.get(newObectId);
             if (!user) {
                 res.status(404).json({ message: "User not found" });
                 return;
             }
 
-            const reponse = await users.update(id, type);
+            const reponse = await users.update(newObectId, type);
+
+
             if (!reponse) {
                 res.status(500).send({ message: "Internal server error" });
                 return;
@@ -71,11 +74,11 @@ function init(dbUrl) {
     router.put("/message", async (req, res) => {
         try {
 
-            let { userid,message, id_Parent, title, date, privacy } = req.body;
+            const { userid, message, id_Parent, title, date, privacy } = req.body;
 
 
             // verifie que les paramettres ne sont pas nul et affiche celui qui est nul
-            if ( !userid || !message || !id_Parent || !title || !date) {
+            if (!userid || !message || !id_Parent || !title || !date) {
 
                 res.status(400).json({
                     message: "Missing parameters"
@@ -94,15 +97,29 @@ function init(dbUrl) {
                 })
                 return;
             }
-            console.log("message", message,"newObjectId", newObjectId,"date", date,"author_name", author_name,"id_Parent", id_Parent,"title", title,"privacy", privacy)
             const reponse = await messages.create(message, date, author_name, id_Parent, title, privacy);
-            console.log(reponse)
 
             res.status(201).json({ message: "Message created", message: reponse });
         } catch (e) {
             res.status(500).send({ message: "Internal server error", error: e });
         }
     });
+    router.delete("/message/:id", async (req, res) => {
+
+        try {
+            const { id } = req.params;
+            const newObjectId = new ObjectId(id)
+            const reponse = await messages.delete(newObjectId);
+            if (!reponse) {
+                res.status(500).send({ message: "Internal server error" });
+                return;
+            }
+            res.status(200).send({ message: "Message deleted" });
+        } catch (e) {
+            res.status(500).send({ message: "Internal server error", error: e });
+        }
+    })
+    ;
 
     router.get("/session", (req, res) => {
         try{
