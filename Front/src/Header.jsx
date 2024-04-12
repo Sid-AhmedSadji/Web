@@ -15,7 +15,7 @@ function Header(props) {
         <Link to="/">
           <img className={styles.logoSorbonne} src="/logoSorbonneUniversite.png" />
         </Link>
-        {props.shearchBar && (
+        {props.searchBar && (
           <>
             <div>
               <Label value={props.filter} setValue={props.setFilter} />

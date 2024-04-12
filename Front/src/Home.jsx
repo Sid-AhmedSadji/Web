@@ -74,7 +74,7 @@ function Home(props) {
 
   return (
     <div className={styles.globalDiv}>
-      <Header setFilter={setFilter} filter={filter} setFilterBegging={setFilterBegging} setFilterEnd={setFilterEnd} searchBar={true} user={userType}/>
+      <Header setFilter={setFilter} filter={filter} setFilterBegging={setFilterBegging} setFilterEnd={setFilterEnd} searchBar shearchBar={true} user={userType} />
       <div className={styles.mainSection}>
         <input type="text" placeholder={isSettingTitle ? "New message ? Choose a title for your message" : "What is your message ?"} value={isSettingTitle ? title : message} onChange={(e) => { isSettingTitle ? setTitle(e.target.value) : setMessage(e.target.value) }} onKeyPress={handleKeyPress} className={styles.myLabel} />
         <hr align="center" width="75%" />

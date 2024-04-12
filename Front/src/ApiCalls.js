@@ -5,7 +5,7 @@ class Api {
 
   static salt = "$2a$10$x6mRCNZP25VY/LSH78lao.";
 
-  //static api = "http://localhost:4000/api";
+  static api = "http://localhost:4000/api";
 
 
   static hashPassword(password) {
