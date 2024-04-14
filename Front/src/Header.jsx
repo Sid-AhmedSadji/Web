@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import Label from './StylisedLabel.jsx';
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"; //Permet aux utilisateurs de retourner à la page d'accueil en cliquant sur le logo de l'université.
 import Menu from './MenuRoulant.jsx';
 import PrivateChat from './PrivateChat.jsx';
 
 import styles from './Css/Header.module.css';
 
 function Header(props) {
-  const [search, setSearch] = useState("");
-  const [showChat, setShowChat] = useState(true); // To control chat display
+  const [search, setSearch] = useState("");  //État pour la recherche (non utilisé dans le code actuel)
+  const [showChat, setShowChat] = useState(true); //État pour contrôler l'affichage du chat
+
   return (
     <>
       <div className={styles.Header}>
