@@ -1,15 +1,12 @@
-import React from 'react';
-import styles from './Css/AfficheMessage.module.css'; // Import CSS module
-import { Link, useParams } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import TimeAgo from 'react-timeago' //Importe un composant pour formater les dates relativement (ex : il y a 3 heures), mais il n'est pas utilisé. 
-import api from './ApiCalls';
-import Message from './Message';
+import {Link,useState,useEffect} from 'react'
+import styles from './Css/AfficheMessage.module.css'
+import api from './ApiCalls'
+import Message from './Message'
 
-let nbMessageAfficher = 2 ; //Nombre initial de messages à afficher
+let nbMessageAfficher = 2 ; //Nombre initial de reponses à afficher par message
 
 //Composant pour ordonner et afficher une liste de messages récursivement
-function OrderListe({ listeMessages, id , i }) {
+function OrderListe({ listeMessages, id , i, type }) {
 
     const filteredMessages = listeMessages.filter(message => message.id_Parent === id);
    
@@ -30,8 +27,7 @@ function OrderListe({ listeMessages, id , i }) {
             {filteredMessages.map((topic, index) => (
                 <li className={styles.myLi} key={topic._id}>
                     <>
-                    <Message Message={topic} nbMax={0} />
-
+                        <Message Message={topic} nbMax={0} type={type}/>
                     </>
                     <OrderListe listeMessages={listeMessages} id={topic._id} i={i-1} />
                 </li>
@@ -50,6 +46,7 @@ function App(props) {
     
     const [loading, setLoading] = useState(true); //Gère l'état de l'affichage du chargement
     const [listeMessages, setListeMessages] = useState([]); //Stocke la liste des messages récupérés
+    const [type , setType] = useState(null);
 
   
   
@@ -65,9 +62,19 @@ function App(props) {
             }finally{
                 setLoading(false);
             }
-          }
+        }
+
+        async function fetchUser() {
+            try {
+                const data = await api.checkSession();
+                setType(data.usertype);
+            } catch (error) {
+                console.error("Error", error.response.data.message);
+            }
+        }
   
       fetchMessages();
+      fetchUser();
     }, []);
     
     //Affiche le chargement
@@ -78,9 +85,9 @@ function App(props) {
     return (
         <div style={{ margin: '30px' , boxSizing: 'border-box' }}>
             {topic && (
-                  <Message Message={topic} nbMax={0} />
+                  <Message Message={topic} nbMax={0} type={type} />
             )}
-            <OrderListe listeMessages={listeMessages} id={id} i={nbMessageAfficher} />
+            <OrderListe listeMessages={listeMessages} id={id} i={nbMessageAfficher} type={type}/>
         </div>
     );
 

@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom"; //Importe Link pour la navigation et useNavigate pour la redirection programmée
-import { useState, useEffect } from 'react'; //Importe useState pour la gestion de l'état local, useEffect pour les effets de bord
+import useState from 'react'; //Importe useState pour la gestion de l'état local, useEffect pour les effets de bord
 import styles from "./Css/Login.module.css"; 
 import toast, { Toaster } from 'react-hot-toast'; //Importe toast pour afficher des notifications
 import api from './ApiCalls'; //Importe les appels API définis dans ApiCalls.js
@@ -7,7 +7,6 @@ import api from './ApiCalls'; //Importe les appels API définis dans ApiCalls.js
 function Login(props) {
   const [pseudo, setPseudo] = useState(""); //Gère l'état pour le pseudonyme de l'utilisateur
   const [password, setPassword] = useState(""); //Gère l'état pour le mot de passe
-  const navigate = useNavigate(); //C'est pour ?
 
 
   

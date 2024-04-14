@@ -16,11 +16,6 @@ const toLogIn = () => {
   toast.loading('Please wait...');
 }
 
-//toast speudo already used
-const errorPseudo = () => {
-  toast.error('Username already in use');
-}
-
 async function postUser(props) {
   const { pseudo, password, confirmPassword, firstname, lastname } = props;
 

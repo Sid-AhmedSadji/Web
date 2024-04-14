@@ -17,8 +17,6 @@ function Messages({ listeMessages, loading, type }) {
             </li>
           ))}
       </ul>
-      <div className={styles.menuContainer}>
-      </div>
     </div>
   );
 }

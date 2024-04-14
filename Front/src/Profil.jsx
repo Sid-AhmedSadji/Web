@@ -94,15 +94,13 @@ function Profil (){
     return (
       <div className={styles.messageDiv}    >
 
-
          <div className={styles.messages}>
 
-         <Messages listeMessages={listeMessages} />
+          <Messages listeMessages={listeMessages} />
           
-          </div>
-
-
         </div>
+
+      </div>
     );
   }
 
@@ -114,26 +112,20 @@ function Profil (){
 
       <div className={styles.mainDiv}> 
 
-      <div className={styles.switch}>
+        <div className={styles.switch}>
           <button className={clicked ? styles.active : null} onClick={() => { setclicked(!clicked);  }}>Profile</button>
           <button className={!clicked ? styles.active : null} onClick={() => {setclicked(!clicked); }}>Messages</button>
         </div>
         
-
         {clicked ? userDiv() : messageDiv()}
-
-       
-
 
       </div>
 
-
-
     </div>
-
-
   );
+
 };
+
 export default Profil ;
 
 

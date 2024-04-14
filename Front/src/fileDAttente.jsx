@@ -1,9 +1,8 @@
-import styles from './Css/fileDAttente.module.css';
-import { Link, useNavigate } from 'react-router-dom';
-import Menu from './MenuRoulant.jsx';
-import Header from './Header.jsx';
-import { useEffect, useState } from 'react';
-import api from './ApiCalls.js';
+import styles from './Css/fileDAttente.module.css'
+import {useNavigate} from 'react-router-dom'
+import Header from './Header'
+import {useEffect,useState} from 'react'
+import api from './ApiCalls'
 
 async function getUsers() {
   try {

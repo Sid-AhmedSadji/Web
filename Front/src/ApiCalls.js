@@ -8,8 +8,8 @@ class Api {
 
   //Méthode pour hasher un mot de passe avant l'envoi au serveur
   static hashPassword(password) {
-    //salt 
-    return bcrypt.hashSync(password, Api.salt); // Utilise bcrypt pour hasher le mot de passe avec un sel ?
+    // Utilise bcrypt pour hasher le mot de passe avec le salt défini en dur dans la classe pour eviter differents hash pour le meme mot de passe 
+    return bcrypt.hashSync(password, Api.salt); 
   }
 
   //Méthode pour publier un message
@@ -30,7 +30,7 @@ class Api {
         privacy
       }, {
         headers: {
-          'Content-Type': 'application/json' //Spécifie le type de contenu attendu par le serveur
+          'Content-Type': 'application/json' //Spécifie le type de contenu envoyé au serveur
         }
       });
       return response.data //Retourne les données de la réponse
@@ -66,7 +66,7 @@ class Api {
     
   }
 
-  //Méthode pour enregistrer un utilisateur
+  //Méthode pour enregistrer un nouvel utilisateur
   static async postUser(props) {
     const { pseudo, password, lastname, firstname } = props;
       const hastedPassword=this.hashPassword(password); //Hash le mot de passe avant l'envoi

@@ -1,11 +1,10 @@
-import React from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import Header from './Header.jsx';
-import MainDiv from './AfficheMessage.jsx'; // Ensure component name starts with a capital letter
-import { useState, useEffect } from 'react';
-import api from './ApiCalls.js';
-import styles from './Css/AfficheMessage.module.css';
-import toast, { Toaster } from 'react-hot-toast';
+import {useParams,useNavigate} from 'react-router-dom'
+import Header from './Header.jsx'
+import MainDiv from './AfficheMessage.jsx'
+import {useState,useEffect} from 'react'
+import api from './ApiCalls.js'
+import styles from './Css/AfficheMessage.module.css'
+import toast,{Toaster} from 'react-hot-toast'
 
 
 const MessageDetails = () => {

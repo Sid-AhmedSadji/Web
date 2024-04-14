@@ -1,9 +1,8 @@
 import styles from './Css/fileDAttente.module.css';
-import { useNavigate } from 'react-router-dom';
-import Header from './Header.jsx';
-import { useEffect, useState } from 'react';
+import {useNavigate, useEffect, useState} from 'react';
 import api from './ApiCalls.js';
-import toast, { Toaster } from 'react-hot-toast';
+import Header from './Header.jsx';
+import toast, {Toaster} from 'react-hot-toast';
 
 async function getUsers() {
   try {

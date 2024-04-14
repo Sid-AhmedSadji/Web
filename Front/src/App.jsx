@@ -10,7 +10,6 @@ import Request from './fileDAttente.jsx';
 import Gestion from './gestionUsers.jsx';
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import toast, { Toaster } from 'react-hot-toast';
 import api from './ApiCalls';
 
 function App() {
