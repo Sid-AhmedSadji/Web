@@ -3,9 +3,10 @@ import { Link } from 'react-router-dom'
 import api from './ApiCalls.js'
 // logout api
 
+//Fonction asynchrone pour se déconnecter
 async function logOut() {
   try {
-    const response = await api.logout()
+    const response = await api.logout() //Appelle la fonction de déconnexion API
 
   } catch (error) {
     console.error(error)
