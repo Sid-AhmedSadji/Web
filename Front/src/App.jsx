@@ -1,4 +1,6 @@
 // App.js
+//Le composant App englobe la structure principales de l'application en organisant les autres composants.
+//Importation de composants et de bibliothèques
 import LogIn from './LogIn.jsx';
 import SignUp from './SignUp.jsx';
 import Home from './Home.jsx';
@@ -12,31 +14,37 @@ import toast, { Toaster } from 'react-hot-toast';
 import api from './ApiCalls';
 
 function App() {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null); //Gestion de l'état de l'utilisateur
+  const [loading, setLoading] = useState(true); //Gestion de l'état de chargement
 
 
+  //Effet pour vérifier la session utilisateur au démarrage de l'application
   useEffect(() => {
   
-  const checkSession = async () => {
+   //Définition de la fonction checkSession
+  const checkSession = async () => { //Elle est responsable de faire des appels API pour vérifier si l'utilisateur est déjà connecté quand l'application charge.
     try {
       console.log('Checking session...');
-      const response = await api.checkSession();
-      setUser(response.userid);
-    } catch (error) {
+      const response = await api.checkSession(); //Tentative de récupération de l'état de session de l'utilisateur 
+      //Attention : api.checkSession() est une fonction défini dans apiCall.js
+      setUser(response.userid); //Mise à jour de l'état de l'utilisateur
+    } catch (error) { 
+      //Gestion des erreurs
       console.error(error.response.data.message);
     } finally {
       setLoading(false); // Marque la fin du chargement, que ce soit avec succès ou non
     }
   };
 
-  checkSession();
-}, []);
+  checkSession(); //Appel de la fonction checkSession
+}, []); //Tableau des dépendances vide (UseEffect ne s'exécutera qu'une seule fois.)
 
+  //Affichage en cas de chargement
   if (loading) {
     return <div>Loading...</div>;
   }
 
+  //Configuration du routage avec react-router-dom
   return (
     <Router>
       <Routes>
@@ -54,4 +62,5 @@ function App() {
 }
 
 export default App;
+
 
