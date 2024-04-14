@@ -1,29 +1,30 @@
-import { Link, useNavigate } from "react-router-dom";
-import { useState, useEffect } from 'react';
-import styles from "./Css/Login.module.css";
-import toast, { Toaster } from 'react-hot-toast';
-import api from './ApiCalls';
+import { Link, useNavigate } from "react-router-dom"; //Importe Link pour la navigation et useNavigate pour la redirection programmée
+import { useState, useEffect } from 'react'; //Importe useState pour la gestion de l'état local, useEffect pour les effets de bord
+import styles from "./Css/Login.module.css"; 
+import toast, { Toaster } from 'react-hot-toast'; //Importe toast pour afficher des notifications
+import api from './ApiCalls'; //Importe les appels API définis dans ApiCalls.js
 
 function Login(props) {
-  const [pseudo, setPseudo] = useState("");
-  const [password, setPassword] = useState("");
-  const navigate = useNavigate();
+  const [pseudo, setPseudo] = useState(""); //Gère l'état pour le pseudonyme de l'utilisateur
+  const [password, setPassword] = useState(""); //Gère l'état pour le mot de passe
+  const navigate = useNavigate(); //C'est pour ?
 
 
-
+  
+  //Fonction asynchrone pour récupérer les utilisateurs
   async function getUser() {
     try {
-      if (pseudo === "" || password === "") {
-        toast.error("Please fill all fields");
+      if (pseudo === "" || password === "") { 
+        toast.error("Please fill all fields"); //Affiche une notification d'erreur
         return;
       }
-      const user = await api.getUser({ login: pseudo, id: null, type: null });
-      if (user[0].type !== "admin" && user[0].type !== "user") {
+      const user = await api.getUser({ login: pseudo, id: null, type: null }); //Tente de récupérer l'utilisateur
+      if (user[0].type !== "admin" && user[0].type !== "user") { //Vérifie le type de l'utilisateur
         toast.error("Please wait for the account confirmation");
       } else {
         const response = await api.login({ login: pseudo, password: password });
         toast.success("Login successful");
-        props.setUser(response.id);
+        props.setUser(response.id); //Met à jour l'état global de l'utilisateur
       }
     } catch (error) {
       toast.error(`Login failed: ${error.response.data.message}`);
@@ -57,12 +58,13 @@ function Login(props) {
                 className={styles.inputBox}
                 placeholder="Password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => setPassword(e.target.value)} 
                 required
               />
             </div>
             <div className={styles.inputField}>
-              <button className={styles.inputSubmit} onClick={getUser}>
+              <button className={styles.inputSubmit} onClick={getUser}> 
+                Sign In
                 Sign In
               </button>
             </div>
