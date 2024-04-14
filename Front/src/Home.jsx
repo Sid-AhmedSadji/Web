@@ -6,6 +6,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 function Home(props) {
+  //Déclaration des états locaux pour la gestion des messages, de l'utilisateur et des filtres
   const [loading, setLoading] = useState(true);
   const [listeMessages, setListeMessages] = useState([]);
   const [title, setTitle] = useState('');
@@ -18,17 +19,18 @@ function Home(props) {
   const [filterEnd, setFilterEnd] = useState(null);
   let navigate = useNavigate();
 
+  //Utilise useEffect pour vérifier l'utilisateur et charger des données
   useEffect(() => {
-    if (props.user === null) {
+    if (props.user === null) { //Redirige, si aucun utilisateur n'est connecté
       navigate("/Login");
     }
 
-    async function fetchData() {
+    async function fetchData() {  //Fonction asynchrone pour récupérer les données
       try {
-        const response = await api.checkSession();
-        setUserType(response.usertype);
+        const response = await api.checkSession(); //Vérifie la session
+        setUserType(response.usertype); //Définit le type d'utilisateur
         const data = await api.getMessages({ privacy: isPrivate, id: null, filter: filter });
-        let res = data.messages;
+        let res = data.messages; //Filtre les messages en fonction du texte, de la date de début et de fin
         if (filter !== "") {
           res = data.messages.filter(message => message.message.includes(filter) || message.author_name.includes(filter) || message.title.includes(filter));
         }
@@ -39,37 +41,39 @@ function Home(props) {
           res = res.filter(message => new Date(message.date) <= new Date(filterEnd));
         }
         
-        setListeMessages(res);
+        setListeMessages(res); //Met à jour l'état avec les messages filtrés
       } catch (error) {
         console.error('Error:', error);
       } finally {
-        setLoading(false);
+        setLoading(false); //Arrête le chargement
       }
     }
     fetchData();
-  }, [props.user, navigate, isPrivate, filter,loading, filterBegging, filterEnd]);
+  }, [props.user, navigate, isPrivate, filter,loading, filterBegging, filterEnd]); //Dépendances de useEffect (C'est à dire qu'il se ré-exécutera si un de ces composants est modifié.)
 
+  //Gestion des entrées utilisateur pour les messages
   async function handleKeyPress(e) {
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter') { //Lorsque l'utilisateur appuie sur Entrée
       if (isSettingTitle) {
         if (title.length > 0) {
-          setIsSettingTitle(false); // Switch to message input
+          setIsSettingTitle(false); //Switch to message input(Passe à l'entrée du message)
         }
       } else {
         if (message.length > 0) {
           await api.postMessage({ title, id_Parent: "0", message, privacy: isPrivate });
-          setTitle('');
-          setMessage('');
+          setTitle(''); //Réinitialise le titre
+          setMessage(''); //Réinitialise le message
           setIsSettingTitle(true); // Switch back to title input
-          setLoading(true);
+          setLoading(true); //Réactive le chargement
         }
       }
     }
   }
 
+  //Bascule entre les vues de messages publics et privés
   async function switchPrivacy(newPrivacy) {
-    setIsPrivate(newPrivacy);
-    setFilter('');
+    setIsPrivate(newPrivacy); //Change le statut de confidentialité
+    setFilter(''); //Réinitialise le filtre
   }
 
   return (
