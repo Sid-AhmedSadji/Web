@@ -1,32 +1,33 @@
-import {useParams,useNavigate} from 'react-router-dom'
-import Header from './Header.jsx'
-import MainDiv from './AfficheMessage.jsx'
-import {useState,useEffect} from 'react'
-import api from './ApiCalls.js'
-import styles from './Css/AfficheMessage.module.css'
-import toast,{Toaster} from 'react-hot-toast'
+import React from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import Header from './Header.jsx';
+import MainDiv from './AfficheMessage.jsx'; // Ensure component name starts with a capital letter
+import { useState, useEffect } from 'react';
+import api from './ApiCalls.js';
+import styles from './Css/AfficheMessage.module.css';
+import toast, { Toaster } from 'react-hot-toast';
 
 
 const MessageDetails = () => {
-  const idMessage  = useParams().id; // Rename `id` to `idMessage`
-  const [idUser, setIdUser] = useState(null); // Rename `id` to `idUser`
-  const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState(null);
-  const [title, setTitle] = useState("");
-  const [topic, setTopic] = useState("");
-  const [message, setMessage] = useState("");
-  const [isSettingTitle, setIsSettingTitle] = useState(true);
+  const idMessage  = useParams().id; // Rename `id` to `idMessage` | (Récupère l'ID du message de l'URL)
+  const [idUser, setIdUser] = useState(null); // Rename `id` to `idUser` | (État pour l'ID de l'utilisateur connecté)
+  const [loading, setLoading] = useState(true); //État pour l'affichage du chargement
+  const [user, setUser] = useState(null); //État pour stocker les informations de l'utilisateur
+  const [title, setTitle] = useState(""); //État pour le titre d'une réponse
+  const [topic, setTopic] = useState("");  //État pour stocker les détails du message principal
+  const [message, setMessage] = useState(""); //État pour le contenu d'une réponse
+  const [isSettingTitle, setIsSettingTitle] = useState(true); //Booléen pour basculer entre entrer un titre et un message
   const [mainDivKey, setMainDivKey] = useState(0); // Key to force MainDiv re-render
   let navigate = useNavigate();
 
 
   useEffect(() => {
   
-    async function fetchUser() {
+    async function fetchUser() { //Fonction pour récupérer les détails de l'utilisateur
       try {
         const id = await api.checkSession();
         setIdUser(id.userid);
-        const data = await api.getUser({ login: null, id: id.userid, type: null });
+        const data = await api.getUser({ login: null, id: id.userid, type: null }); 
         if (data) {
           setUser(data[0]);
         }
@@ -34,20 +35,20 @@ const MessageDetails = () => {
         setUser(null);
         console.error('Error:', error.response);
       }finally {
-        setLoading(false);
+        setLoading(false); //Termine le chargement
       }
     }
   
-    async function fetchMessage() {
+    async function fetchMessage() { //Fonction pour récupérer les détails du message principal
       try {
         const data = await api.getMessages({ id: idMessage });
-        setTopic(data.messages[0]);
+        setTopic(data.messages[0]); //Stocke les détails du message principal
       } catch (error) {
         console.error('Error:', error);
       }
     }
 
-    async function checkSession () {
+    async function checkSession () { //Fonction pour vérifier la session et récupérer les données
       try {
         console.log('Checking session...');
         const response = await api.checkSession();
@@ -61,21 +62,20 @@ const MessageDetails = () => {
 
     checkSession();
   
-
-  
   }, [idMessage]); // Trigger this effect each time the ID changes
   
-  async function handleKeyPress(e) {
+  
+  async function handleKeyPress(e) { //Gère la saisie du texte pour créer une nouvelle réponse
     if (e.key === 'Enter') {
       if (isSettingTitle) {
         if (title.length > 0) {
-          setIsSettingTitle(false);
+          setIsSettingTitle(false); //Passe à la saisie du message
         }
       } else {
         if (message.length > 0) {
           try {
             await api.postMessage({ title, id_Parent: idMessage, message, privacy: topic.privacy })
-            setMainDivKey(mainDivKey + 1);
+            setMainDivKey(mainDivKey + 1); //Incrémente la clé pour re-rendre MainDiv
           }catch (error) {
             setTitle('');
             setMessage('');
@@ -114,5 +114,5 @@ const MessageDetails = () => {
 
 export default MessageDetails;
 
-
+//Affiche une page de message
 
