@@ -2,16 +2,16 @@ import Header from "./Header.jsx"
 import { useState,useEffect } from "react";
 import styles from "./Css/Profil.module.css"
 import { useParams, useNavigate, Link } from "react-router-dom";
-import api from "./ApiCalls.js"
+import api from "./ApiCalls.js" //Importation des appels API
 import Messages from"./SectionMessages.jsx"
 
-function Message({ message, id }) {
+function Message({ message, id }) { //Composant pour afficher un message résumé avec un lien
   var msg = message;
 
   if (message.length > 60) {
     msg = message.slice(0, 60) + ' [...]';
   }
-
+  //(linkBtn) Lien vers le message complet 
   return (
     <div className={styles.message}>
       <Link className={styles.linkBtn} to={`/Messages/${id}`}>
@@ -24,27 +24,27 @@ function Message({ message, id }) {
 
 
 function Profil (){
-  const [loading, setLoading] = useState(true);
-  const [listeMessages, setListeMessages] = useState([]);
-  const [user, setUser] = useState(null);
-  const {login} =  useParams();
-  const [clicked, setclicked ] = useState(true);
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true); //État de chargement de la page
+  const [listeMessages, setListeMessages] = useState([]); //État pour stocker les messages de l'utilisateur
+  const [user, setUser] = useState(null); //État pour stocker les informations de l'utilisateur
+  const {login} =  useParams(); //Récupère le paramètre login de l'URL
+  const [clicked, setclicked ] = useState(true); //Gère l'affichage de la vue Profil ou Messages
+  const navigate = useNavigate(); //Pour faire ?
 
   useEffect(() => {
-    async function fetchUser() {
+    async function fetchUser() { //Récupère les informations de l'utilisateur
       try {
         const data = await api.getUser({login:login, id:null, type:null});
         setUser(data[0]);
       } catch (error) {
         console.error('Error:', error);
-        setLoading(false); // Finish loading in case of error
+        setLoading(false); // Finish loading in case of error (Je pense que cela ne sert à rien de mettre le setLoading ici, de toute façon cela se terminera toujours par un setLoading(False) qui est défini dans le finnaly).
       }finally {
-        setLoading(false);
+        setLoading(false); //Termine le chargement
       }
     }
   
-    async function fetchMessages() {
+    async function fetchMessages() { //Récupère les messages de l'utilisateur
       try {
         const data = await api.getMessages("public");
         setListeMessages(data.messages.filter(message => message.author_name===login ));
@@ -53,7 +53,7 @@ function Profil (){
       }
     }
 
-    async function checkSession () {
+    async function checkSession () { //Vérifie la session et lance les fetchs
       try {
         console.log('Checking session...');
         const response = await api.checkSession();
@@ -71,10 +71,12 @@ function Profil (){
 
   }, []);
 
+   //Affichage en cas de chargement
   if (loading) {
     return <div>Loading...</div>;
   }
 
+  //Génère la vue (le render) avec les informations de l'utilisateur
   function userDiv() {
     return (
       
@@ -90,17 +92,20 @@ function Profil (){
     );
   }
 
+  //Génère la vue (le render) avec les messages de l'utilisateur
   function messageDiv() {
     return (
       <div className={styles.messageDiv}    >
 
+
          <div className={styles.messages}>
 
-          <Messages listeMessages={listeMessages} />
+         <Messages listeMessages={listeMessages} />
           
-        </div>
+          </div>
 
-      </div>
+
+        </div>
     );
   }
 
@@ -112,20 +117,26 @@ function Profil (){
 
       <div className={styles.mainDiv}> 
 
-        <div className={styles.switch}>
+      <div className={styles.switch}>
           <button className={clicked ? styles.active : null} onClick={() => { setclicked(!clicked);  }}>Profile</button>
           <button className={!clicked ? styles.active : null} onClick={() => {setclicked(!clicked); }}>Messages</button>
         </div>
         
+
         {clicked ? userDiv() : messageDiv()}
+
+       
+
 
       </div>
 
+
+
     </div>
+
+
   );
-
 };
-
 export default Profil ;
 
 
