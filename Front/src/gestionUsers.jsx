@@ -1,9 +1,11 @@
 import styles from './Css/fileDAttente.module.css';
-import {useNavigate, useEffect, useState} from 'react';
-import api from './ApiCalls.js';
+import { useNavigate } from 'react-router-dom';
 import Header from './Header.jsx';
-import toast, {Toaster} from 'react-hot-toast';
+import { useEffect, useState } from 'react';
+import api from './ApiCalls.js';
+import toast, { Toaster } from 'react-hot-toast';
 
+//Fonction asynchrone pour récupérer la liste des utilisateurs
 async function getUsers() {
   try {
     const data = await api.getUser({ login: null, id: null, type: null });
@@ -17,24 +19,24 @@ async function getUsers() {
 
 
 
-
-
 function App(props) {
-  const [listOfUsers, setData] = useState([]);
-  const [userType, setType] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const [listOfUsers, setData] = useState([]); //Stocke la liste des utilisateurs
+  const [userType, setType] = useState(0); //Stocke le type de l'utilisateur actuel
+  const [loading, setLoading] = useState(true); //Indique si les données sont en train de charger
   const navigate = useNavigate();
-  const [i, setI] = useState(0);
+  const [i, setI] = useState(0); //Compteur utilisé pour forcer le rechargement des données
 
+  //Fonction pour récupérer les données des utilisateurs
   async function fetchData() {
     const data = await getUsers();
     data.data === undefined ? setData(data.filter(user => user.type !== '0')) : [];
   }
 
-  
-useEffect(() => {
-  toast.loading('Please wait...');
 
+  useEffect(() => {
+    toast.loading('Please wait...'); //Affiche une notification (un toast) de chargement
+
+  //Vérifie la session et charge les données  
   async function checkSession() {
     try {
       console.log('Checking session...');
@@ -50,18 +52,17 @@ useEffect(() => {
 
   checkSession();
 
+  //Actualise les données toutes les 5 secondes
   const interval = setInterval(async () => {
     await fetchData();
     setLoading(false);
   }, 5000);
   toast.dismiss();
 
-  return () => clearInterval(interval);
+  return () => clearInterval(interval); // Nettoie l'intervalle lors du démontage du composant
 }, [i]);
 
-
-
-
+  //Fonction pour changer le type d'un utilisateur
   async function changeType(props) {
     try {
       const { id, type } = props;
@@ -72,6 +73,7 @@ useEffect(() => {
     }
   }
 
+  //Affiche un indicateur de chargement
   if (loading) {
     return <div>Loading...</div>;
   }
