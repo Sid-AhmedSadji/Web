@@ -1,32 +1,36 @@
 //App.js
 
-const { ObjectId } = require('mongodb');
-const express = require("express");
-const Users = require("./entities/users.js");
-const Messages = require("./entities/messages.js");
-const MongoClient = require("mongodb").MongoClient;
+const { ObjectId } = require('mongodb'); //Utilisé pour convertir les ID en format MongoDB ObjectId
+const express = require("express"); //Framework pour créer le serveur HTTP
+const Users = require("./entities/users.js"); //Module pour les opérations liées aux utilisateurs
+const Messages = require("./entities/messages.js"); //Module pour les opérations liées aux messages
+const MongoClient = require("mongodb").MongoClient; //Client MongoDB pour se connecter à la base de données
 
-
+//Fonction pour initialiser les routes
 function init(dbUrl) {
 
-    const router = express.Router();
+    const router = express.Router(); //Crée un nouveau routeur
     // On utilise JSON
-    router.use(express.json());
+    router.use(express.json()); //Middleware pour analyser le corps JSON des requêtes entrantes
     // simple logger for this router's requests
     // all requests to this router will first hit this middleware
+
+    //Middleware pour logger les requêtes
     router.use((req, res, next) => {
         console.log('API: method %s, path %s', req.method, req.path);
         console.log('Body', req.body);
         console.log('Query', req.query);
-        next();
+        next(); //Passe à la prochaine fonction de middleware ou route
     });
-    const users = new Users.default(dbUrl);
-    const messages = new Messages.default(dbUrl);
 
+    const users = new Users.default(dbUrl); //Instancie la gestion des utilisateurs
+    const messages = new Messages.default(dbUrl); //Instancie la gestion des messages
+
+    //Route pour obtenir des messages
     router.get("/messages",async (req, res) => {
 
         try {
-
+            //Vérifie si l'utilisateur est connecté en vérifiant la session
             const userid = req.session?.userid;
             if (!userid) {
                 res.status(401).json({
@@ -34,21 +38,26 @@ function init(dbUrl) {
                 });
                 return;
             }
+
+            //Extraction des paramètres de requête : `id` et `privacy`
             const { id, privacy } = req.query;
             const newObectId = id ? new ObjectId(id) : null;
-
-            const result = await messages.get(newObectId,privacy);
+            
+            //Récupération des messages de la base de données
+            const result = await messages.get(newObectId, privacy);
             if (!result) {
                 res.status(404).json({ message: "No messages found" });
                 return;
             }
+            //Si des messages sont trouvés, les retourner avec un statut 200
             res.status(200).json({ message: "Messages found", messages: result });
         }catch (e) {
+            //En cas d'erreur, envoyer un 500 Internal Server Error
             res.status(500).send({ message: "Internal server error", error: e });
         }
     });
 
-
+    //Route pour changer le type d'utilisateur
     router.post("/changeType", async (req, res) => {
         try {
             const { id,type } = req.body;
@@ -71,6 +80,7 @@ function init(dbUrl) {
             res.status(500).send({message: "Internal server error", error : e });
     }})
 
+    //Route pour créer un nouveau message
     router.put("/message", async (req, res) => {
         try {
 
@@ -104,6 +114,8 @@ function init(dbUrl) {
             res.status(500).send({ message: "Internal server error", error: e });
         }
     });
+
+    //Route pour supprimer un message
     router.delete("/message/:id", async (req, res) => {
 
         try {
@@ -118,12 +130,14 @@ function init(dbUrl) {
         } catch (e) {
             res.status(500).send({ message: "Internal server error", error: e });
         }
-    })
-    ;
+    });
 
+    //Route pour vérifié l'état de la session
     router.get("/session", (req, res) => {
         try{
+            //Vérifier si l'ID de l'utilisateur est stocké dans la session
             if (req.session.userid) {
+                //Si l'utilisateur est connecté, renvoie un statut 200 avec des détails de l'utilisateur
                 res.status(200).json({
                     message: "User logged in",
                     userid: req.session.userid,
@@ -131,19 +145,24 @@ function init(dbUrl) {
                 });
             }
             else {
+                //Si aucun utilisateur n'est connecté, renvoie un statut 401
                 res.status(401).json({
                     message: "User not logged in"
                 });
             }
         }catch(e){
+            //En cas d'erreur du serveur, renvoie un statut 500
             res.status(500).send({message: "Internal server error", error : e });
         }
     });
 
+    //Route pour créer une session utilisateur après une connexion réussie
     router.post("/user/login", async (req, res) => {
+
         try {
-            const { login, password } = req.body;
-            // Erreur sur la requête HTTP
+            const { login, password } = req.body; //Extraire login et password du corps de la requête
+
+            // Erreur sur la requête HTTP (Vérifie si le login et le password sont présents dans la requête)
             if (!login || !password) {
             	res.status(400).json({
                     status: 400,
@@ -151,6 +170,8 @@ function init(dbUrl) {
                 });
                 return;
             }
+
+            //Vérifie si l'utilisateur existe dans la base de données
             if(! await users.exists(login)) {
             	res.status(401).json({
                     status: 401,
@@ -158,9 +179,12 @@ function init(dbUrl) {
                 });
                 return;
             }
+            
+            //Vérifier le mot de passe de l'utilisateur
             let user = await users.checkPassword(login, password);
+
             if (user) {
-                // Avec middleware express-session
+                // Avec middleware express-session(Si le mot de passe est correct, régénére la session pour la sécurité)
                 req.session.regenerate(function (err) {
                     if (err) {
                         res.status(500).json({
@@ -169,7 +193,7 @@ function init(dbUrl) {
                         });
                     }
                     else {
-                        // C'est bon, nouvelle session créée
+                        // C'est bon, nouvelle session créée (Si la session est régénérée avec succès, enregistre l'id et le type de l'utilisateur dans la session)
                         req.session.userid = user._id;
                         req.session.usertype =  user.type;
                         res.status(200).json({
@@ -182,7 +206,7 @@ function init(dbUrl) {
                 });
                 return;
             }
-            // Faux login : destruction de la session et erreur
+            // Faux login : destruction de la session et erreur (Si le mot de passe est incorrect, détruit la session et retourner une erreur)
             req.session.destroy((err) => { });
             res.status(403).json({
                 status: 403,
@@ -218,7 +242,10 @@ function init(dbUrl) {
 
 
     router
+        //Crée une route de base pour "/users"
         .route("/users")
+
+        //Route pour récupérer diffèrent utilisateur
         .get(async (req, res) => {
 
         try {
@@ -228,14 +255,16 @@ function init(dbUrl) {
 
             const user = await users.get(newObectId,login,type);
             if (user.length == 0)
-                res.sendStatus(404);
+                res.sendStatus(404); //Aucun utilisateur trouvé
             else
-                res.status(200).send(user);
+                res.status(200).send(user); //Envoie les utilisateurs trouvés
         }
         catch (e) {
-            res.status(500).send(e);
+            res.status(500).send(e); //Erreur serveur
         }
     })//fait
+
+    //Route pour supprimer un utilisateur spécifique
     .delete(async(req, res, next) => {
     try {
         const user = await users.deleteUser(req.params.user_id);
@@ -250,6 +279,7 @@ function init(dbUrl) {
     });
 
     //fait
+    //Route permet de créer un nouvel utilisateur
     router.put("/user", async (req, res) => {
         const { login, password, lastname, firstname } = req.body;
         if (!login || !password || !lastname || !firstname) {
@@ -276,6 +306,7 @@ function init(dbUrl) {
 
 
 
-    return router;
+    return router; //Retourne le routeur configuré
 }
-exports.default = init;
+
+exports.default = init; 
