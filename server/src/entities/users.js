@@ -1,12 +1,14 @@
 const MongoClient = require("mongodb").MongoClient;
 
 class Users {
+  //Constructeur pour initialiser la connexion à la base de données
   constructor(db) {
     (async () => {
       this.client = await MongoClient.connect(db);
     })();
   }
 
+  //Méthode pour créer un utilisateur dans la base de données
   async create(login, password, lastname, firstname,id) {
     try {
       const result = await this.client.db().collection('Users').insertOne({
@@ -23,7 +25,7 @@ class Users {
     }
   }
 
-
+  //Méthode pour récupérer des utilisateurs basée sur l'ID, le login ou le type
   async get(userid, login,type) {
     try {
       const query = userid == null ? {} : { _id: userid };
@@ -41,6 +43,7 @@ class Users {
     }
   }
 
+  //Méthode pour vérifier si un utilisateur existe par son login
   async exists(login) {
     try {
       const result = await this.client.db().collection('Users').findOne({
@@ -52,6 +55,7 @@ class Users {
     }
   }
 
+  //Méthode pour vérifier le mot de passe d'un utilisateur
   async checkPassword(login, password) {
     try {
       const result = await this.client.db().collection('Users').findOne({
@@ -66,6 +70,7 @@ class Users {
 
   async
 
+  //Méthode pour supprimer un utilisateur par son ID
   async deleteUser(id) {
     try {
       const result = await this.client.db().collection('Users').deleteOne({
@@ -77,6 +82,7 @@ class Users {
     }
   }
 
+  //Méthode pour mettre à jour le type d'un utilisateur
   async update(id, type) {
     try {
       const result = await this.client.db().collection('Users').updateOne({
