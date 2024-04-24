@@ -1,6 +1,7 @@
 import SingleMessage from "./Message";
 import styles from './Css/SectionMessages.module.css';
 
+//Définition du composant avec props pour la liste des messages, un indicateur de chargement, et le type de l'utilisateur
 function Messages({ listeMessages, loading, type }) {
   return (
     <div className={styles.main}>
@@ -17,9 +18,12 @@ function Messages({ listeMessages, loading, type }) {
             </li>
           ))}
       </ul>
+      <div className={styles.menuContainer}> 
+      </div>
     </div>
   );
 }
 
 export default Messages;
 
+//Le composant Messages (SectionMessages) est conçu pour afficher une liste de messages principaux (c'est-à-dire ceux qui n'ont pas de message parent, ceux qui démarre le sujet).

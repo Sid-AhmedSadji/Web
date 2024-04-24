@@ -5,6 +5,7 @@ import Header from './Header.jsx';
 import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
+//Fonction asynchrone pour récupérer la liste des utilisateurs
 async function getUsers() {
   try {
     const data = await api.getUser({ login: null, id: null, type: null });
@@ -16,59 +17,55 @@ async function getUsers() {
 }
 
 function App(props) {
-  const [listOfUsers, setListOfUsers] = useState([]);
-  const [userType, setUserType] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const [listOfUsers, setListOfUsers] = useState([]); //Stocke la liste des utilisateurs
+  const [userType, setUserType] = useState(0); //Stocke le type de l'utilisateur actuel
+  const [loading, setLoading] = useState(true); //Indique si les données sont en train de charger
   const navigate = useNavigate();
-  const [i, setI] = useState(0);
 
-  async function fetchData() {
-    const data = await getUsers();
-    console.log(data)
-    setListOfUsers(data.filter(user => user.type !== '0'));
-  }
 
   useEffect(() => {
-    toast.loading('Please wait...');
-
-    async function checkSession() {
-      try {
+    toast.promise(
+      (async () => {
         console.log('Checking session...');
         const response = await api.checkSession();
         setUserType(response.usertype);
         await fetchData();
         setLoading(false);
-      } catch (error) {
-        console.error("Error", error.response.data.message);
-        navigate("/");
+        return 'Done!';
+      })(),
+      {
+        loading: 'Connecting to server ...',
+        success: 'Done!',
+        error: (err) => `Login failed: ${err?.response?.data || 'Internal server error'}`
       }
-    };
+    );
+  }, []);
 
-    checkSession();
+  //Fonction pour récupérer les données des utilisateurs
+  async function fetchData() {
+    const data = await getUsers();
+    setListOfUsers(data.filter(user => user.type !== '0'));
+  }
 
-    const interval = setInterval(async () => {
-      await fetchData();
-      setLoading(false);
-    }, 5000);
-
-    toast.dismiss();
-
-    return () => clearInterval(interval);
-  }, [i]);
-
+  //Fonction pour changer le type d'un utilisateur
   async function changeType(props) {
-    try {
-      const { id, type } = props;
-      console.log(id, type)
-      const response = await api.changeTypeUser({ id: id, type: type });
-    } catch (error) {
-      console.error('Error:', error);
-    }
+    const id = props.id;
+    const type = props.type;
+    return toast.promise(
+      (async () => {
+        const response = await api.changeTypeUser({ id: id, type: type });
+        await fetchData();
+      })(),
+      { loading: 'Changing user type...', success: 'Done!', error: 'Error changing user type' }
+    );
   }
 
+  //Affiche un indicateur de chargement
   if (loading) {
-    return <div>Loading...</div>;
+    return <><Toaster /></>;
   }
+  
+
 
   if (userType !== 'admin') {
     return (
@@ -81,7 +78,7 @@ function App(props) {
   return (
     <div className={styles.main}>
       <Toaster />
-      <Header setData={props.setData} shearchBar={false} />
+      <Header setData={props.setData} shearchBar={false} user={userType}/>
       <div className={styles.myForm}>
         <h4>Lastname</h4>
         <h4>Firstname</h4>
@@ -98,10 +95,10 @@ function App(props) {
           <h4>{user.type}</h4>
           <div className={styles.btnDiv}>
             {user.type === "banned" ?
-              <button className={`${styles.myButton} ${styles.Accept}`} onClick={() => { changeType({ id: user._id, type: "user" }); setI(i + 1) }}>Unban</button> :
-              <button className={`${styles.myButton} ${styles.Accept}`} onClick={() => { user.type === "admin" ? toast.error("Unpermitted action") : (changeType({ id: user._id, type: "admin" }) && setI(i + 1)) }}>Admin</button>
+              <button className={`${styles.myButton} ${styles.Accept}`} onClick={() => { toast.promise(changeType({ id: user._id, type: "user" }), { loading: 'Unbanning...', success: 'Done!', error: 'Error' }) }}>Unban</button> :
+              <button className={`${styles.myButton} ${styles.Accept}`} onClick={() => { toast.promise(changeType({ id: user._id, type: "admin" }), { loading: 'Giving rights...', success: 'Done!', error: 'Error' }) }}>Admin</button>
             }
-            <button className={`${styles.myButton} ${styles.Refuse}`} onClick={() => { user.type === "admin" ? toast.error("Unpermitted action") : (changeType({ id: user._id, type: "banned" }) && setI(i + 1)) }}>Ban</button>
+            <button className={`${styles.myButton} ${styles.Refuse}`} onClick={() => { toast.promise(changeType({ id: user._id, type: "banned" }), { loading: 'Banning...', success: 'Done!', error: 'Error' }) }}>Ban</button>
           </div>
         </form>
       ))}
@@ -110,3 +107,5 @@ function App(props) {
 }
 
 export default App;
+
+

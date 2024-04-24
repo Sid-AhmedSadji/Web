@@ -1,12 +1,15 @@
-import styles from './Css/fileDAttente.module.css'
-import {useNavigate} from 'react-router-dom'
-import Header from './Header'
-import {useEffect,useState} from 'react'
-import api from './ApiCalls'
+import styles from './Css/fileDAttente.module.css';
+import { Link, useNavigate } from 'react-router-dom';
+import Menu from './MenuRoulant.jsx';
+import Header from './Header.jsx';
+import { useEffect, useState } from 'react';
+import api from './ApiCalls.js';
+import toast, { Toaster } from 'react-hot-toast';
 
+//Fonction asynchrone pour récupérer les utilisateurs
 async function getUsers() {
   try {
-    const data = await api.getUser({
+    const data = await api.getUser({ //Appel API pour récupérer des utilisateurs de type '0' (en attente)
       login: null,
       id: null,
       type: '0',
@@ -15,58 +18,53 @@ async function getUsers() {
 
   } catch (error) {
     console.error('Error:', error.response.data);
-    return { data: [] };
+    return { data: [] }; //Retourne un tableau vide en cas d'erreur
   }
 }
 
 function App(props) {
-  const [users, setData] = useState([]);
-  const [userType, setType] = useState(0);
-  const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
+  const [users, setData] = useState([]); //État pour stocker les utilisateurs
+  const [userType, setType] = useState(0); //État pour le type de l'utilisateur actuel
+  const [loading, setLoading] = useState(true); //État de chargement
+  const navigate = useNavigate(); //Hook pour la navigation programmée (Redirection)
 
   useEffect(() => {
-    async function fetchData() {
-      const data = await getUsers({ type: '0' });
-      data.data === undefined ? setData(data) : [];
-    }
-
-    async function checkSession() {
-      try {
+    toast.promise(
+      (async () => {
         console.log('Checking session...');
         const response = await api.checkSession();
         setType(response.usertype);
-        fetchData();
+        const newUsers = await getUsers({ type: '0' });
+        setData(newUsers);
         setLoading(false);
-      } catch (error) {
-        console.error('Error', error.response.data.message);
-        navigate('/');
+        return 'Done!';
+      })(),
+      {
+        loading: 'Connecting to server ...',
+        success: 'Done!',
+        error: (err) => `Login failed: ${err?.response?.data || 'Internal server error'}`
       }
-    }
-
-    checkSession();
-
-    const interval = setInterval(async () => {
-      await fetchData();
-      setLoading(false);
-    }, 5000);
-
-    return () => clearInterval(interval);
+    );
   }, []);
 
-  async function changeType(props) {
+  async function changeType(props) { 
     try {
       const { id, type } = props;
-      console.log(id, type);
       const reponse = await api.changeTypeUser({ id: id, type: type });
+      const newUsers = await getUsers({ type: '0' });
+      setData(newUsers);
     } catch (error) {
       console.error('Error:', error);
     }
   }
 
+  //Affichage du chargement
+  //Affiche un indicateur de chargement
+
   if (loading) {
-    return <div>Loading...</div>;
+    return <><Toaster /></>;
   }
+  
 
   if (userType !== 'admin') {
     return (
@@ -76,9 +74,12 @@ function App(props) {
     );
   }
 
+
+
   return (
     <div className={styles.main}>
-      <Header setData={props.setData} searchBar={false} />
+      <Toaster />
+      <Header setData={props.setData} searchBar={false} user={userType} />
       <div className={styles.myForm}>
         <h4>Lastname</h4>
         <h4>Firstname</h4>
@@ -86,28 +87,45 @@ function App(props) {
         <h4>Actions</h4>
       </div>
       <hr style={{ width: '55%' }} />
-      {users.map((user, index) => (
-        <form key={index} className={styles.myForm}>
-          <h4>{user.lastname}</h4>
-          <h4>{user.firstname}</h4>
-          <h4>{user.login}</h4>
-          <div className={styles.btnDiv}>
-            <button
-              className={`${styles.myButton} ${styles.Accept}`}
-              onClick={() => changeType({ id: user._id, type: 'user' })}
-              type="submit"
-            >
-              Accept
-            </button>
-            <button
-              className={`${styles.myButton} ${styles.Refuse}`}
-              onClick={() => changeType({ id: user._id, type: 'banned' })}
-            >
-              Refuse
-            </button>
-          </div>
-        </form>
-      ))}
+      {users.data ? (
+        <></>
+     ) : (
+        users.map((user, index) => (
+          <form key={index} className={styles.myForm} onSubmit={(e) => e.preventDefault()}>
+            <h4>{user.lastname}</h4>
+            <h4>{user.firstname}</h4>
+            <h4>{user.login}</h4>
+            <div className={styles.btnDiv}>
+              <button
+                className={`${styles.myButton} ${styles.Accept}`}
+                onClick={() =>
+                  toast.promise(
+                    changeType({id:user._id, tpe:'user'}),
+                    {
+                      loading: 'Changing user type...',
+                      success: 'Done!',
+                      error: 'Error changing user type',
+                    }
+                  )
+                }
+              >
+                Accept
+              </button>
+              <button
+                className={`${styles.myButton} ${styles.Refuse}`}
+                onClick={() =>
+                  toast.promise(
+                    changeType({id:user._id, type:'banned'}),
+                    { loading: 'Changing user type...', success: 'Done!', error: 'Error changing user type' }
+                  )
+                }
+              >
+                Refuse
+              </button>
+            </div>
+          </form>
+        ))
+      )}
     </div>
   );
 }

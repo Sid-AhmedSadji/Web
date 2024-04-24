@@ -4,14 +4,14 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const cors = require('cors');
 const app = express();
-const port = 8000;
+const port = 8000; //Y a un truc qui vas pas... Port 8000... Ou alors c'était pour les tests ?
 
 //app.use(cookieParser());
-app.use(cors({credentials: true, origin: 'http://localhost:5173'}));
-app.use(bodyParser.json());
+app.use(cors({credentials: true, origin: 'http://localhost:5173'})); //Configuration de CORS pour accepter les requêtes de localhost:5173 avec des Cookies
+app.use(bodyParser.json()); //Utilisation de bodyParser pour parser les corps de requêtes JSON
 // Configuration de express-session
 app.use(session({
-    secret: 'secretKey',
+    secret: 'secretKey', //Clé secrète pour la signature du cookie de session
     resave: false,
     saveUninitialized: false,
     cookie: {
@@ -21,7 +21,7 @@ app.use(session({
 
 
 
-
+//Données fictives pour les utilisateurs
 const users = [
     {
         "pseudo": "JohnDoe123",
@@ -90,8 +90,9 @@ const users = [
         "id": "10"
     }
 ];
-    
- const listeMessages = [
+
+//Données fictives pour les messages
+const listeMessages = [
     {
         "author_name": "JohnDoe123",
         "author_id": "0",
@@ -164,12 +165,14 @@ const users = [
     },
 ];
 
+//Route pour obtenir un utilisateur par ID
 app.get('/api/user/:id', (req, res) => {
     res.setHeader('Content-Type', 'application/json;charset=UTF-8');
     const id = req.params.id;
     res.end(JSON.stringify(users.filter(message => message.id === id)));
 })
 
+//Route pour obtenir tous les utilisateurs
 app.get('/api/users', (req, res) => {
     res.setHeader('Content-Type', 'application/json;charset=UTF-8');
     res.end(JSON.stringify(users));
@@ -206,7 +209,6 @@ app.delete('/api/user/:id', (req, res) => {
         res.sendStatus(200);
     } else {
         res.sendStatus(404);
-
     }
 })
 
@@ -362,3 +364,4 @@ app.use ((req, res) => {
 app.listen(port, function() {
     console.log(`Le serveur écoute le port ${port}`);
 });
+

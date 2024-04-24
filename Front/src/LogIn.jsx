@@ -23,7 +23,10 @@ function Login(props) {
         props.setUser(response.id); 
       }
     } catch (error) {
-      toast.error(`Login failed: ${error.response.data.message}`);
+      if (error.response )
+        toast.error(`Login failed: ${error.response.data}`);
+      else 
+        toast.error(`Login failed: Internal server error`);
       console.error('Error:', error);
     }
   }
