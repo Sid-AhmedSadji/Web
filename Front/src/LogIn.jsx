@@ -1,29 +1,26 @@
-import { Link, useNavigate } from "react-router-dom"; //Importe Link pour la navigation et useNavigate pour la redirection programmée
-import useState from 'react'; //Importe useState pour la gestion de l'état local, useEffect pour les effets de bord
+import { Link, useNavigate } from "react-router-dom";
+import React, { useState } from 'react'; // Correct import statement for useState
 import styles from "./Css/Login.module.css"; 
-import toast, { Toaster } from 'react-hot-toast'; //Importe toast pour afficher des notifications
-import api from './ApiCalls'; //Importe les appels API définis dans ApiCalls.js
+import toast, { Toaster } from 'react-hot-toast'; 
+import api from './ApiCalls';
 
 function Login(props) {
-  const [pseudo, setPseudo] = useState(""); //Gère l'état pour le pseudonyme de l'utilisateur
-  const [password, setPassword] = useState(""); //Gère l'état pour le mot de passe
+  const [pseudo, setPseudo] = useState(""); 
+  const [password, setPassword] = useState(""); 
 
-
-  
-  //Fonction asynchrone pour récupérer les utilisateurs
   async function getUser() {
     try {
       if (pseudo === "" || password === "") { 
-        toast.error("Please fill all fields"); //Affiche une notification d'erreur
+        toast.error("Please fill all fields"); 
         return;
       }
-      const user = await api.getUser({ login: pseudo, id: null, type: null }); //Tente de récupérer l'utilisateur
-      if (user[0].type !== "admin" && user[0].type !== "user") { //Vérifie le type de l'utilisateur
+      const user = await api.getUser({ login: pseudo, id: null, type: null }); 
+      if (user[0].type !== "admin" && user[0].type !== "user") { 
         toast.error("Please wait for the account confirmation");
       } else {
         const response = await api.login({ login: pseudo, password: password });
         toast.success("Login successful");
-        props.setUser(response.id); //Met à jour l'état global de l'utilisateur
+        props.setUser(response.id); 
       }
     } catch (error) {
       toast.error(`Login failed: ${error.response.data.message}`);
@@ -64,7 +61,6 @@ function Login(props) {
             <div className={styles.inputField}>
               <button className={styles.inputSubmit} onClick={getUser}> 
                 Sign In
-                Sign In
               </button>
             </div>
           </div>
@@ -79,4 +75,3 @@ function Login(props) {
 }
 
 export default Login;
-

@@ -44,6 +44,7 @@ function Home(props) {
         setListeMessages(res); //Met à jour l'état avec les messages filtrés
       } catch (error) {
         console.error('Error:', error);
+        props.setUser(null)
       } finally {
         setLoading(false); //Arrête le chargement
       }
