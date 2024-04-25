@@ -2,17 +2,40 @@
 
 This application is a web forum where users can create topics and respond to them. Users have limited access to the site and cannot access messages until they have been authorized by an admin.
 
-## Technologies Used
+## Technologies Used & API Calls
 
-- **Node.js**: JavaScript runtime environment
-- **Express.js**: Web framework for Node.js
-- **React.js**: JavaScript library for building user interfaces
-- **MongoDB**: NoSQL database
-- **Express Session**: Middleware for session management in Express.js
+### Technologies Used
+
+ **Node.js**: JavaScript runtime environment
+ **Express.js**: Web framework for Node.js
+ **React.js**: JavaScript library for building user interfaces
+ **MongoDB**: NoSQL database
+ **Express Session**: Middleware for session management in Express.js
 
 These technologies are used specifically for handling database queries.
 
 Additionally, some elements of the frontend are sourced from open-source projects.
+
+### API Calls
+
+All requests to the database from the frontend are handled through the `apiCalls.js` file. This file contains methods for interacting with the server's API endpoints, including user authentication, message posting, user management, and more.
+
+Here's a summary of the main functionalities provided by `apiCalls.js`:
+
+ **Authentication**:
+  - `login(props)`: Logs in the user.
+  - `logout()`: Logs out the user.
+  - `checkSession()`: Checks the user's session status.
+
+ **User Management**:
+  - `postUser(props)`: Registers a new user.
+  - `changeTypeUser(props)`: Changes the type of a user.
+  - `getUser(props)`: Retrieves user information.
+
+ **Message Posting**:
+  - `postMessage(props)`: Posts a new message.
+  - `getMessages(props)`: Retrieves messages.
+  - `deleteMessage(id)`: Deletes a message.
 
 ## Configuration
 
@@ -37,14 +60,25 @@ Additionally, some elements of the frontend are sourced from open-source project
 - Username: admin
 - Password: admin
 
+## User Types
+
+There are different types of users in the system:
+
+- **Type 0 (Pending)**: Users who have registered but their account has not been validated yet.
+- **Type Banned**: Users who have the same rights as Type 0 users but have been rejected by an admin.
+- **Type User**: Users who have been authorized by an admin. They have access to other users' profiles and to the public forum.
+- **Type Admin**: Admin users who can grant or revoke permissions from other users, access both public and private forums.
+
+These user types are used to manage access and permissions within the application.
+
 ## Pages
 
-- **Home**: The main page where users can log in or sign up. [Go to Home](http://localhost:5173/)
-- **Sign Up**: Page for new users to create an account. [Go to Sign Up](http://localhost:5173/SignUp)
-- **Profile**: User profile page, accessible by clicking on a user's username. [Go to Profile](http://localhost:5173/Profil/:login)
-- **Message Page**: Page to view and respond to messages within a topic. [Go to Message Page](http://localhost:5173/Messages/:id)
-- **Request**: Page where users can request access to view messages. [Go to Request](http://localhost:5173/Request)
-- **User Management**: Page for admin users to manage other users. [Go to User Management](http://localhost:5173/gestionUsers)
+- **/**: The main page where users can log in or view topics.
+- **/SignUp**: Page for new users to create an account. 
+- **/Profil/:pseudo**: User profile page, where :pseudo represents the username of a user, accessible by clicking on a user's username. 
+- **/Messages/:id**: Page to view and respond to messages within a topic. Where :id represents the id of a topic, accessible by clicking on a TOPIC. 
+- **/Request**: This page is only accessible to admins. Here, admins can view all users who have registered and are awaiting validation to access the messages.
+- **/gestionUsers**: Page for admin users to manage other users. Here, admins can change the permissions of other users.
 
 ## API Routes
 
@@ -62,7 +96,7 @@ The application exposes the following API routes:
 
 POST requests require a JSON body containing the required data.
 
-
 ## Authors
 
 This project was created by Sadji Sid-Ahmed and Lim Oudam-dara as part of a university project.
+
