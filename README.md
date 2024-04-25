@@ -1,69 +1,60 @@
-# Application de gestion d'utilisateurs et de messages
+# Web Forum App
 
-Cette application est un système de gestion des utilisateurs et des messages. Elle permet de créer, de modifier et de supprimer des utilisateurs, ainsi que d'envoyer, de modifier et de supprimer des messages.
+This application is a web forum where users can create topics and respond to them. Users have limited access to the site and cannot access messages until they have been authorized by an admin.
 
-## Technologies utilisées
+## Technologies Used
 
-- **Node.js** : Plateforme JavaScript côté serveur
-- **Express.js** : Framework web pour Node.js
-- **React.js** : Bibliothèque JavaScript pour construire des interfaces utilisateur
-- **MongoDB** : Base de données NoSQL
-- **Session Express** : Middleware de gestion des sessions pour Express.js
+- **Node.js**: JavaScript runtime environment
+- **Express.js**: Web framework for Node.js
+- **React.js**: JavaScript library for building user interfaces
+- **MongoDB**: NoSQL database
+- **Express Session**: Middleware for session management in Express.js
+
+These technologies are used specifically for handling database queries.
+
+Additionally, some elements of the frontend are sourced from open-source projects.
 
 ## Configuration
 
-1. **Installation des dépendances** : Avant de démarrer l'application, assurez-vous d'installer toutes les dépendances en exécutant la commande suivante dans les répertoire Front et serveur :
+1. **Install Dependencies**: Before starting the application, make sure to install all dependencies by running the following command in both the `FRONT` and `server` directories:
    ```
    npm install
    ```
 
-2. **Configuration de la base de données** : Assurez-vous d'avoir une instance MongoDB exécutée localement ou configurez les informations de connexion à une base de données distante dans le fichier `config.js`.
-
-3. **Démarrage du serveur** : Lancez le serveur en exécutant la commande suivante :
+2. **Start the Server**: Launch the server by running the following command from the `server` directory:
    ```
    npm start
    ```
 
-4. **Démarrage de l'application frontend** : Pour démarrer l'application frontend, accédez au répertoire `frontend` et exécutez la commande suivante :
+3. **Start the Frontend Application**: To start the frontend application, navigate to the `FRONT` directory and run the following command:
    ```
    npm run dev 
    ```
 
-## Utilisation
+4. **Open Your Browser**: After starting the server and frontend application, open your web browser and go to `localhost:5173`.
 
-1. **Connexion** : Lorsque vous accédez à l'application, vous serez invité à vous connecter. Utilisez vos identifiants utilisateur pour vous connecter.
-
-2. **Gestion des utilisateurs** : Une fois connecté, vous pouvez accéder à la gestion des utilisateurs. Vous pouvez ajouter, supprimer et modifier des utilisateurs.
-
-3. **Gestion des messages** : Vous pouvez également accéder à la gestion des messages. Ici, vous pouvez envoyer de nouveaux messages, modifier et supprimer les messages existants.
-
-## Routes API
-
-L'application expose les routes API suivantes :
-
-- `GET /api/users` : Récupère la liste des utilisateurs.
-- `GET /api/users/:id` : Récupère un utilisateur par son ID.
-- `POST /api/users` : Crée un nouvel utilisateur.
-- `PUT /api/users/:id` : Met à jour un utilisateur existant.
-- `DELETE /api/users/:id` : Supprime un utilisateur par son ID.
-
-- `GET /api/messages` : Récupère la liste des messages.
-- `GET /api/messages/:id` : Récupère un message par son ID.
-- `POST /api/messages` : Crée un nouveau message.
-- `PUT /api/messages/:id` : Met à jour un message existant.
-- `DELETE /api/messages/:id` : Supprime un message par son ID.
-
-## Ce qui reste a faire : 
-- **Optimiser le Front**
-- **Chercher des bugs**
-- **Optimiser l'apiCall et gestions des erreurs<>**
-- **Faire une page avec tous les utilisateurs et permettre de les rendre admins**
-- **Hasher les mots de passe**
-- **Modifier info panel pour uniquement afficher les topics**
-- **Faire le readme**
+5. **Default Admin User**: By default, the application comes with an admin user with the following credentials:
+- Username: admin
+- Password: admin
 
 
-## Auteurs
+## API Routes
 
-Ce projet a été réalisé par Sadji Sid-Ahmed et Lim [Ajouter son nom].
+The application exposes the following API routes:
 
+- `GET /api/messages`: Retrieves the list of messages.
+- `POST /api/message`: Creates a new message.
+- `DELETE /api/message/:id`: Deletes a message by its ID.
+- `GET /api/session`: Checks the user's session status.
+- `POST /api/user/login`: Logs in the user.
+- `GET /api/user/logout`: Logs out the user.
+- `GET /api/users`: Retrieves the list of users.
+- `POST /api/user`: Creates a new user.
+- `POST /api/changeType`: Changes the user's type.
+
+POST requests require a JSON body containing the required data.
+
+
+## Authors
+
+This project was created by Sadji Sid-Ahmed and Lim Oudam-dara as part of a university project.

@@ -21,7 +21,7 @@ class Api {
 
     const id = await this.checkSession(); //Vérifie la session de l'utilisateur
     
-    const response = await axios.put(Api.api + '/message', { //Envoie une requête PUT pour créer/modifier un message
+    const response = await axios.post(Api.api + '/message', { //Envoie une requête POST pour créer/modifier un message
         message,
         id_Parent,
         title,
@@ -71,7 +71,7 @@ class Api {
     const { pseudo, password, lastname, firstname } = props;
       const hastedPassword=this.hashPassword(password); //Hash le mot de passe avant l'envoi
       axios.defaults.withCredentials = true;
-      const response = await axios.put(Api.api + '/user', { 
+      const response = await axios.post(Api.api + '/user', { 
         login: pseudo,
         password: hastedPassword,
         lastname,

@@ -81,7 +81,7 @@ function init(dbUrl) {
     }})
 
     //Route pour créer un nouveau message
-    router.put("/message", async (req, res) => {
+    router.post("/message", async (req, res) => {
         try {
 
             let { userid, message, id_Parent, title, date, privacy } = req.body;
@@ -280,7 +280,7 @@ function init(dbUrl) {
 
     //fait
     //Route permet de créer un nouvel utilisateur
-    router.put("/user", async (req, res) => {
+    router.post("/user", async (req, res) => {
         const { login, password, lastname, firstname } = req.body;
         if (!login || !password || !lastname || !firstname) {
             res.status(400).send("Missing fields");
