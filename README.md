@@ -37,6 +37,14 @@ Additionally, some elements of the frontend are sourced from open-source project
 - Username: admin
 - Password: admin
 
+## Pages
+
+- **Home**: The main page where users can log in or sign up. [Go to Home](http://localhost:5173/)
+- **Sign Up**: Page for new users to create an account. [Go to Sign Up](http://localhost:5173/SignUp)
+- **Profile**: User profile page, accessible by clicking on a user's username. [Go to Profile](http://localhost:5173/Profil/:login)
+- **Message Page**: Page to view and respond to messages within a topic. [Go to Message Page](http://localhost:5173/Messages/:id)
+- **Request**: Page where users can request access to view messages. [Go to Request](http://localhost:5173/Request)
+- **User Management**: Page for admin users to manage other users. [Go to User Management](http://localhost:5173/gestionUsers)
 
 ## API Routes
 
