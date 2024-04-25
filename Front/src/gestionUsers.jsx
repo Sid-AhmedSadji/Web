@@ -95,10 +95,13 @@ function App(props) {
           <h4>{user.type}</h4>
           <div className={styles.btnDiv}>
             {user.type === "banned" ?
-              <button className={`${styles.myButton} ${styles.Accept}`} onClick={() => { toast.promise(changeType({ id: user._id, type: "user" }), { loading: 'Unbanning...', success: 'Done!', error: 'Error' }) }}>Unban</button> :
-              <button className={`${styles.myButton} ${styles.Accept}`} onClick={() => { toast.promise(changeType({ id: user._id, type: "admin" }), { loading: 'Giving rights...', success: 'Done!', error: 'Error' }) }}>Admin</button>
+              <button className={`${styles.myButton} ${styles.Accept}`} onClick={() => { changeType({ id: user._id, type: "user" }) }}>Unban</button> :
+              <button className={`${styles.myButton} ${styles.Accept}`} onClick={() => { changeType({ id: user._id, type: "admin" }) }}>Admin</button>
             }
-            <button className={`${styles.myButton} ${styles.Refuse}`} onClick={() => { toast.promise(changeType({ id: user._id, type: "banned" }), { loading: 'Banning...', success: 'Done!', error: 'Error' }) }}>Ban</button>
+            {user.type === "admin" ?
+              <button className={`${styles.myButton} ${styles.Refuse}`} onClick={() => { toast.error('You can\'t ban an admin') }}>Ban</button> :
+              <button className={`${styles.myButton} ${styles.Refuse}`} onClick={() => { changeType({ id: user._id, type: "banned" }) }}>Ban</button>
+            }
           </div>
         </form>
       ))}

@@ -4,50 +4,25 @@ import toast, { Toaster } from 'react-hot-toast';
 import api from './ApiCalls';
 import styles from './Css/Login.module.css';
 
-//Fonctions pour afficher différents types de notifications
-const errorPassword = () => {
-  toast.error('Passwords do not match or fields are empty');
-};
-
-const signUpOk = () => {
-  toast.success('Your account has been created');
-};
-
-const toLogIn = () => {
-  toast.loading('Please wait...');
-}
-
-//toast speudo already used
-const errorPseudo = () => { //On ne l'utilise pas ?
-  toast.error('Username already in use');
-}
-
 //Fonction asynchrone pour enregistrer un nouvel utilisateur
 async function postUser(props) {
   const { pseudo, password, confirmPassword, firstname, lastname } = props;
 
   //Vérification des champs requis
   if (pseudo === "" || password === "" || confirmPassword === "" || firstname === "" || lastname === "") {
-    //le toast en anglais 
-    toast.error("Please fill in all the fields");
-    return false ;
+    throw new Error("Please fill in all the fields");
   }
   if (password !== confirmPassword ) {
-    errorPassword();
-    return false;
+    throw new Error("Passwords do not match");
   }
-  try {
+  // check password contain at least 8 characters with at least one number and one special character without regrex 
+  if (password.length < 8 || !/[0-9]/.test(password) || !/[!@#$%^&*]/.test(password)) {
+    throw new Error("Password must be at least 8 characters long and contain at least one number and one special character");
+  }
+
     //Appel API pour enregistrer l'utilisateur
     const response = await api.postUser({ pseudo, password, firstname, lastname });
-    signUpOk(); //Affichage de la réussite
-    return true;
-  } catch (error) {
-    //Retour des erreurs
-    if (error.response)
-      return Promise.reject(error.response.data);
-    else
-      return Promise.reject(error.message);
-  }
+
 }
 
 function SignUp() {
@@ -71,7 +46,10 @@ function SignUp() {
       {
         loading: 'Please wait...',
         success: 'Registration successful!',
-        error: (err) => `Registration error: ${err}`
+        error: (err) => {
+          const errorMessage = err.response ? err.response.data : `Registration error: ${err}`;
+          return errorMessage;
+        }
       }
     ).then(() => setTimeout(() => {navigate('/')}, 2000)); //Si la promesse est résolue, un timeout est défini pour déclencher après 1 seconde, naviguant vers la page principale '/'
     //Phase première de l'inscription boolean = true
