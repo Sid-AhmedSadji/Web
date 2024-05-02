@@ -26,4 +26,4 @@ wss.on('connection', function connection(ws) {
   ws.on('close', () => console.log('Un client WebSocket s\'est déconnecté.'));
 });
 
-//Ce fichier est utilisé pour démarrer le serveur web, afin qu'il écoute sur le port 4000.
+//Ce fichier est utilisé pour démarrer le serveur web, afin qu'il écoute sur le port 4000. Mais il ne faudait pas plutôt, le port 5173 pour cela ? 

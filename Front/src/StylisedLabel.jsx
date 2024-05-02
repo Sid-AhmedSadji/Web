@@ -10,7 +10,6 @@ const SearchInput = ({ value, setValue }) => (
       id="input-search" //ID pour associer le label
       value={value} //La valeur du champ est contrôlée par la prop 'value'
       onChange={(e) => setValue(e.target.value)} // Use an arrow function to update the value
-      placeholder="Looking For ?"
     />
     <label className={styles.search} htmlFor="input-search"></label> {/* Label stylisé pour le champ de saisie */}
   </>
