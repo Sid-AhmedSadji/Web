@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import styles from './Css/GlobalChat.module.css';
+import { HiX } from "react-icons/hi";
+import { IoMdSend } from "react-icons/io";
 
-function GlobalChat({ userId }) {
+function GlobalChat({ userId, setShowChat }) {
+  
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [ws, setWs] = useState(null); //Etat pour la WebSocket
@@ -56,6 +59,7 @@ function GlobalChat({ userId }) {
 
   return (
     <div className={styles.chatContainer}>
+      <button className={styles.closeButton} onClick={() => setShowChat(false)}><HiX /></button>
       <div className={styles.messagesList}>
         {messages.map((message, index) => (
           <div key={index} className={styles.messageItem}>
@@ -70,7 +74,7 @@ function GlobalChat({ userId }) {
           onChange={(e) => setNewMessage(e.target.value)}
           placeholder="Tapez votre message ici"
         />
-        <button onClick={sendMessage}>Envoyer</button>
+        <button onClick={sendMessage}><IoMdSend /></button>
       </div>
     </div>
   );

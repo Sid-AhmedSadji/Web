@@ -38,6 +38,18 @@ a{
   text-decoration: none ;
 }
 
+.chatButton{
+  background-color: transparent;
+  border : none;
+  color : white ;
+  font-size: 24px;
+}
+
+.chatButton:hover{
+  font-size: 28px;
+  transition: 0.3s;
+}
+
 @media  (max-width:800px) {
   .logoSorbonne{
     height: 4.5vh;

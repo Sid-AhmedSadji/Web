@@ -27,7 +27,7 @@ class Api {
         title,
         date,
         userid: id.userid,
-        privacy
+        privacy,
       }, {
         headers: {
           'Content-Type': 'application/json' //Spécifie le type de contenu envoyé au serveur
@@ -152,6 +152,15 @@ class Api {
             response.push(await axios.delete(Api.api + `/message/${message._id}`)); //Envoie une requête DELETE pour chaque message
         }
     }
+    return response.data;
+  }
+
+  static async reportMessage(id, author_name) {
+    axios.defaults.withCredentials = true;
+    const response = await axios.put(Api.api + '/report', {
+      id,
+      author_name
+    });
     return response.data;
   }
 

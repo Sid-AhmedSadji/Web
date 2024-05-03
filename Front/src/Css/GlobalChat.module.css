@@ -1,40 +1,94 @@
 /* GlobalChat.module.css */
 .chatContainer {
-    position: relative;
-    top: 75%; left: 75%;
-    bottom: 0;
-    right: 0;
-    width: 300px;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-  }
-  
-  .messagesList {
-    max-height: 300px;
-    overflow-y: auto;
-    padding: 10px;
-  }
-  
-  .messageItem {
-    margin-bottom: 10px;
-    padding: 5px;
-    background-color: #e8e8e8;
-    border-radius: 5px;
-  }
-  
-  .messageInput {
-    display: flex;
-    padding: 10px;
-  }
-  
-  .messageInput input {
-    flex-grow: 1;
-    margin-right: 10px;
-    padding: 5px;
-  }
-  
-  .messageInput button {
-    padding: 5px 10px;
-  }
+  position: absolute;
+  height: 50%;
+  width: 30%;
+
+  top: 25%;
+  left: 35%;
+
+  z-index: 100;
+
+  border-radius: 30px;
+  background-color: rgba(255, 220, 220, 0.406);
+  backdrop-filter: blur(15px);
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+}
+
+.messagesList {
+  max-height: 75%;
+  overflow-y: auto;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.messageItem {
+  margin-bottom: 10px;
+  padding: 5px 15px;
+  background-color: transparent;
+  font-size: 20px;
+  width: fit-content;
+  border-radius: 30px;
+  border: 3px solid rgba(255, 255, 255, 0.2);
+}
+
+.messageInput {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  position : absolute;
+  bottom: 0;
+  width: 90%;
+  left: 5%;
+}
+
+.messageInput input {
+  width : 100%;
+  border-radius: 20px;
+  text-align: left;
+  padding: 15px;
+  position: relative;
+  font-size: 16px;
+  box-sizing: border-box;
+  background-color: rgba(255, 220, 220, 0.406);
+  backdrop-filter: blur(15px);
+  transition: transform 0.3s;
+  color : black
+}
+
+
+
+.messageInput button {
+  padding: 5px ;
+  font-size: 20px;
+  background-color: transparent;  
+  text-align: center;
+
+
+}
+
+.messageInput button:hover {
+  font-size: 24px;
+  transition: 0.3s;
+  color: green;
+  cursor: pointer;
+}
+
+.closeButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color : transparent;
+  font-size: 24px;
+}
+
+.closeButton:hover {
+  font-size: 28px;
+  color: red;
+  transition: 0.3s;
+  cursor: pointer;
+}
+

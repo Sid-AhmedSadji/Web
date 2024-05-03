@@ -2,11 +2,12 @@ import SingleMessage from "./Message";
 import styles from './Css/SectionMessages.module.css';
 
 //Définition du composant avec props pour la liste des messages, un indicateur de chargement, et le type de l'utilisateur
-function Messages({ listeMessages, loading, type }) {
+function Messages({ listeMessages, loading, type, idUser }) {
+
   return (
     <div className={styles.main}>
       <ul className={styles.myUl}>
-        {listeMessages.filter(message => message.id_Parent === "0")
+        {listeMessages.filter(message => message.id_Parent === "0" && !message.reports.includes(idUser) && message.reports.length < 10) 
           .map((message, index) => (
             <li key={index} className={styles.myLi}>
               <SingleMessage
@@ -14,11 +15,12 @@ function Messages({ listeMessages, loading, type }) {
                 loading={loading}
                 nbMax={60}
                 type={type}
+                idUser={idUser}
               />
             </li>
           ))}
       </ul>
-      <div className={styles.menuContainer}> 
+      <div className={styles.menuContainer}>
       </div>
     </div>
   );

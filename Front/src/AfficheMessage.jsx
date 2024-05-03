@@ -6,7 +6,7 @@ import Message from './Message'
 let nbMessageAfficher = 2 ; //Nombre initial de reponses à afficher par message
 
 //Composant pour ordonner et afficher une liste de messages récursivement
-function OrderListe({ listeMessages, id , i, type }) {
+function OrderListe({ listeMessages, id , i, type, idUser}) {
 
     const filteredMessages = listeMessages.filter(message => message.id_Parent === id);
    
@@ -27,7 +27,7 @@ function OrderListe({ listeMessages, id , i, type }) {
             {filteredMessages.map((topic, index) => (
                 <li className={styles.myLi} key={topic._id}>
                     <>
-                        <Message Message={topic} nbMax={0} type={type}/>
+                        <Message Message={topic} nbMax={0} type={type} idUser={idUser}/>
                     </>
                     <OrderListe listeMessages={listeMessages} id={topic._id} i={i-1} />
                 </li>
@@ -42,7 +42,8 @@ function OrderListe({ listeMessages, id , i, type }) {
 //Composant principal pour afficher les messages
 function App(props) {
 
-    const { id, topic } = props;
+    const { id, topic, userid } = props;
+
     
     const [loading, setLoading] = useState(true); //Gère l'état de l'affichage du chargement
     const [listeMessages, setListeMessages] = useState([]); //Stocke la liste des messages récupérés
@@ -55,14 +56,13 @@ function App(props) {
         async function fetchMessages() {
             try {
               const Message = await api.getMessages(topic.privacy);
-              setListeMessages(Message.messages);
-
+              //retire les messages que userid a reports 
+              setListeMessages(Message.messages.filter(message => !message.reports.includes(userid) && message.reports.length < 10));
             } catch (error) {
               console.error('Error:', error);
-            }finally{
-                setLoading(false);
             }
         }
+
 
         async function fetchUser() {
             try {
@@ -70,6 +70,8 @@ function App(props) {
                 setType(data.usertype);
             } catch (error) {
                 console.error("Error", error.response.data.message);
+            }finally{
+                setLoading(false);
             }
         }
   
@@ -82,12 +84,13 @@ function App(props) {
       return <div>Loading...</div>;
     }
 
+
     return (
         <div style={{ margin: '30px' , boxSizing: 'border-box' }}>
             {topic && (
-                  <Message Message={topic} nbMax={0} type={type} />
+                  <Message Message={topic} nbMax={0} type={type} idUser={userid}/>
             )}
-            <OrderListe listeMessages={listeMessages} id={id} i={nbMessageAfficher} type={type}/>
+            <OrderListe listeMessages={listeMessages} id={id} i={nbMessageAfficher} type={type} idUser={userid}/>
         </div>
     );
 

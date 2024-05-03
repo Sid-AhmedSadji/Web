@@ -82,19 +82,28 @@ const MessageDetails = () => {
             setIsSettingTitle(true);
             toast.error('Error:'+ error.response.data.message);
             console.error('Error:', error.response.data.message);
+          }finally{
+            setTitle('');
+            setMessage('');
+            setIsSettingTitle(true);
           }
         }
       }
     }
   }
   
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  
 
   return (
     <div className={ styles.mainDiv }>
       <Toaster />
-      <Header />
+      <Header user={user.type} />
       <div className={styles.msgDiv}>
-        <MainDiv key={mainDivKey} id={idMessage} topic={topic} /> 
+        <MainDiv key={mainDivKey} id={idMessage} topic={topic} userid={idUser}/> 
       </div>
       {!loading &&
         <>
@@ -115,4 +124,3 @@ const MessageDetails = () => {
 export default MessageDetails;
 
 //Affiche une page de message
-

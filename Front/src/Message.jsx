@@ -1,19 +1,34 @@
 import styles from './Css/Message.module.css';
 import { Link } from 'react-router-dom';
 import TimeAgo from 'react-timeago';
-import { HiTrash } from "react-icons/hi"; //Importation de l'icône de poubelle pour le bouton de suppression
+import { HiTrash, HiOutlineExclamation } from "react-icons/hi"; //Importation de l'icône de poubelle pour le bouton de suppression
 import Api from './ApiCalls.js';
+
+
 
 
 
 function Message(props) {
 
   const { message, date, author_name, _id, title} = props.Message; //Destructuration pour obtenir les détails du message depuis les props
-  const { nbMax } = props; //Nombre maximal de caractères à afficher avant la troncature
+  const { nbMax, idUser } = props; //Nombre maximal de caractères à afficher avant la troncature
+
 
   let msg = message;
   if (nbMax > 0 && message.length > nbMax) //Tronque le message si plus long que nbMax
     msg = message.slice(0, nbMax) + ' [...]';
+
+
+  async function reportMessage( ) {
+    try {
+      const response = await Api.reportMessage(_id, idUser);
+           
+    }catch (error) {
+      console.error("Error while reporting message:", error);
+    }
+    
+  }
+
 
   return (
     <div className={styles.mainDiv}>
@@ -23,6 +38,7 @@ function Message(props) {
         </Link>
         <p className={styles.title}> - {title}</p>
         <TimeAgo className={styles.timeAgo} date={date} />
+        <button className={styles.btnDiv} onClick={ reportMessage} ><HiOutlineExclamation/></button>
       </div>
       <Link to={`/Messages/${_id}`} className={styles.link}>
         <p className={styles.text}>{msg}</p>
@@ -34,4 +50,3 @@ function Message(props) {
 }
 
 export default Message;
-

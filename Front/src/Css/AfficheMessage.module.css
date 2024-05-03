@@ -1,4 +1,6 @@
 /* OrderListe.module.css */
+
+
 .styledBar{
     width: 1px;
     color: white;
@@ -50,7 +52,7 @@
 
 .link{
     text-decoration: none;
-    color : white ;
+    color : rgb(195, 176, 252) ;
 }
 
 .myLi {

@@ -12,7 +12,7 @@ function Home(props) {
   const [title, setTitle] = useState('');
   const [message, setMessage] = useState('');
   const [isSettingTitle, setIsSettingTitle] = useState(true);
-  const [userType, setUserType] = useState('');
+  const [User, setUser] = useState('');
   const [isPrivate, setIsPrivate] = useState("public");
   const [filter, setFilter] = useState('');
   const [filterBegging, setFilterBegging] = useState(null);
@@ -28,7 +28,7 @@ function Home(props) {
     async function fetchData() {  //Fonction asynchrone pour récupérer les données
       try {
         const response = await api.checkSession(); //Vérifie la session
-        setUserType(response.usertype); //Définit le type d'utilisateur
+        setUser(response); //Définit le type d'utilisateur
         const data = await api.getMessages({ privacy: isPrivate, id: null, filter: filter });
         let res = data.messages; //Filtre les messages en fonction du texte, de la date de début et de fin
         if (filter !== "") {
@@ -77,15 +77,20 @@ function Home(props) {
     setFilter(''); //Réinitialise le filtre
   }
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+
   return (
     <div className={styles.globalDiv}>
-      <Header setFilter={setFilter} filter={filter} setFilterBegging={setFilterBegging} setFilterEnd={setFilterEnd} searchBar shearchBar={true} user={userType} />
+      <Header setFilter={setFilter} filter={filter} setFilterBegging={setFilterBegging} setFilterEnd={setFilterEnd} searchBar shearchBar={true} user={User.usertype} />
       <div className={styles.mainSection}>
         <input type="text" placeholder={isSettingTitle ? "New message ? Choose a title for your message" : "What is your message ?"} value={isSettingTitle ? title : message} onChange={(e) => { isSettingTitle ? setTitle(e.target.value) : setMessage(e.target.value) }} onKeyPress={handleKeyPress} className={styles.myLabel} />
         <hr align="center" width="75%" />
-        <Messages listeMessages={listeMessages} loading={setLoading} type={userType}/>
+        <Messages listeMessages={listeMessages} loading={setLoading} type={User.usertype} idUser={User.userid} />
       </div>
-      {userType === "admin" &&
+      {User.usertype === "admin" &&
         <div className={styles.switch}>
           <button className={isPrivate === "public" ? styles.active : null} onClick={() => switchPrivacy("public")}>Public</button>
           <button className={isPrivate === "private" ? styles.active : null} onClick={() => switchPrivacy("private")}>Private</button>
@@ -96,4 +101,3 @@ function Home(props) {
 }
 
 export default Home;
-
