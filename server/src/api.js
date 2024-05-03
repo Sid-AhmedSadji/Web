@@ -57,6 +57,20 @@ function init(dbUrl) {
         }
     });
 
+    router.put("/report", async (req, res) => {
+        try {
+            const { id, author_name } = req.body;
+            console.log(id, author_name);
+            const newObjectId = new ObjectId(id);
+            console.log(newObjectId);
+            const nbReports = await messages.reportMessage(newObjectId, author_name);
+            console.log(nbReports);
+            res.status(200).send({ message: `Message reported, now has ${nbReports} reports` });
+        } catch (e) {
+            res.status(500).send({ message: "Internal server error", error: e });
+        }
+    });
+
     //Route pour changer le type d'utilisateur
     router.post("/changeType", async (req, res) => {
         try {

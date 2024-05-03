@@ -18,7 +18,8 @@ class Messages {
                 author_name: author_name,
                 id_Parent: id_Parent,
                 title: title,
-                privacy: privacy
+                privacy: privacy,
+                reports: []
             })
             return result; //Retourne le résultat de l'insertion
         } catch (err) {
@@ -31,7 +32,6 @@ class Messages {
         try {
             const query = id == null ? {} : { _id: id }; //Construit la requête de base
             privacy ? query.privacy = privacy : null //Ajoute le filtre de confidentialité si présent
-            console.log(query)
             const result = await this.client.db().collection('Messages').find(query).toArray();
             return result; //Retourne les messages trouvés 
         } catch (err) {
@@ -64,6 +64,25 @@ class Messages {
             throw err;
         }
     }
+
+    //Méthode asynchrone pour ajouter un signalement a un message prends en parametre l'id d'un message et l'id d'un utilisateur
+    async reportMessage(id, author_name) {
+        try {
+            const result = await this.client.db().collection('Messages').updateOne(
+                { _id: id }, // Utilise ObjectId pour l'ID du message
+                {
+                    $push: {
+                        reports: author_name // Ajoute l'auteur au tableau des reports
+                    }
+                }
+            );
+            return result; // Retourne le résultat de la mise à jour
+        } catch (error) {
+            console.error("Error while reporting message:", error);
+            throw error; // Lance une nouvelle erreur pour indiquer qu'il y a eu une erreur dans la mise à jour
+        }
+    }
+    
 }
 
 exports.default = Messages ;

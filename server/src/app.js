@@ -1,7 +1,8 @@
 const path = require('path'); //Module pour travailler avec les chemins de fichiers
 const api = require('./api.js'); //Importe les définitions de l'API
+const privateMessagesRouter = require('./routes/privateMessages'); //Importe le routeur pour les messages privés
 const cors = require('cors'); //Middleware pour activer CORS (Cross-Origin Resource Sharing)
-
+const WebSocket = require('ws');
 
 //Détermine le répertoire de base
 const basedir = path.normalize(path.dirname(__dirname));
