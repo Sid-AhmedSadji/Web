@@ -40,7 +40,7 @@ function Header(props) {
             {/* Bouton pour basculer l'affichage du chat */}
             {showChat ? 
               <button onClick={toggleChat} className={styles.chatButton}> <HiChatAlt2 /> </button> :
-              <GlobalChat userId={props.userId} setShowChat={toggleChat}/> 
+              <GlobalChat userId={props.idUser} setShowChat={toggleChat}/> 
             }
 
           </>
