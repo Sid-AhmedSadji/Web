@@ -1,7 +1,8 @@
-import {Link,useState,useEffect} from 'react'
+import {useState,useEffect} from 'react'
 import styles from './Css/AfficheMessage.module.css'
 import api from './ApiCalls'
 import Message from './Message'
+import { Link } from 'react-router-dom';
 
 let nbMessageAfficher = 2 ; //Nombre initial de reponses à afficher par message
 
@@ -14,9 +15,11 @@ function OrderListe({ listeMessages, id , i, type, idUser}) {
 
     if ( i === 0 ){ //Si le niveau de profondeur est 0, affiche un lien pour voir plus de réponses
         return(
-            <p style={{paddingLeft : "50px", paddingBottom : "15px"}}>
-                <Link to={`/Messages/${id}`}>Show responses</Link>
-            </p>
+            
+                <Link to={`/Messages/${id}`}>
+                    <p className={styles.myP}>Show more responses</p>
+                </Link>
+            
         )
     }
 

@@ -80,12 +80,6 @@
     flex: none; /* Exclut cet élément de l'effet de flexbox */
 }
 
-
-.myP{
-    padding-left  : 0px;
-    margin : 0px 
-}
-
 .hole1 {
     position: absolute;
     top: 0px; /* Décalez le trou vers le haut de la bordure principale */
@@ -116,6 +110,16 @@
     box-sizing: border-box;
 }
 
+.myP{
+    color: #e9c1ff;
+    padding-left: 40px;
+    font-size: 16px;
+}
+
+.myP:hover{
+    font-size: 20px;
+    transition: font-size 0.3s ease;
+}
 @media  (max-width:800px) {
     .myLi {
         margin :  20px 0px 0px 5px ;
