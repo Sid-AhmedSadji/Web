@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import api from './ApiCalls.js';
 import Header from './Header.jsx';
 import toast, { Toaster } from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
 
 //Fonction asynchrone pour récupérer la liste des utilisateurs
 async function getUsers() {
@@ -20,7 +19,6 @@ function App(props) {
   const [listOfUsers, setListOfUsers] = useState([]); //Stocke la liste des utilisateurs
   const [userType, setUserType] = useState(0); //Stocke le type de l'utilisateur actuel
   const [loading, setLoading] = useState(true); //Indique si les données sont en train de charger
-  const navigate = useNavigate();
 
 
   useEffect(() => {

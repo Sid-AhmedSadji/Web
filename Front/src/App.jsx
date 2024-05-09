@@ -11,11 +11,10 @@ import Gestion from './gestionUsers.jsx';
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import api from './ApiCalls';
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 
 function App() {
   const [user, setUser] = useState(null); //Gestion de l'état de l'utilisateur
-  const [loading, setLoading] = useState(true); //Gestion de l'état de chargement
 
 
   const checkSessionPromise = () => {

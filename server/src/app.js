@@ -1,6 +1,5 @@
 const path = require('path'); //Module pour travailler avec les chemins de fichiers
 const api = require('./api.js'); //Importe les définitions de l'API
-const privateMessagesRouter = require('./routes/privateMessages'); //Importe le routeur pour les messages privés
 const cors = require('cors'); //Middleware pour activer CORS (Cross-Origin Resource Sharing)
 const WebSocket = require('ws');
 
@@ -39,13 +38,6 @@ app.use(session({
 
 app.use('/api', api.default(dbUrl)); //Utilise l'API pour les chemins commençant par '/api'
 
-//Ajout de la gestion des messages privés
-app.use('api', privateMessagesRouter); // Route pour les messages privés
-
-//Fermer la connexion à la base de données ?
-app.on('close', () => {
-    console.log('Fermeture du serveur, nettoyage en cours...');
-});
 exports.default = app;
 
 //Le fichier app.js est utilisé pour configurer l'application serveur.

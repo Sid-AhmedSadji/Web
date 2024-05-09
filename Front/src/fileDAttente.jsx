@@ -1,6 +1,4 @@
 import styles from './Css/fileDAttente.module.css';
-import { Link, useNavigate } from 'react-router-dom';
-import Menu from './MenuRoulant.jsx';
 import Header from './Header.jsx';
 import { useEffect, useState } from 'react';
 import api from './ApiCalls.js';
@@ -26,7 +24,6 @@ function App(props) {
   const [users, setData] = useState([]); //État pour stocker les utilisateurs
   const [userType, setType] = useState(0); //État pour le type de l'utilisateur actuel
   const [loading, setLoading] = useState(true); //État de chargement
-  const navigate = useNavigate(); //Hook pour la navigation programmée (Redirection)
 
   useEffect(() => {
     toast.promise(

@@ -4,7 +4,6 @@ const { ObjectId } = require('mongodb'); //Utilisé pour convertir les ID en for
 const express = require("express"); //Framework pour créer le serveur HTTP
 const Users = require("./entities/users.js"); //Module pour les opérations liées aux utilisateurs
 const Messages = require("./entities/messages.js"); //Module pour les opérations liées aux messages
-const MongoClient = require("mongodb").MongoClient; //Client MongoDB pour se connecter à la base de données
 
 //Fonction pour initialiser les routes
 function init(dbUrl) {

@@ -9,7 +9,6 @@ import { HiChatAlt2 } from "react-icons/hi";
 import styles from './Css/Header.module.css';
 
 function Header(props) {
-  //const [search, setSearch] = useState("");  //État pour la recherche (non utilisé dans le code actuel)
   const [showChat, setShowChat] = useState(true); //État pour contrôler l'affichage du chat
 
   // Fonction de callback pour changer l'état de l'affichage du chat
